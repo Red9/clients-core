@@ -14,7 +14,8 @@
              *  
              */
             .factory('api', function($resource, $http, $location) {
-                var apiUrl = 'http://api.' + $location.host();
+                // TODO(SRLM): I had to hard code this for now, but get it into the grunt file!!!
+                var apiUrl = 'http://api.redninesensor.com';
                 
                 $http.defaults.withCredentials = true;
 
