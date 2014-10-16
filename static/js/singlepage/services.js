@@ -4,19 +4,25 @@
     angular.module('redApp.services', [])
 
             /** Create a Red9 API accessor object
-             *  
+             *
              *  Each resource has the following methods:
              *   - save (create)
              *   - get
              *   - query
              *   - update
              *   - delete
-             *  
+             *
              */
             .factory('api', function($resource, $http, $location) {
                 // TODO(SRLM): I had to hard code this for now, but get it into the grunt file!!!
+
                 var apiUrl = 'http://api.redninesensor.com';
-                
+                // Allow us to do special things in the development site version
+                if ($location.host() === 'localdev.redninesensor.com') {
+                    apiUrl = 'http://api.localdev.redninesensor.com';
+                }
+
+
                 $http.defaults.withCredentials = true;
 
                 var apiOptions = {
