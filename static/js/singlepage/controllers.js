@@ -38,11 +38,11 @@
             $scope.message = 'hello';
             $scope.datasetFilters = {
                 user: {
-                    'owner.id': $scope.currentUser.id,
-                    'createTime.more': Date.now() - 1000 * 60 * 60 * 24 * 30 * 3
+                    'ownerId': $scope.currentUser.id,
+                    'createTime.gt': Date.now() - 1000 * 60 * 60 * 24 * 30 * 3
                 },
                 allRecent: {
-                    'createTime.more': Date.now() - 1000 * 60 * 60 * 24 * 30 * 1
+                    'createTime.gt': Date.now() - 1000 * 60 * 60 * 24 * 30 * 1
                 }
             };
         })
@@ -52,7 +52,7 @@
                 dataset: {
                     //part: 'title,id,createTime,headPanel.startTime,headPanel.endTime,owner.id,owner.displayName,count',
                     //count: true,
-                    expand: 'headPanel,owner'
+                    expand: 'owner'
                 },
                 event: {
                     part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
@@ -62,9 +62,9 @@
 
             api.dataset.query(parameters.dataset, function (datasets) {
                 var datasetAggregate = _.reduce(datasets, function (memo, dataset) {
-                    memo.sumDuration += dataset.headPanel.endTime - dataset.headPanel.startTime;
+                    memo.sumDuration += dataset.endTime - dataset.startTime;
                     try {
-                        memo.sumDistance += dataset.headPanel.summaryStatistics.static.route.path.distance.value;
+                        memo.sumDistance += dataset.summaryStatistics.static.route.path.distance.value;
                     } catch (e) {
                     }
                     return memo;
@@ -82,16 +82,16 @@
 
                 $scope.datasetUsers = _.chain(datasets)
                     .groupBy(function (dataset) {
-                        return dataset.owner.id;
+                        return dataset.ownerId;
                     })
                     .map(function (list) {
                         return _.reduce(list, function (memo, dataset) {
 
-                            memo.sumDuration += dataset.headPanel.endTime - dataset.headPanel.startTime;
+                            memo.sumDuration += dataset.endTime - dataset.startTime;
                             memo.count += 1;
 
                             // A bit wasteful to set it on every iteration, but oh well.
-                            memo.owner.id = dataset.owner.id;
+                            memo.ownerId = dataset.ownerId;
                             memo.owner.displayName = dataset.owner.displayName;
                             return memo;
                         }, {

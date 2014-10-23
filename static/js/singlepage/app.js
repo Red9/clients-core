@@ -103,7 +103,10 @@
 
             $locationProvider.html5Mode(true);
         })
-
+        .config(function ($resourceProvider) {
+            // Don't strip trailing slashes from calculated URLs
+            $resourceProvider.defaults.stripTrailingSlashes = false;
+        })
         .run(function ($rootScope, $location, $cookieStore) {
             // The idea of using cookies for initial user authentication came from this page:
             // http://www.frederiknakstad.com/2013/01/21/authentication-in-single-page-applications-with-angular-js/
@@ -115,7 +118,8 @@
             // Check authentication
             $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
                 if ($rootScope.currentUser === null && nextLoc.accessLevel !== 'public') {
-                    $location.path('/page/404');
+                    // Disable authentication, for now.
+                    //     $location.path('/page/404');
                 } else {
 
                 }
