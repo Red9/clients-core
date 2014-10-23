@@ -19,12 +19,11 @@
 
                         var parameters = {
                             dataset: {
-                                part: 'title,id,createTime,headPanel.startTime,headPanel.endTime,owner.id,owner.displayName,count',
-                                count: true,
-                                expand: 'headPanel,owner'
+                                //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
+                                expand: 'owner'
                             },
                             event: {
-                                part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
+                                //part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
                             }
 
                         };
@@ -200,9 +199,9 @@
                             $scope.users = users;
 
                             // First time prepopulate
-                            if (queryParameters['owner.id']) {
+                            if (queryParameters.ownerId) {
                                 $scope.users.forEach(function(user) {
-                                    if (user.id === queryParameters['owner.id']) {
+                                    if (user.id === queryParameters.ownerId) {
                                         $scope.search.user = user;
                                     }
                                 });
@@ -225,7 +224,7 @@
                                 search.title = searchForm.title;
                             }
                             if (isValidInput(searchForm.user)) {
-                                search['owner.id'] = searchForm.user.id;
+                                search.ownerId = searchForm.user.id;
                             }
 
                             $scope.searchFilters = search;

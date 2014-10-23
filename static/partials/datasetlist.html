@@ -46,7 +46,7 @@
             <tbody>
                 <tr ng-repeat-start="dataset in resourcePage" class="ngFade">
                     <td><input type="checkbox" ng-model="dataset.selected"></td>
-                    <td><a href="/user/{{dataset.owner.id}}">{{dataset.owner.displayName}}</a></td>
+                    <td><a href="/user/{{dataset.ownerId}}">{{dataset.owner.displayName}}</a></td>
                     <td>{{dataset.title| limitTo:60}}<span ng-if="dataset.title.length > 60">...</span></td>
                     <td><a href="/dataset/{{dataset.id}}" target="_self">View <span class="glyphicon glyphicon-circle-arrow-right"></span></a></td>
                     <td><span class="badge">{{dataset.count.event > 0 ? dataset.count.event : ''}}</span></td>
@@ -61,8 +61,8 @@
                     <td colspan="100">
                         <ul class="list-unstyled">
                             <li>Created On: {{dataset.createTime| date}}</li>
-                            <li>Started On: {{dataset.headPanel.startTime| date}}</li>
-                            <li>Duration: {{dataset.headPanel.endTime - dataset.headPanel.startTime| duration}}</li>
+                            <li>Started On: {{dataset.startTime| date}}</li>
+                            <li>Duration: {{dataset.endTime - dataset.startTime| duration}}</li>
                         </ul>
                     </td>
                 </tr>
