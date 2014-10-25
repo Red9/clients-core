@@ -22,7 +22,8 @@
             //                  apiUrl = 'http://api.localdev.redninesensor.com';
 //                }
 
-            var apiUrl = "http://betaapi.redninesensor.com";
+            //var apiUrl = "http://betaapi.redninesensor.com";
+            var apiUrl = "http://localhost:3000";
 
 
             $http.defaults.withCredentials = true;
