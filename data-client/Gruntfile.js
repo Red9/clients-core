@@ -23,9 +23,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         src: ['release/**/*.js'],
-                        dest: '',
-                        //ext: '.annotated.js',
-                        //extDot: 'last'
+                        dest: ''
                     }
                 ]
             }
@@ -58,7 +56,7 @@ module.exports = function (grunt) {
         useminPrepare: {
             html: 'release/src/index.html',
             options: {
-                dest: 'release'
+                dest: 'release/src'
             }
         },
         usemin: {
