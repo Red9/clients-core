@@ -14,18 +14,6 @@
      *
      */
         .factory('api', function ($resource, $http, $location) {
-            // TODO(SRLM): I had to hard code this for now, but get it into the grunt file!!!
-
-            //    var apiUrl = 'http://api.redninesensor.com';
-            // Allow us to do special things in the development site version
-//                if ($location.host() === 'localdev.redninesensor.com') {
-            //                  apiUrl = 'http://api.localdev.redninesensor.com';
-//                }
-
-            //var apiUrl = "http://betaapi.redninesensor.com";
-            var apiUrl = "http://localhost:3000";
-
-
             $http.defaults.withCredentials = true;
 
             var apiOptions = {
@@ -33,16 +21,33 @@
             };
 
             return {
-                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}, apiOptions),
-                event: $resource(apiUrl + '/event/:id', {id: '@id'}, apiOptions),
-                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}, apiOptions),
-                user: $resource(apiUrl + '/user/:id', {id: '@id'}, apiOptions),
-                video: $resource(apiUrl + '/video/:id', {id: '@id'}, apiOptions)
+                dataset: $resource(red9config.apiUrl + '/dataset/:id', {id: '@id'}, apiOptions),
+                event: $resource(red9config.apiUrl + '/event/:id', {id: '@id'}, apiOptions),
+                comment: $resource(red9config.apiUrl + '/comment/:id', {id: '@id'}, apiOptions),
+                user: $resource(red9config.apiUrl + '/user/:id', {id: '@id'}, apiOptions),
+                video: $resource(red9config.apiUrl + '/video/:id', {id: '@id'}, apiOptions)
+            };
+        })
+        .factory('authenticate', function ($http, $window, $interval, $location, current, _) {
+            $http.defaults.withCredentials = true;
+            return {
+                logout: function () {
+                    current.user = null;
+                    $http.post(red9config.apiUrl + '/auth/logout');
+                    $window.location = '/';
+                },
+                login: function () {
+                    if (_.has($location.search(), 'attemptUrl')) {
+                        console.log('setting callbackURL to attemptURL');
+                        $window.location = red9config.apiUrl + '/auth/google?callbackUrl=' + encodeURIComponent($location.search().attemptUrl);
+                    } else {
+                        console.log('setting callbackURL to absURL');
+                        $window.location = red9config.apiUrl + '/auth/google?callbackUrl=' + $location.absUrl();
+                    }
+                }
             };
         })
         .factory('confirmDialog', function ($modal) {
-
-
             return function (parameters) {
                 return function () {
                     var ModalInstanceCtrl = function ($scope, $modalInstance) {
@@ -65,13 +70,6 @@
                     modalInstance.result.then(parameters.confirm, parameters.cancel);
 
                 };
-                /*
-                 modalInstance.result.then(function(confirmed) {
-                 console.log('confirmed: ' + confirmed);
-                 }, function() {
-                 console.log('Modal dismissed at: ' + new Date());
-                 });
-                 */
             };
         });
 })();

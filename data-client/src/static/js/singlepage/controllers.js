@@ -2,12 +2,8 @@
     'use strict';
 
     angular.module('redApp.controllers', [])
-        .controller('pageController', function ($scope, $location, $cookieStore) {
-            $scope.logout = function () {
-                $scope.currentUser = null;
-                $cookieStore.remove('connect.sid');
-                $location.path('/page/about');
-            };
+        .controller('pageController', function ($scope, authenticate) {
+            $scope.logout = authenticate.logout;
         })
         .controller('search', function ($scope, $location) {
             $scope.searchFilters = $location.search();
@@ -34,17 +30,31 @@
             });
         })
         .controller('homeController',
-        function ($scope) {
+        function ($scope, current) {
             $scope.message = 'hello';
             $scope.datasetFilters = {
                 user: {
-                    'ownerId': $scope.currentUser.id,
+                    'ownerId': current.user.id,
                     'createTime.gt': Date.now() - 1000 * 60 * 60 * 24 * 30 * 3
                 },
                 allRecent: {
                     'createTime.gt': Date.now() - 1000 * 60 * 60 * 24 * 30 * 1
                 }
             };
+        })
+        .controller('unauthenticatedController',
+        function ($scope, $location, _) {
+            $scope.attemptUrl = $location.search().attemptUrl;
+            $scope.error = null;
+            if (_.has($location.search(), 'error')) {
+                try {
+                    $scope.error = JSON.parse($location.search().error);
+                } catch (e) {
+                    $scope.error = {
+                        message: 'Warning: could not parse URL error. Did you mess with it? If not, contact support.'
+                    };
+                }
+            }
         })
         .controller('siteStatistics',
         function ($scope, _, api) {

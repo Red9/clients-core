@@ -29,7 +29,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
                     constraints.expand += value;
                 });
             }
-            sandbox.getSchema(resourceType, function(schema) {
+            //sandbox.getSchema(resourceType, function(schema) {
                 $.ajax({
                     type: 'GET',
                     url: sandbox.apiUrl + '/' + resourceType + '/?' + $.param(constraints),
@@ -40,7 +40,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
                     }
 
                 });
-            });
+            //});
         };
         sandbox.update = function(resourceType, id, newValues, callback) {
             console.log('resourceType: ' + resourceType);
@@ -120,9 +120,9 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
         };
         sandbox.getPanel = function(id, startTime, endTime, cache, callback) {
             var panelParameters = {
-                buckets: 1000,
-                format: 'json',
-                cache: 'off'
+                rows: 1000//,
+                //format: 'json',
+                //cache: 'off'
             };
             if (typeof startTime !== 'undefined') {
                 panelParameters.startTime = startTime;
@@ -130,13 +130,13 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
             if (typeof endTime !== 'undefined') {
                 panelParameters.endTime = endTime;
             }
-            if (cache === true) {
-                panelParameters.cache = 'on';
-            }
+            //if (cache === true) {
+            //    panelParameters.cache = 'on';
+            //}
 
             $.ajax({
                 type: 'GET',
-                url: sandbox.apiUrl + '/panel/' + id + '/body/?' + $.param(panelParameters),
+                url: sandbox.apiUrl + '/dataset/' + id + '/json?' + $.param(panelParameters),
                 dataType: 'json',
                 success: function(panel) {
                     _.each(panel.values, function(row) {

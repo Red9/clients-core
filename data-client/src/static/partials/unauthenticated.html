@@ -1,0 +1,12 @@
+<h4>Trying to look at <u>{{attemptUrl}}</u>?</h4>
+<h4>You need to sign in to view that page.</h4>
+
+<div ng-if="error">
+    <h3>Sign In Error:</h3>
+
+    <p>StatusCode: {{error.statusCode}}</p>
+
+    <p>Error: {{error.error}}</p>
+
+    <p>Message: {{error.message}}</p>
+</div>

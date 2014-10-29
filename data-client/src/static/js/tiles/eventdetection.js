@@ -516,7 +516,7 @@ define(['vendor/jquery', 'vendor/underscore', 'socketio', 'vendor/jquery.validat
                                     setSpectralFormPreconfigured($form, $(this).val());
                                 });
                             }
-                        }, ['headPanel']);
+                        });
                     });
                 }
 

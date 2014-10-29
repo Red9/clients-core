@@ -15,6 +15,7 @@ define(['vendor/jquery', 'vendor/moment', 'vendor/moment-timezone', 'vendor/mome
         };
 
         sandbox.getCurrentDatasetId = function() {
+            console.log('sandbox.focusState.dataset: ' + sandbox.focusState.dataset);
             if (typeof sandbox.focusState.dataset !== 'undefined') {
                 return sandbox.focusState.dataset.id;
             } else if (typeof sandbox.focusState.event !== 'undefined') {

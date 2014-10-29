@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -10,17 +10,8 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     // Copy assets over
-                    {expand: true, src: ['static/css/**'], dest: 'release/'},
-                    {expand: true, src: ['static/fonts/**'], dest: 'release/'},
-                    {expand: true, src: ['static/images/**'], dest: 'release/'},
-                    {expand: true, src: ['static/partials/**'], dest: 'release/'},
-                    {expand: true, src: ['static/templates/**'], dest: 'release/'},
-                    {expand: true, src: ['static/js/**'], dest: 'release'}
+                    {expand: true, src: ['src/**'], dest: 'release/'}
                 ]
-            },
-            index: {
-                src: 'index.html',
-                dest: 'release/index.html'
             }
         },
         ngAnnotate: {
@@ -48,7 +39,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'static/**/*.js'],
+            files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
                 // options here to override JSHint defaults
                 globals: {
@@ -58,20 +49,20 @@ module.exports = function(grunt) {
                     angular: true,
                     window: true
                 },
-                ignores: ['static/js/vendor/*.js', 'static/js/vendor_old/*.js'],
+                ignores: ['src/static/js/vendor/*.js', 'src/static/js/vendor_old/*.js'],
                 laxbreak: true // don't warn about putting operators on the next line.
             }
 
 
         },
         useminPrepare: {
-            html: 'release/index.html',
+            html: 'release/src/index.html',
             options: {
                 dest: 'release'
             }
         },
         usemin: {
-            html: 'release/index.html'
+            html: 'release/src/index.html'
         }
     });
 
@@ -87,18 +78,18 @@ module.exports = function(grunt) {
     grunt.registerTask('test', ['jshint']);
 
     grunt.registerTask('default',
-            [
-                'jshint',
-                'clean:before',
-                'copy',
-                'ngAnnotate',
-                'useminPrepare',
-                'concat:generated',
-                'cssmin:generated',
-                'uglify:generated',
-                'usemin',
-                'clean:after'
-            ]);
+        [
+            'jshint',
+            'clean:before',
+            'copy',
+            'ngAnnotate',
+            'useminPrepare',
+            'concat:generated',
+            'cssmin:generated',
+            'uglify:generated',
+            'usemin',
+            'clean:after'
+        ]);
 
     grunt.registerTask('copydir', ['clean', 'copy']);
 
