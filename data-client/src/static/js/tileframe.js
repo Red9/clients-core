@@ -95,7 +95,6 @@ define(['vendor/jquery', 'vendor/underscore'], function($, _) {
                 // has already occurred.
                 return;
             }
-            console.log('tileframe Destructor');
 
             tileResult.destructor();
 

@@ -73,9 +73,7 @@ define(['vendor/jquery', 'vendor/underscore'
                     });
                 });
             } else if (type === 'dataset') {
-                console.log('############# A');
                 sandbox.get(type, {id: id}, function(datasetList) {
-                    console.log('############# B');
                     //if (typeof datasetList[0].headPanel === 'undefined'){
                     //    // Removed this second check for DW-246.
                     //        //|| _.keys(datasetList[0].headPanel.summaryStatistics).length === 0) {
@@ -94,9 +92,8 @@ define(['vendor/jquery', 'vendor/underscore'
                         endTime = datasetList[0].endTime;
                     }
                     sandbox.getPanel(datasetList[0].id, startTime, endTime, cache, function(panel) {
-                        console.log('############# C');
                         sandbox.setPageTitle(datasetList[0].title);
-
+                        console.log('Setting dataset focus state.');
                         sandbox.focusState.dataset = datasetList[0];
                         sandbox.focusState.minStartTime = datasetList[0].startTime;
                         sandbox.focusState.maxEndTime = datasetList[0].endTime;
