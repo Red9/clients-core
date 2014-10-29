@@ -24,8 +24,6 @@
 
     ])
         .config(function ($routeProvider, $locationProvider) {
-
-
             // Resources
             $routeProvider.when('/', {
                 templateUrl: '/static/partials/home.html',
@@ -64,6 +62,13 @@
                 accessLevel: 'user',
                 title: 'R9: Site Statistics'
             });
+            $routeProvider.when('/page/unauthenticated', { // TODO: Users shouldn't be able to access this page when they are signed in.
+                templateUrl: '/static/partials/unauthenticated.html',
+                controller: 'unauthenticatedController',
+                accessLevel: 'public',
+                title: 'R9: Not Authenticated'
+            });
+
 
             // Pages
             $routeProvider.when('/page/404', {
@@ -107,33 +112,30 @@
             // Don't strip trailing slashes from calculated URLs
             $resourceProvider.defaults.stripTrailingSlashes = false;
         })
-        .run(function ($rootScope, $location, $cookieStore) {
+        .run(function ($rootScope, $location, $window, current, authenticate) {
             // The idea of using cookies for initial user authentication came from this page:
             // http://www.frederiknakstad.com/2013/01/21/authentication-in-single-page-applications-with-angular-js/
-            var currentUser = $cookieStore.get('currentUser');
+            //var currentUser = $cookieStore.get('currentUser');
             // currentUser may be undefined, in which case we set it to null.
-            $rootScope.currentUser = typeof currentUser === 'undefined' ? null : currentUser;
-            $cookieStore.remove('currentUser');
+            //$rootScope.currentUser = typeof currentUser === 'undefined' ? null : currentUser;
+            $rootScope.current = current;
+            $rootScope.authenticate = authenticate;
+            //$cookieStore.remove('currentUser');
 
             // Check authentication
             $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
-                if ($rootScope.currentUser === null && nextLoc.accessLevel !== 'public') {
-                    // Disable authentication, for now.
-                    //     $location.path('/page/404');
-                } else {
-
+                if ($rootScope.current.user === null && nextLoc.accessLevel !== 'public') {
+                    // Attempting to access a protected page.
+                    $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
+                    $location.path('/page/unauthenticated');
                 }
             });
 
             // Set page title
             $rootScope.$on('$routeChangeSuccess', function (event, currentRoute, previousRoute) {
+                console.log('Setting title: ' + currentRoute.title);
                 $rootScope.pageTitle = currentRoute.title;
             });
-
-            // Allow us to do special things in the development site version
-            if ($location.host() === 'localdev.redninesensor.com') {
-                $rootScope.developmentSite = true;
-            }
         });
 })();
 

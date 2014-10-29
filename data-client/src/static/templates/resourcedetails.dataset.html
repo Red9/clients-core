@@ -22,27 +22,27 @@
             </tr>
             <tr>
                 <th>Start Time</th>
-                <td>{{date dataset.headPanel.startTime}}&nbsp;&nbsp;&nbsp;{{time dataset.headPanel.startTime}}</td>
+                <td>{{date dataset.startTime}}&nbsp;&nbsp;&nbsp;{{time dataset.startTime}}</td>
             </tr>
             <tr>
                 <th>Duration</th>
-                <td>{{{duration dataset.headPanel.startTime dataset.headPanel.endTime}}}</td>
+                <td>{{{duration dataset.startTime dataset.endTime}}}</td>
             </tr>
             <tr>
                 <th>GPS On Time</th>
-                <td>{{{duration 0 dataset.headPanel.summaryStatistics.static.gps.timeon.value}}} on ({{{percent dataset.headPanel.summaryStatistics.static.gps.timeon.value dataset.headPanel.summaryStatistics.static.gps.timeoff.value}}})</td>
+                <td>{{{duration 0 dataset.summaryStatistics.static.gps.timeon.value}}} on ({{{percent dataset.summaryStatistics.static.gps.timeon.value dataset.headPanel.summaryStatistics.static.gps.timeoff.value}}})</td>
             </tr>
             <tr>
                 <th>Distance</th>
                 <td>
-                    {{#if dataset.headPanel.summaryStatistics.static.route}}
+                    {{#if dataset.summaryStatistics.static.route}}
                     <table class="table table-condensed">
                         <thead>
                         <th>Type</th>
                         <th>Distance</th>
                         <th>Speed</th>
                         </thead>
-                        {{#each dataset.headPanel.summaryStatistics.static.route}}
+                        {{#each dataset.summaryStatistics.static.route}}
                         <tr>
                             <td>{{@key}}</td>
                             <td>{{unitize distance.value distance.units}}</td>
@@ -81,7 +81,7 @@
         </table>
 
         <h4>
-            Download <a download="{{dataset.id}}-panel.csv" href="{{apiUrl}}/panel/{{dataset.headPanelId}}/body?minmax=false">Complete Panel</a>
+            Download <a download="{{dataset.id}}-panel.csv" href="{{apiUrl}}/panel/{{dataset.id}}/body?minmax=false">Complete Panel</a>
         </h4>
 
     </div>

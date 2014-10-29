@@ -442,7 +442,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async', 'customHandlebarsH
                                     })
                                     .value();
                             var parameters = {
-                                durationValue: frameCorrected((dataset.headPanel.endTime - dataset.headPanel.startTime)/1000 * denominator),
+                                durationValue: frameCorrected((dataset.endTime - dataset.startTime)/1000 * denominator),
                                 denominator: denominator,
                                 datasetName: dataset.title,
                                 sequenceName: 'Marker list',
@@ -456,7 +456,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async', 'customHandlebarsH
                             console.dir(events);
                         });
                     });
-                }, ['headPanel']);
+                });
             });
 
             tile.place.find('.long-list-wrapper')

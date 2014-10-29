@@ -9,6 +9,7 @@ define(['vendor/jquery', 'vendor/underscore', 'utilities/commentList'], function
             } else {
                 tile.addListener('totalState-resource-focused', resourceFocused);
                 // Default to what's currently visible
+                console.log('sandbox.getCurrentDatasetId: ' + sandbox.getCurrentDatasetId());
                 setResource('dataset', sandbox.getCurrentDatasetId());
             }
             doneCallback();
@@ -21,7 +22,7 @@ define(['vendor/jquery', 'vendor/underscore', 'utilities/commentList'], function
             }
             sandbox.get('dataset', {id: datasetId}, function(datasetList) {
                 var dataset = datasetList[0];
-                var datasetDuration = dataset.headPanel.endTime - dataset.headPanel.startTime;
+                var datasetDuration = dataset.endTime - dataset.startTime;
                 sandbox.get('event', {datasetId: datasetId}, function(events) {
                     callback(
                             _.sortBy(
@@ -45,7 +46,7 @@ define(['vendor/jquery', 'vendor/underscore', 'utilities/commentList'], function
                                 return aggregatedEvent.type;
                             }));
                 });
-            }, ['headPanel', 'owner']);
+            }, ['owner']);
         }
 
         function calculateEventIndex(datasetId, eventId, callback) {
@@ -73,7 +74,7 @@ define(['vendor/jquery', 'vendor/underscore', 'utilities/commentList'], function
         }
 
         function setResource(type, id) {
-            var expand = type === 'dataset' ? ['headPanel', 'owner'] : undefined;
+            var expand = type === 'dataset' ? ['owner'] : undefined;
             sandbox.get(type, {id: id}, function(resourceList) {
                 var resource = resourceList.length === 0 ? {} : resourceList[0];
                 sandbox.requestTemplate('resourcedetails.' + type, function(template) {

@@ -51,12 +51,12 @@ define(['vendor/jquery', 'vendor/underscore'
                     sandbox.get('dataset', {id: eventList[0].datasetId}, function(dataset) {
                         startTime = eventList[0].startTime;
                         endTime = eventList[0].endTime;
-                        sandbox.getPanel(dataset[0].headPanelId, startTime, endTime, true, function(panel) {
+                        sandbox.getPanel(dataset[0].id, startTime, endTime, true, function(panel) {
                             sandbox.setPageTitle('Event: ' + eventList[0].type);
 
                             sandbox.focusState.dataset = undefined;
-                            sandbox.focusState.minStartTime = dataset[0].headPanel.startTime;
-                            sandbox.focusState.maxEndTime = dataset[0].headPanel.endTime;
+                            sandbox.focusState.minStartTime = dataset[0].startTime;
+                            sandbox.focusState.maxEndTime = dataset[0].endTime;
                             sandbox.focusState.startTime = startTime;
                             sandbox.focusState.endTime = endTime;
                             sandbox.focusState.event = eventList[0];
@@ -70,33 +70,36 @@ define(['vendor/jquery', 'vendor/underscore'
                                     });
                             callbackDone();
                         });
-                    }, ['headPanel']);
+                    });
                 });
             } else if (type === 'dataset') {
+                console.log('############# A');
                 sandbox.get(type, {id: id}, function(datasetList) {
-                    if (typeof datasetList[0].headPanel === 'undefined'){
-                        // Removed this second check for DW-246.
-                            //|| _.keys(datasetList[0].headPanel.summaryStatistics).length === 0) {
-                        // For the case when the the dataset has just been
-                        // uploaded, and processing is not done yet.
-                        setTimeout(function() {
-                            sandbox.initiateResourceFocusedEvent(type, id, startTime, endTime, callbackDone);
-                        }, 1000);
-                        return;
-                    }
+                    console.log('############# B');
+                    //if (typeof datasetList[0].headPanel === 'undefined'){
+                    //    // Removed this second check for DW-246.
+                    //        //|| _.keys(datasetList[0].headPanel.summaryStatistics).length === 0) {
+                    //    // For the case when the the dataset has just been
+                    //    // uploaded, and processing is not done yet.
+                    //    setTimeout(function() {
+                    //        sandbox.initiateResourceFocusedEvent(type, id, startTime, endTime, callbackDone);
+                    //    }, 1000);
+                    //    return;
+                    //}
                     var cache = typeof startTime === 'undefined' && typeof endTime === 'undefined';
                     if (typeof startTime === 'undefined') {
-                        startTime = datasetList[0].headPanel.startTime;
+                        startTime = datasetList[0].startTime;
                     }
                     if (typeof endTime === 'undefined') {
-                        endTime = datasetList[0].headPanel.endTime;
+                        endTime = datasetList[0].endTime;
                     }
-                    sandbox.getPanel(datasetList[0].headPanel.id, startTime, endTime, cache, function(panel) {
+                    sandbox.getPanel(datasetList[0].id, startTime, endTime, cache, function(panel) {
+                        console.log('############# C');
                         sandbox.setPageTitle(datasetList[0].title);
 
                         sandbox.focusState.dataset = datasetList[0];
-                        sandbox.focusState.minStartTime = datasetList[0].headPanel.startTime;
-                        sandbox.focusState.maxEndTime = datasetList[0].headPanel.endTime;
+                        sandbox.focusState.minStartTime = datasetList[0].startTime;
+                        sandbox.focusState.maxEndTime = datasetList[0].endTime;
                         sandbox.focusState.startTime = startTime;
                         sandbox.focusState.endTime = endTime;
                         sandbox.focusState.panel = panel;
@@ -110,7 +113,7 @@ define(['vendor/jquery', 'vendor/underscore'
                                 });
                         callbackDone();
                     });
-                }, ['headPanel', 'owner']);
+                }, ['owner']);
             }
         };
     }

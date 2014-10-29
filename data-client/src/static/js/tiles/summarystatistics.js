@@ -18,7 +18,7 @@ define(['vendor/jquery'], function($) {
             if (type === 'dataset') {
                 setStatistics('dataset',
                         sandbox.focusState.dataset.title,
-                        sandbox.focusState.dataset.headPanel.summaryStatistics);
+                        sandbox.focusState.dataset.summaryStatistics);
             } else if (type === 'event') {
                 setStatistics('event',
                         sandbox.focusState.event.type,
