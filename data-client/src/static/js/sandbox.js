@@ -47,7 +47,6 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/handlebars',
         init: function () {
             $.get(sandbox.apiUrl + '/auth/current',
                 function (data) {
-                    console.log('Current user: ' + data.user.id);
                     sandbox.currentUser = data.user.id;
 
                     sandbox.buildSandbox();
