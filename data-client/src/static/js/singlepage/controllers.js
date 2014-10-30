@@ -34,7 +34,7 @@
 
             $scope.beginUpload = function () {
                 $upload.upload({
-                    url: 'http://localhost:3000/dataset/',
+                    url: red9config.apiUrl + '/dataset/',
                     method: 'POST',
                     withCredentials: true,
                     data: {
