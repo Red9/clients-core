@@ -44,12 +44,9 @@
                     file: $scope.file,
                     fileFormDataName: 'rnc'
                 }).progress(function (evt) {
-                    $scope.uploadPercent = parseInt(100.0 * evt.loaded / evt.total)
-                    console.log('percent: ' + $scope.uploadPercent);
+                    $scope.uploadPercent = parseInt(100.0 * evt.loaded / evt.total);
                 }).success(function (data, status) {
-                    console.log('All done: ');
                     $scope.uploadPercent = 100;
-                    console.dir(data);
                     $scope.uploadDataset = data;
                 }).error(function (data) {
                     $scope.uploadError = data;
