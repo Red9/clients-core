@@ -20,6 +20,43 @@
                 $scope.resourceFilters = $scope.searchFilters;
             });
         })
+        .controller('uploadRNC',
+        function ($scope, $upload, current, api) {
+            $scope.users = [];
+            $scope.uploadPercent = 0;
+            $scope.upload = {};
+
+            $scope.owner = current.user;
+
+            api.user.query({}, function (users) {
+                $scope.users = users;
+            });
+
+            $scope.beginUpload = function () {
+                $upload.upload({
+                    url: 'http://localhost:3000/dataset/',
+                    method: 'POST',
+                    withCredentials: true,
+                    data: {
+                        ownerId: $scope.owner.id,
+                        title: $scope.title
+                    },
+                    file: $scope.file,
+                    fileFormDataName: 'rnc'
+                }).progress(function (evt) {
+                    $scope.uploadPercent = parseInt(100.0 * evt.loaded / evt.total);
+                }).success(function (data, status) {
+                    $scope.uploadPercent = 100;
+                    $scope.uploadDataset = data;
+                }).error(function (data) {
+                    $scope.uploadError = data;
+                });
+            };
+            $scope.onFileSelect = function ($files) {
+                console.dir($files);
+                $scope.file = $files[0];
+            };
+        })
         .controller('myProfile',
         function ($scope) {
         })
