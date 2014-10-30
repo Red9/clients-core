@@ -355,7 +355,7 @@ angular.module('ngResource', ['ng']).
 
     this.defaults = {
       // Strip slashes by default
-      stripTrailingSlashes: false,
+      stripTrailingSlashes: true,
 
       // Default actions configuration
       actions: {

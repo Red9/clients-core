@@ -21,17 +21,24 @@
             });
         })
         .controller('uploadRNC',
-        function ($scope, $upload, current) {
-            $scope.ownerId = current.user.id;
+        function ($scope, $upload, current, api) {
+            $scope.users = [];
             $scope.uploadPercent = 0;
             $scope.upload = {};
+
+            $scope.owner = current.user;
+
+            api.user.query({}, function (users) {
+                $scope.users = users;
+            });
+
             $scope.beginUpload = function () {
                 $upload.upload({
                     url: 'http://localhost:3000/dataset/',
                     method: 'POST',
                     withCredentials: true,
                     data: {
-                        ownerId: $scope.ownerId,
+                        ownerId: $scope.owner.id,
                         title: $scope.title
                     },
                     file: $scope.file,
@@ -44,6 +51,8 @@
                     $scope.uploadPercent = 100;
                     console.dir(data);
                     $scope.uploadDataset = data;
+                }).error(function (data) {
+                    $scope.uploadError = data;
                 });
             };
             $scope.onFileSelect = function ($files) {
