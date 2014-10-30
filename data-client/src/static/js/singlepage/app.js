@@ -16,6 +16,7 @@
         'ngResource',
         'angularSpinner',
         'angular.filter',
+        'angularFileUpload',
         'underscore',
         'redApp.filters',
         'redApp.services',
@@ -67,6 +68,12 @@
                 controller: 'unauthenticatedController',
                 accessLevel: 'public',
                 title: 'R9: Not Authenticated'
+            });
+            $routeProvider.when('/upload/rnc', {
+                templateUrl: '/static/partials/uploadrnc.html',
+                controller: 'uploadRNC',
+                accessLevel: 'user',
+                title: 'R9: Upload'
             });
 
 

@@ -23,7 +23,7 @@
             opacity: 1;
         }
 
-        /*// Taken from http://stackoverflow.com/a/13754758/2557842*/
+        /* Taken from http://stackoverflow.com/a/13754758/2557842 */
         .input-mini {
             width: 75px;
         }
@@ -60,6 +60,28 @@
             height: 10px;
             border-radius: 2px;
         }
+
+
+        /* Taken from http://www.abeautifulsite.net/whipping-file-inputs-into-shape-with-bootstrap-3/ */
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
     </style>
 
 </head>
@@ -75,20 +97,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Total State</a>
+            <a class="navbar-brand" ng-href="/">Total State</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed = true">
             <ul class="nav navbar-nav" ng-if="current.user">
-                <li><a href="/upload/rnc" target="_self">RNC</a></li>
-                <li><a href="/dataset/">Datasets</a></li>
-                <li><a href="/event/">Events</a></li>
+                <li><a ng-href="/upload/rnc">Upload</a></li>
+                <li><a ng-href="/dataset/">Datasets</a></li>
+                <li><a ng-href="/event/">Events</a></li>
             </ul>
             <ul class="nav navbar-nav" ng-if="!current.user">
-                <li><a href="/page/about">About</a></li>
-                <li><a href="/page/team">Team</a></li>
-                <li><a href="/page/jobs">Jobs</a></li>
+                <li><a ng-href="/page/about">About</a></li>
+                <li><a ng-href="/page/team">Team</a></li>
+                <li><a ng-href="/page/jobs">Jobs</a></li>
             </ul>
             <!--                <form class="navbar-form navbar-left" role="search">
                                 <div class="form-group">
@@ -124,7 +146,9 @@
 <!-- build:js /static/js/vendor1.js -->
 <script src="/static/js/vendor/spin.js"></script>
 <script src="/static/js/vendor/underscore_no_require.js"></script>
+<script src="/static/js/vendor/angular-file-upload-html5-shim.js"></script>
 <script src="/static/js/vendor/angular.js"></script>
+<script src="/static/js/vendor/angular-file-upload.js"></script>
 <script src="/static/js/vendor/deferred-bootstrap.js"></script>
 <!-- endbuild -->
 
