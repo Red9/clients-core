@@ -6,6 +6,10 @@
             return window._; // assumes underscore has already been loaded on the page
         });
 
+    angular.module('async', [])
+        .factory('async', function () {
+            return window.async; // assumes async has already been loaded on the page
+        });
 
 // Declare app level module which depends on filters, and services
     angular.module('redApp', [
@@ -74,6 +78,12 @@
                 controller: 'uploadRNC',
                 accessLevel: 'user',
                 title: 'R9: Upload'
+            });
+            $routeProvider.when('/leaderboard/', {
+                templateUrl: '/static/partials/leaderboard.html',
+                controller: 'leaderboard',
+                accessLevel: 'public',
+                title: 'R9: Leaderboard'
             });
 
 

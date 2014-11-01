@@ -10,6 +10,7 @@
 
         {{! include the datasetId. If we are editing the event it will be discarded, but it is needed for creating the event.}}
         <input name="datasetId" value="{{datasetId}}" data-default="{{datasetId}}" type="hidden"/>
+        <input name="source" value='{"type":"manual"}' type="hidden"/>
 
         <div class="form-group">
             <label for="startTime">Start Time</label>

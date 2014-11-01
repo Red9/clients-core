@@ -20,7 +20,7 @@
                     var parameters = {
                         dataset: {
                             //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
-                            expand: 'owner'
+                            'expand': ['owner','count']
                         },
                         event: {
                             //part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
