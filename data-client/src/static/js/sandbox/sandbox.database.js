@@ -21,13 +21,12 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
         };
         sandbox.get = function(resourceType, constraints, callback, expand) {
             if (typeof expand !== 'undefined') {
-                constraints.expand = "";
-                _.each(expand, function(value, index) {
-                    if (index > 0) {
-                        constraints.expand += ',';
-                    }
-                    constraints.expand += value;
-                });
+                if(expand.length > 1){
+                    alert('Programming error: expand cannot be more than 1. Alert SRLM.');
+                }
+                if(expand.length === 1){
+                    constraints['expand[]'] = expand[0];
+                }
             }
             //sandbox.getSchema(resourceType, function(schema) {
                 $.ajax({

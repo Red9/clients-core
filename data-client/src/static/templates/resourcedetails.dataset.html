@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12">    
+    <div class="col-md-12">
         <h4>{{type}} Summary</h4>
 
         <table class="table table-condensed">
@@ -30,25 +30,32 @@
             </tr>
             <tr>
                 <th>GPS On Time</th>
-                <td>{{{duration 0 dataset.summaryStatistics.static.gps.timeon.value}}} on ({{{percent dataset.summaryStatistics.static.gps.timeon.value dataset.headPanel.summaryStatistics.static.gps.timeoff.value}}})</td>
+                <td>{{{duration 0 dataset.summaryStatistics.static.gps.timeon.value}}} on ({{{percent
+                    dataset.summaryStatistics.static.gps.timeon.value
+                    dataset.headPanel.summaryStatistics.static.gps.timeoff.value}}})
+                </td>
             </tr>
             <tr>
                 <th>Distance</th>
                 <td>
-                    {{#if dataset.summaryStatistics.static.route}}
+                    {{#if dataset.summaryStatistics2}}
                     <table class="table table-condensed">
                         <thead>
                         <th>Type</th>
                         <th>Distance</th>
                         <th>Speed</th>
                         </thead>
-                        {{#each dataset.summaryStatistics.static.route}}
+
                         <tr>
-                            <td>{{@key}}</td>
-                            <td>{{unitize distance.value distance.units}}</td>
-                            <td>{{unitize averageSpeed.value averageSpeed.units}}</td>
+                            <td>Path Distance</td>
+                            <td>{{dataset.summaryStatistics}}</td>
+                            <td>{{dataset.summaryStatistics[speed:path].average}}</td>
                         </tr>
-                        {{/each}}
+                        <tr>
+                            <td>Great Circle Distance</td>
+                            <td>{{dataset.summaryStatistics[distance:greatcircle]}}</td>
+                            <td>{{dataset.summaryStatistics[speed:greatcircle].average}}</td>
+                        </tr>
                     </table>
                     {{else}}
                     (no GPS)
@@ -81,7 +88,8 @@
         </table>
 
         <h4>
-            Download <a download="{{dataset.id}}-panel.csv" href="{{apiUrl}}/panel/{{dataset.id}}/body?minmax=false">Complete Panel</a>
+            Download <a download="{{dataset.id}}-panel.csv" href="{{apiUrl}}/panel/{{dataset.id}}/body?minmax=false">Complete
+            Panel</a>
         </h4>
 
     </div>
@@ -99,6 +107,7 @@
         <div id="recordingSource" class="panel-collapse collapse">
             <div class="panel-body">
                 <h3>Parsed Properties</h3>
+
                 <div class="row">
                     <div class="col-md-12"><strong>Filename</strong>: {{dataset.source.filename}}</div>
                 </div>
@@ -106,12 +115,17 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="row"><div class="col-md-3"><strong>Unit</strong>: {{unit}}</div></div>
-                        <div class="row"><div class="col-md-3"><strong>Rows</strong>: {{rows}}</div></div>
+                        <div class="row">
+                            <div class="col-md-3"><strong>Unit</strong>: {{unit}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><strong>Rows</strong>: {{rows}}</div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <div class="row"><strong>Recorder Start Time</strong>:</div>
-                        <div class="row">{{date datasetStartTime}} {{time datasetStartTime}}<br/>({{datasetStartTime}})</div>
+                        <div class="row">{{date datasetStartTime}} {{time datasetStartTime}}<br/>({{datasetStartTime}})
+                        </div>
                     </div>
                     <div class="col-md-5">
                         <div class="row"><strong>Recorder End Time</strong>:</div>
@@ -126,12 +140,18 @@
                     <div class="col-md-3"><strong>Sensors</strong><br/>
                         <table class="table table-condensed">
                             <thead>
-                            <th>Class</th><th>id</th><th>Name</th>
+                            <th>Class</th>
+                            <th>id</th>
+                            <th>Name</th>
                             </thead>
                             <tbody>
-                                {{#each sensors}}
-                                <tr><td>{{@key}}</td><td>{{id}}</td><td>{{name}}</td></tr>
-                                {{/each}}
+                            {{#each sensors}}
+                            <tr>
+                                <td>{{@key}}</td>
+                                <td>{{id}}</td>
+                                <td>{{name}}</td>
+                            </tr>
+                            {{/each}}
                             </tbody>
                         </table>
                     </div>
@@ -143,7 +163,8 @@
                             <div class="col-md-5"><strong>Broken Time</strong>: {{createTime.brokenTime}}</div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4"><strong>Bits/Timestamp</strong>: {{timestampFormat.bitsPerTimestamp}}</div>
+                            <div class="col-md-4"><strong>Bits/Timestamp</strong>: {{timestampFormat.bitsPerTimestamp}}
+                            </div>
                             <div class="col-md-5"><strong>Frequency</strong>: {{timestampFormat.frequency}}</div>
                         </div>
                         <div class="row">

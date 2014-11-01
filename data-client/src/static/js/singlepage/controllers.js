@@ -93,23 +93,116 @@
                 }
             }
         })
+        .controller('leaderboard',
+        function ($scope, _, api) {
+
+            $scope.format = 'dd-MMMM-yyyy';
+            $scope.userList = null;
+
+            $scope.startDate = {
+                //date: new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000), // Last week
+                //date: new Date((new Date()).getTime() - 4 * 31 * 24 * 60 * 60 * 1000), // Four months ago
+                date: new Date((new Date()).getTime() - 7 * 7 * 24 * 60 * 60 * 1000), // Seven weeks ago
+                opened: false,
+                open: function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.startDate.opened = true;
+                }
+            };
+
+            $scope.endDate = {
+                date: new Date(), // Today
+                opened: false,
+                open: function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.endDate.opened = true;
+                }
+            };
+
+            $scope.runSearch = function () {
+                $scope.startTime = $scope.startDate.date.getTime();
+                $scope.endTime = $scope.endDate.date.getTime();
+                $scope.leaderboardData = null;
+                var datasetQuery = {
+                    'expand[]': ['owner', 'event'],
+                    'startTime.gt': $scope.startDate.date.getTime(),
+                    'endTime.lt': $scope.endDate.date.getTime()
+                };
+                api.dataset.query(datasetQuery, function (datasetList) {
+                    // Filter to just the event type that we're interested in
+                    var searchString = "wave";
+                    datasetList = _.map(datasetList, function (dataset) {
+                        dataset.event = _.filter(dataset.event, function (event) {
+                            return event.type.toUpperCase().indexOf(searchString.toUpperCase()) != -1;
+                        });
+                        return dataset;
+                    });
+
+                    // Utility function to help us out.
+                    function calculateAverageDuration(eventList) {
+                        return _.reduce(eventList, function (memo, event) {
+                                return memo + (event.endTime - event.startTime);
+                            }, 0) / eventList.length;
+                    }
+
+                    $scope.leaderboardData = _.chain(datasetList).groupBy('ownerId').map(function (userDatasets, userId) {
+                        var maximumEventCount;
+                        var maximumEventDuration;
+                        var points = 0;
+
+                        _.each(userDatasets, function (dataset) {
+                            if (!_.isObject(maximumEventCount)
+                                || dataset.event.length > maximumEventCount.count) {
+                                maximumEventCount = {
+                                    count: dataset.event.length,
+                                    datasetId: dataset.id
+                                };
+                            }
+
+                            var datasetEventDuration = calculateAverageDuration(dataset.event);
+                            if (!_.isObject(maximumEventDuration)
+                                || _.isNaN(maximumEventDuration.duration)
+                                || datasetEventDuration > maximumEventDuration.duration) {
+                                maximumEventDuration = {
+                                    duration: datasetEventDuration,
+                                    datasetId: dataset.id
+                                };
+                            }
+
+                            if (!_.isNaN(datasetEventDuration)) {
+                                points += 2 * datasetEventDuration / 1000 * dataset.event.length;
+                            }
+                        });
+
+                        return {
+                            user: userDatasets[0].owner,
+                            points: Math.round(userDatasets.length * 100 + points),
+                            maximumEventCount: maximumEventCount,
+                            maximumEventDuration: maximumEventDuration,
+                            datasets: userDatasets
+                        };
+                    }).value();
+                });
+            };
+
+            $scope.runSearch(); // Initial run
+        })
         .controller('siteStatistics',
         function ($scope, _, api) {
             var parameters = {
                 dataset: {
-                    //part: 'title,id,createTime,headPanel.startTime,headPanel.endTime,owner.id,owner.displayName,count',
-                    //count: true,
-                    expand: 'owner'
+                    'expand': ['owner', 'count']
                 },
-                event: {
-                    part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
-                }
+                event: {}
 
             };
 
             api.dataset.query(parameters.dataset, function (datasets) {
                 var datasetAggregate = _.reduce(datasets, function (memo, dataset) {
                     memo.sumDuration += dataset.endTime - dataset.startTime;
+                    console.log(memo.sumDuration + ', ' + dataset.startTime + ', ' + dataset.endTime + ', ' + dataset.id);
                     try {
                         memo.sumDistance += dataset.summaryStatistics.static.route.path.distance.value;
                     } catch (e) {
@@ -151,8 +244,6 @@
             });
 
             api.event.query({}, function (events) {
-
-
                 var eventsAggregate = _.chain(events)
                     .groupBy('type')
                     .map(function (eventsByType, type) {
