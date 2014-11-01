@@ -38,7 +38,7 @@
             <tr>
                 <th>Distance</th>
                 <td>
-                    {{#if dataset.summaryStatistics2}}
+                    {{#if dataset.summaryStatistics}}
                     <table class="table table-condensed">
                         <thead>
                         <th>Type</th>
@@ -48,13 +48,13 @@
 
                         <tr>
                             <td>Path Distance</td>
-                            <td>{{dataset.summaryStatistics}}</td>
-                            <td>{{dataset.summaryStatistics[speed:path].average}}</td>
+                            <td>{{dataset.summaryStatistics.distance.path}}</td>
+                            <td>{{dataset.summaryStatistics.speed.path.average}} m/s^2</td>
                         </tr>
                         <tr>
                             <td>Great Circle Distance</td>
-                            <td>{{dataset.summaryStatistics[distance:greatcircle]}}</td>
-                            <td>{{dataset.summaryStatistics[speed:greatcircle].average}}</td>
+                            <td>{{dataset.summaryStatistics.distance.greatCircle}}</td>
+                            <td></td>
                         </tr>
                     </table>
                     {{else}}
