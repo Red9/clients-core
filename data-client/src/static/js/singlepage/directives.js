@@ -1,6 +1,7 @@
 (function () {
     'use strict';
 
+
     /* Directives */
     angular.module('redApp.directives', [])
         .directive('resourceList', function () {
@@ -17,10 +18,64 @@
                     $scope.resourceList = null;
                     $scope.resultDisplay = 'table';
 
+                    $scope.map = {
+                        markers: {},
+                        layers: {
+                            baselayers: {
+                                ThunderforestLandscape: {
+                                    url: 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+                                    type: 'xyz',
+                                    name: 'Thunderforest Landscape',
+                                    layerParams: {},
+                                    layerOptions: {}
+                                },
+                                ThunderforestOutdoors: {
+                                    url: 'http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
+                                    type: 'xyz',
+                                    name: 'Thunderforest Outdoors',
+                                    layerParams: {},
+                                    layerOptions: {}
+                                },
+                                "osm": {
+                                    "name": "OpenStreetMap",
+                                    "url": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                    "type": "xyz",
+                                    "layerParams": {},
+                                    "layerOptions": {}
+                                },
+                                MapQuestOpenAerial: {
+                                    url: 'http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
+                                    name: 'MapQuestOpen Aerial',
+                                    layerParams: {},
+                                    type: 'xyz',
+                                    layerOptions: {
+                                        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
+                                        'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+                                    }
+                                }
+                            },
+                            overlays: {
+                                Locations: {
+                                    "name": "Locations",
+                                    "type": "markercluster",
+                                    "visible": true,
+                                    "layerOptions": {
+                                        chunkedLoading: true,
+                                        showCoverageOnHover: false,
+                                        removeOutsideVisibleBounds: true,
+                                        maxClusterRadius: 30
+                                    }
+                                }
+                            }
+                        },
+                        bounds: {},
+                        center: {}
+                    };
+
                     var parameters = {
                         dataset: {
                             //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
-                            'expand': ['owner','count']
+                            'expand': ['owner', 'count']
                         },
                         event: {
                             //part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
@@ -56,6 +111,77 @@
                         }
                     }
 
+                    // Create the geoJSON display
+                    function createGeoJSON(list) {
+                        $scope.geojson.data = _.chain(list).filter(function (item) {
+                            return _.has(item, 'boundingCircle');
+                        }).map(function (item) {
+                            return {
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [item.boundingCircle.longitude, item.boundingCircle.latitude]
+                                }
+                            };
+                        }).value();
+                    }
+
+
+                    function createMapMarkers(list) {
+                        var minimumLatitude = Number.MAX_VALUE;
+                        var maximumLatitude = -Number.MAX_VALUE;
+                        var minimumLongitude = Number.MAX_VALUE;
+                        var maximumLongitude = -Number.MAX_VALUE;
+
+
+                        $scope.map.markers = _.chain(list).filter(function (item) {
+                            return _.has(item, 'boundingCircle');
+                        }).reduce(function (memo, item) {
+                            var key = item.id.replace(/-/g, '');
+                            var message = "";
+                            if (_.has(item, 'title')) {
+                                message = item.title;
+                            } else if (_.has(item, 'type')) {
+                                message = item.type;
+                            }
+
+                            memo[key] = {
+                                layer: "Locations",
+                                message: message,
+                                lat: item.boundingCircle.latitude,
+                                lng: item.boundingCircle.longitude
+                            };
+
+                            if (item.boundingCircle.latitude > maximumLatitude) {
+                                maximumLatitude = item.boundingCircle.latitude;
+                            }
+                            if (item.boundingCircle.latitude < minimumLatitude) {
+                                minimumLatitude = item.boundingCircle.latitude;
+                            }
+
+                            if (item.boundingCircle.longitude > maximumLongitude) {
+                                maximumLongitude = item.boundingCircle.longitude;
+                            }
+                            if (item.boundingCircle.longitude < minimumLongitude) {
+                                minimumLongitude = item.boundingCircle.longitude;
+                            }
+
+
+                            return memo;
+                        }, {}).value();
+
+                        $scope.map.bounds = {
+                            southWest: {
+                                lat: minimumLatitude,
+                                lng: minimumLongitude
+                            },
+                            northEast: {
+                                lat: maximumLatitude,
+                                lng: maximumLongitude
+                            }
+                        }
+                    }
+
                     $scope.$watch('resourcePages.currentPage', extractResourcePage);
                     $scope.$watch('resourcePages.itemsPerPage', extractResourcePage);
                     $scope.$watchCollection('resourceList', extractResourcePage);
@@ -73,6 +199,7 @@
                                 // in the page
                                 $scope.resourcePages.currentPage = 1;
                                 $scope.resourceList = _.sortBy(data, sortBy[$scope.resourceType]);
+                                createMapMarkers(data);
                             });
                     });
 
