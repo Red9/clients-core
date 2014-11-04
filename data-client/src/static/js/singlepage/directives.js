@@ -326,7 +326,7 @@
                     }
 
                     if (_.has($scope.query, 'ownerId')) {
-                        api.user.query({id: $scope.query.ownerId}, function (results) {
+                        api.user.query({idList: $scope.query.ownerId}, function (results) {
                             $scope.userList = results;
                         });
                     }
