@@ -1,4 +1,4 @@
-require(['sandbox', 'vendor/jquery', 'vendor/underscore', 'vendor/bootstrap'], function(sandbox, $, _) {
+require(['sandbox', 'vendor/jquery', 'vendor/underscore', 'vendor/bootstrap.old'], function(sandbox, $, _) {
 
     sandbox.buildSandbox();
     sandbox.requestTemplate('spa.bottombar.panel', function(template) {

@@ -25,7 +25,8 @@
         'redApp.filters',
         'redApp.services',
         'redApp.directives',
-        'redApp.controllers'
+        'redApp.controllers',
+        'leaflet-directive'
 
     ])
         .config(function ($routeProvider, $locationProvider) {

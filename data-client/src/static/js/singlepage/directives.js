@@ -1,6 +1,7 @@
 (function () {
     'use strict';
 
+
     /* Directives */
     angular.module('redApp.directives', [])
         .directive('resourceList', function () {
@@ -17,10 +18,64 @@
                     $scope.resourceList = null;
                     $scope.resultDisplay = 'table';
 
+                    $scope.map = {
+                        markers: {},
+                        layers: {
+                            baselayers: {
+                                ThunderforestLandscape: {
+                                    url: 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+                                    type: 'xyz',
+                                    name: 'Thunderforest Landscape',
+                                    layerParams: {},
+                                    layerOptions: {}
+                                },
+                                ThunderforestOutdoors: {
+                                    url: 'http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
+                                    type: 'xyz',
+                                    name: 'Thunderforest Outdoors',
+                                    layerParams: {},
+                                    layerOptions: {}
+                                },
+                                "osm": {
+                                    "name": "OpenStreetMap",
+                                    "url": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                    "type": "xyz",
+                                    "layerParams": {},
+                                    "layerOptions": {}
+                                },
+                                MapQuestOpenAerial: {
+                                    url: 'http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
+                                    name: 'MapQuestOpen Aerial',
+                                    layerParams: {},
+                                    type: 'xyz',
+                                    layerOptions: {
+                                        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
+                                        'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+                                    }
+                                }
+                            },
+                            overlays: {
+                                Locations: {
+                                    "name": "Locations",
+                                    "type": "markercluster",
+                                    "visible": true,
+                                    "layerOptions": {
+                                        chunkedLoading: true,
+                                        showCoverageOnHover: false,
+                                        removeOutsideVisibleBounds: true,
+                                        maxClusterRadius: 30
+                                    }
+                                }
+                            }
+                        },
+                        bounds: {},
+                        center: {}
+                    };
+
                     var parameters = {
                         dataset: {
                             //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
-                            'expand': ['owner','count']
+                            'expand': ['owner', 'count']
                         },
                         event: {
                             //part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
@@ -56,6 +111,77 @@
                         }
                     }
 
+                    // Create the geoJSON display
+                    function createGeoJSON(list) {
+                        $scope.geojson.data = _.chain(list).filter(function (item) {
+                            return _.has(item, 'boundingCircle');
+                        }).map(function (item) {
+                            return {
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [item.boundingCircle.longitude, item.boundingCircle.latitude]
+                                }
+                            };
+                        }).value();
+                    }
+
+
+                    function createMapMarkers(list) {
+                        var minimumLatitude = Number.MAX_VALUE;
+                        var maximumLatitude = -Number.MAX_VALUE;
+                        var minimumLongitude = Number.MAX_VALUE;
+                        var maximumLongitude = -Number.MAX_VALUE;
+
+
+                        $scope.map.markers = _.chain(list).filter(function (item) {
+                            return _.has(item, 'boundingCircle');
+                        }).reduce(function (memo, item) {
+                            var key = item.id.replace(/-/g, '');
+                            var message = "";
+                            if (_.has(item, 'title')) {
+                                message = item.title;
+                            } else if (_.has(item, 'type')) {
+                                message = item.type;
+                            }
+
+                            memo[key] = {
+                                layer: "Locations",
+                                message: message,
+                                lat: item.boundingCircle.latitude,
+                                lng: item.boundingCircle.longitude
+                            };
+
+                            if (item.boundingCircle.latitude > maximumLatitude) {
+                                maximumLatitude = item.boundingCircle.latitude;
+                            }
+                            if (item.boundingCircle.latitude < minimumLatitude) {
+                                minimumLatitude = item.boundingCircle.latitude;
+                            }
+
+                            if (item.boundingCircle.longitude > maximumLongitude) {
+                                maximumLongitude = item.boundingCircle.longitude;
+                            }
+                            if (item.boundingCircle.longitude < minimumLongitude) {
+                                minimumLongitude = item.boundingCircle.longitude;
+                            }
+
+
+                            return memo;
+                        }, {}).value();
+
+                        $scope.map.bounds = {
+                            southWest: {
+                                lat: minimumLatitude,
+                                lng: minimumLongitude
+                            },
+                            northEast: {
+                                lat: maximumLatitude,
+                                lng: maximumLongitude
+                            }
+                        };
+                    }
+
                     $scope.$watch('resourcePages.currentPage', extractResourcePage);
                     $scope.$watch('resourcePages.itemsPerPage', extractResourcePage);
                     $scope.$watchCollection('resourceList', extractResourcePage);
@@ -73,6 +199,7 @@
                                 // in the page
                                 $scope.resourcePages.currentPage = 1;
                                 $scope.resourceList = _.sortBy(data, sortBy[$scope.resourceType]);
+                                createMapMarkers(data);
                             });
                     });
 
@@ -178,58 +305,59 @@
                 }
             };
         })
-        .directive('datasetSearch', function (api) {
+        .directive('datasetSearch', function () {
             return {
                 restrict: 'E',
                 scope: {
-                    searchFilters: '='
+                    query: '='
                 },
                 templateUrl: '/static/partials/datasetsearch.html',
-                controller: function ($scope, $location) {
+                controller: function ($scope, $location, _, api) {
 
-                    $scope.search = {};
+                    // Working Variable
+                    $scope.tagInput = '';
 
-                    var queryParameters = $location.search();
+                    // Search Query variables
+                    $scope.searchTitle = '';
+                    if (_.has($scope.query, 'tags')) {
+                        $scope.tagList = $scope.query.tags;
+                    } else {
+                        $scope.tagList = [];
+                    }
 
-                    // On page load pull in the initial search parameters to
-                    // populate the form
-                    $scope.search.title = queryParameters.title;
+                    if (_.has($scope.query, 'ownerId')) {
+                        api.user.query({idList: $scope.query.ownerId}, function (results) {
+                            $scope.userList = results;
+                        });
+                    }
 
-                    api.user.query({}, function (users) {
-                        $scope.users = users;
+                    $scope.userList = [];
 
-                        // First time prepopulate
-                        if (queryParameters.ownerId) {
-                            $scope.users.forEach(function (user) {
-                                if (user.id === queryParameters.ownerId) {
-                                    $scope.search.user = user;
-                                }
-                            });
+                    $scope.addTag = function () {
+                        // Make sure that we only add new tags
+                        if ($scope.tagList.indexOf($scope.tagInput) === -1) {
+                            $scope.tagList.push($scope.tagInput);
                         }
-                    });
+                        // But clear input regardless.
+                        $scope.tagInput = '';
+                    };
 
-                    $scope.formChange = function (searchForm) {
+                    $scope.startSearch = function () {
+                        var result = {};
 
-                        // title, user, startTime, endTime
-                        function isValidInput(input) {
-                            return angular.isDefined(input)
-                                && input !== null
-                                && input !== ''
-                                && input !== {};
-                        }
-
-                        var search = {};
-
-                        if (isValidInput(searchForm.title)) {
-                            search.title = searchForm.title;
-                        }
-                        if (isValidInput(searchForm.user)) {
-                            search.ownerId = searchForm.user.id;
+                        if ($scope.userList.length > 0) {
+                            result.ownerId = _.pluck($scope.userList, 'id').join(',');
                         }
 
-                        $scope.searchFilters = search;
+                        if ($scope.tagList.length > 0) {
+                            result['tags[]'] = $scope.tagList;
+                        }
 
-                        $scope.search = searchForm; // Need this line to keep the form values populated
+                        if ($scope.searchTitle.length > 0) {
+                            result.title = $scope.searchTitle;
+                        }
+
+                        $scope.query = result;
                     };
                 }
             };
@@ -245,6 +373,92 @@
                             ngModel.$render();
                         });
                     });
+                }
+            };
+        })
+        .directive('keypressEnter', function () {
+            // Taken from here: http://stackoverflow.com/a/17472118/2557842
+            return function (scope, element, attrs) {
+                element.bind("keydown keypress", function (event) {
+                    if (event.which === 13) {
+                        scope.$apply(function () {
+                            scope.$eval(attrs.keypressEnter);
+                        });
+
+                        event.preventDefault();
+                    }
+                });
+            };
+        })
+        .directive('userInput', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    selectedUser: '=?',
+                    list: '=?',
+                    placeholder: '@'
+                },
+                templateUrl: '/static/partials/directives/userinput.html',
+                controller: function ($scope, api) {
+                    $scope.users = [];
+
+                    $scope.selected = $scope.selectedUser;
+
+                    console.log('placeholder: ' + $scope.placeholder);
+
+
+                    if (_.isUndefined($scope.selectedUser)) {
+                        $scope.selectedUser = null;
+                    }
+
+                    console.dir($scope);
+
+                    $scope.$watch('selected', function (newValue, oldValue) {
+                        console.log('Selected changed!');
+                        if (_.isObject($scope.selected)) {  // Make sure that we've got an addition, not a clearing of the input
+                            $scope.selectedUser = $scope.selected;
+
+                            if (_.isArray($scope.list)  // Make sure that there is a list that we can add to
+                                && $scope.list.indexOf($scope.selected) == -1) { // and that it doesn't have this item already
+                                $scope.list.push($scope.selected);
+                                $scope.selected = null;
+                            }
+
+
+                        }
+
+                    });
+
+
+                    api.user.query({}, function (users) {
+                        $scope.users = users;
+                    });
+                }
+            };
+        })
+        .directive('badgeList', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    list: '=',
+                    displayKey: '@'
+                },
+                templateUrl: '/static/partials/directives/badgelist.html',
+                controller: function ($scope) {
+                    $scope.display = function (item) {
+                        if ($scope.displayKey) {
+                            return item[$scope.displayKey];
+                        } else {
+                            return item;
+                        }
+                    };
+
+                    $scope.removeBadge = function (tag) {
+                        var index = $scope.list.indexOf(tag);
+                        if (index > -1) {
+                            $scope.list.splice(index, 1);
+                        }
+                    };
                 }
             };
         })

@@ -1,28 +1,26 @@
-<form class="form-inline" role="form" novalidate>
-    <div class="form-group">
-        <label class="sr-only" for="selectbasic">Select User</label>
-        <div>
-            <select class="form-control" ng-model="search.user" ng-options="user.displayName for user in users">
-                <option value="">-- Any User --</option>
-            </select>
-        </div>
+<div class="row">
+    <div class="col-sm-4">
+        <input type="search" class="form-control" placeholder="title" ng-model="searchTitle">
     </div>
-    <div class="form-group">
-        <label class="sr-only">search dataset titles</label>
-        <input type="search" class="form-control" placeholder="search titles" ng-model="search.title">
+    <div class="col-sm-4">
+        <input type="text" class="form-control" placeholder="tags" keypress-enter="addTag()" ng-model="tagInput">
     </div>
-<!--    
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-addon">before</div>
-            <input class="form-control" type="date" ng-model="search.startTime">
-        </div>
+    <div class="col-sm-4">
+        <user-input list="userList" placeholder="owner"></user-input>
     </div>
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-addon">after</div>
-            <input class="form-control" type="date" ng-model="search.endTime">
-        </div>
-    </div>-->
-    <button ng-click="formChange(search)" class="btn btn-default">Search</button>
-</form>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        &nbsp;
+    </div>
+    <div class="col-sm-4">
+        <badge-list list="tagList"></badge-list>
+    </div>
+    <div class="col-sm-4">
+        <badge-list list="userList" display-key="displayName"></badge-list>
+    </div>
+</div>
+<div class="row">
+    <button class="btn pull-right" ng-click="startSearch()">Search</button>
+</div>

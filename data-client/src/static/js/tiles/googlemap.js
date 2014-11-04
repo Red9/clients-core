@@ -26,7 +26,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/moment'], function($, _, m
                 var mapOptions = {
                     zoom: 3,
                     center: new google.maps.LatLng(42.228147, -103.541772),
-                    mapTypeId: google.maps.MapTypeId.SATELLITE,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
                     scrollwheel: false
                 };
 
@@ -82,6 +82,8 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/moment'], function($, _, m
                 return pathGroups;
             }
 
+            var previousLatitude = 999999;
+            var previousLongitude = 999999;
             _.each(panel.panel.time, function(time, rowIndex) {
                 var latitude = panel.panel['gps:latitude'][rowIndex];
                 var longitude = panel.panel['gps:longitude'][rowIndex];
@@ -90,13 +92,24 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/moment'], function($, _, m
                         || latitude === null || longitude === null) {
                     // Not a valid point
                     previousPointValid = false;
+                    previousLatitude = 999999;
+                    previousLongitude = 999999;
                     return;
-                } else {
+                } else if (latitude !== previousLatitude
+                        && longitude !== previousLongitude ){
+                    // In theory, we shouldn't do double === comparisons. As it happens I know
+                    // that some doubles will be exactly equal, since they come from
+                    // the same JSON text. And that's what I want, anyway.
+
                     // Valid point
                     if (previousPointValid === false) {
                         pathGroups.push([]);
                         previousPointValid = true;
                     }
+
+                    //console.log(previousLatitude + ' , ' + latitude + ' !!!! ' + previousLongitude + ' , ' + longitude);
+                    previousLatitude = latitude;
+                    previousLongitude = longitude;
 
                     pathGroups[pathGroups.length - 1].push({
                         time: time,
@@ -120,15 +133,6 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/moment'], function($, _, m
 
             // Create small markers indicating the individual points
             _.each(list, function(t) {
-                mapFeatures.push(new google.maps.Marker({
-                    title: moment(t.time).format("h:mm:ss.SSSa")
-                            + "\n(" + t.point.lat().toFixed(4)
-                            + ", " + t.point.lng().toFixed(4) + ")",
-                    map: map,
-                    flat: true, // May help performance, but haven't measured.
-                    position: t.point,
-                    icon: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png'
-                }));
                 bounds.extend(t.point);
                 linePoints.push(t.point);
             });
@@ -146,14 +150,18 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/moment'], function($, _, m
 
             // A line has to have at least two points
             if (linePoints.length > 1) {
-                var repeat = '70%';
+                var repeat;
 
                 if (linePoints.length > 500) {
                     repeat = '10%';
                 } else if (linePoints.length > 250) {
                     repeat = '20%';
-                } else if (linePoints.lenth > 100) {
+                } else if (linePoints.length > 100) {
                     repeat = '35%';
+                } else if (linePoints.length > 30){
+                    repeat = '70%';
+                } else {
+                    repeat = '0%';
                 }
 
                 mapFeatures.push(new google.maps.Polyline({

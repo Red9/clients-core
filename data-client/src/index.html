@@ -12,6 +12,9 @@
     <!-- build:css /static/css/app.css -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="/static/css/leaflet.css" rel="stylesheet">
+    <link href="/static/css/MarkerCluster.css" rel="stylesheet">
+    <link href="/static/css/MarkerCluster.Default.css" rel="stylesheet">
     <!-- endbuild -->
     <style type="text/css">
         .ngFade.ng-enter {
@@ -160,8 +163,11 @@
 <script src="/static/js/vendor/angular-cookies.js"></script>
 <script src="/static/js/vendor/angular-spinner.js"></script>
 <script src="/static/js/vendor/angular-filter.js"></script>
-<script src="/static/js/vendor/ui-bootstrap-tpls-0.11.0.js"></script>
+<script src="/static/js/vendor/ui-bootstrap-tpls.js"></script>
 <script src="/static/js/vendor/async.js"></script>
+<script src="/static/js/vendor/leaflet.js"></script>
+<script src="/static/js/vendor/angular-leaflet-directive.js"></script>
+<script src="/static/js/vendor/leaflet.markercluster.js"></script>
 <!-- endbuild -->
 
 <!-- build:js /static/js/client.js -->
@@ -175,6 +181,7 @@
 <script src="/static/config.js"></script>
 
 <script>
+    L.Icon.Default.imagePath = '/static/images';
     deferredBootstrapper.bootstrap({
         element: document,
         module: 'redApp',

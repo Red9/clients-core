@@ -5,19 +5,15 @@
         .controller('pageController', function ($scope, authenticate) {
             $scope.logout = authenticate.logout;
         })
-        .controller('search', function ($scope, $location) {
-            $scope.searchFilters = $location.search();
+        .controller('search', function ($scope, $location, _) {
+            console.dir($location.search());
+            $scope.query = $location.search();
 
-            $scope.$watch('searchFilters', function (newValue, oldValue) {
-                if (Object.keys(newValue).length > 0) {
-                    // Set the search keys
-                    $location.search(newValue);
-                } else {
-                    // Clear the search keys
-                    $location.url($location.path());
-                }
-                //$scope.datasetList = null;
-                $scope.resourceFilters = $scope.searchFilters;
+            $scope.$watch('query', function (newValue, oldValue) {
+                $location.url($location.path()); // Clear query string
+                _.each(newValue, function (value, key) {
+                    $location.search(key, value);
+                });
             });
         })
         .controller('uploadRNC',
