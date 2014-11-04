@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <th>Uploaded Filename</th>
-                <td>{{{dataset.source.filename}}}</td>
+                <td>{{{dataset.source.createName}}}</td>
             </tr>
             <tr>
                 <th>Created</th>
@@ -30,10 +30,7 @@
             </tr>
             <tr>
                 <th>GPS On Time</th>
-                <td>{{{duration 0 dataset.summaryStatistics.static.gps.timeon.value}}} on ({{{percent
-                    dataset.summaryStatistics.static.gps.timeon.value
-                    dataset.headPanel.summaryStatistics.static.gps.timeoff.value}}})
-                </td>
+                <td>{{{duration 0 dataset.gpsLock.validTime}}} on ({{dataset.gpsLock.percentOn}}%)</td>
             </tr>
             <tr>
                 <th>Distance</th>
@@ -48,13 +45,13 @@
 
                         <tr>
                             <td>Path Distance</td>
-                            <td>{{dataset.summaryStatistics.distance.path}}</td>
-                            <td>{{dataset.summaryStatistics.speed.path.average}} m/s^2</td>
+                            <td>{{decimal dataset.summaryStatistics.distance.path}} m</td>
+                            <td>{{decimal dataset.summaryStatistics.gps.speed.average}} m/s</td>
                         </tr>
                         <tr>
                             <td>Great Circle Distance</td>
-                            <td>{{dataset.summaryStatistics.distance.greatCircle}}</td>
-                            <td></td>
+                            <td>{{decimal dataset.summaryStatistics.distance.greatCircle}}</td>
+                            <td>{{decimal dataset.summaryStatistics.speed.greatCircle}} m/s</td>
                         </tr>
                     </table>
                     {{else}}
@@ -88,7 +85,7 @@
         </table>
 
         <h4>
-            Download <a download="{{dataset.id}}-panel.csv" href="{{apiUrl}}/panel/{{dataset.id}}/body?minmax=false">Complete
+            Download <a download="{{dataset.id}}-panel.csv" href="{{apiUrl}}/{{dataset.id}}/csv?frequency=100">Complete
             Panel</a>
         </h4>
 
@@ -106,36 +103,7 @@
         </div>
         <div id="recordingSource" class="panel-collapse collapse">
             <div class="panel-body">
-                <h3>Parsed Properties</h3>
-
-                <div class="row">
-                    <div class="col-md-12"><strong>Filename</strong>: {{dataset.source.filename}}</div>
-                </div>
                 {{#if dataset.source.scad}}{{#with dataset.source.scad}}
-
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-3"><strong>Unit</strong>: {{unit}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3"><strong>Rows</strong>: {{rows}}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row"><strong>Recorder Start Time</strong>:</div>
-                        <div class="row">{{date datasetStartTime}} {{time datasetStartTime}}<br/>({{datasetStartTime}})
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="row"><strong>Recorder End Time</strong>:</div>
-                        <div class="row">{{date datasetEndTime}} {{time datasetEndTime}}<br/>({{datasetEndTime}})</div>
-                    </div>
-                </div>
-
-
-                <h3>RNC Properties</h3>
-                {{#with rncParameters}}
                 <div class="row">
                     <div class="col-md-3"><strong>Sensors</strong><br/>
                         <table class="table table-condensed">
@@ -155,8 +123,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="row">
+
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-4"><strong>Create CNT</strong>: {{createTime.timestamp}}</div>
@@ -171,11 +138,13 @@
                             <div class="col-md-4"><strong>SW Version</strong>: {{softwareVersion}}</div>
                             <div class="col-md-5"><strong>Create Filename</strong>: {{createName}}</div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4"><strong>Unit</strong>: {{scadUnit}}</div>
+                            <div class="col-md-5"></div>
+                        </div>
 
                     </div>
                 </div>
-                {{/with}}
-
                 {{/with}}{{else}}
                 Unknown source (not SCAD).
                 {{/if}}

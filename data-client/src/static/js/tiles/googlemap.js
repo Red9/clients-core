@@ -26,7 +26,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/moment'], function($, _, m
                 var mapOptions = {
                     zoom: 3,
                     center: new google.maps.LatLng(42.228147, -103.541772),
-                    mapTypeId: google.maps.MapTypeId.SATELLITE,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
                     scrollwheel: false
                 };
 

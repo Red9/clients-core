@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12">    
+    <div class="col-md-12">
         <h4>{{type}} Summary</h4>
 
         <table class="table table-condensed">
@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <th>Event Type Index</th>
-                <td>{{eventIndex.index}} of {{eventIndex.total}}</td>
+                <td>{{{eventIndex.index}}} of {{eventIndex.total}}</td>
             </tr>
             <tr>
                 <th>Start Time</th>
@@ -20,30 +20,30 @@
                 <td>{{duration event.startTime event.endTime}}</td>
             </tr>
             <tr>
-                <th>Number of Rows</th>
-                <td>{{{event.summaryStatistics.static.panelStructure.rowCount.value}}}</td>
-            </tr>
-            <tr>
                 <th>GPS On Time</th>
-                <td>{{{duration 0 event.summaryStatistics.static.gps.timeon.value}}} on ({{{percent event.summaryStatistics.static.gps.timeon.value event.summaryStatistics.static.gps.timeoff.value}}})</td>
+                <td>{{{duration 0 event.gpsLock.validTime}}} on ({{event.gpsLock.percentOn}}%)</td>
             </tr>
             <tr>
                 <th>Distance</th>
                 <td>
-                    {{#if event.summaryStatistics.static.route}}
+                    {{#if event.summaryStatistics}}
                     <table class="table table-condensed">
                         <thead>
                         <th>Type</th>
                         <th>Distance</th>
                         <th>Speed</th>
                         </thead>
-                        {{#each event.summaryStatistics.static.route}}
+
                         <tr>
-                            <td>{{@key}}</td>
-                            <td>{{unitize distance.value distance.units}}</td>
-                            <td>{{unitize averageSpeed.value averageSpeed.units}}</td>
+                            <td>Path Distance</td>
+                            <td>{{decimal event.summaryStatistics.distance.path}} m</td>
+                            <td>{{decimal event.summaryStatistics.gps.speed.average}} m/s</td>
                         </tr>
-                        {{/each}}
+                        <tr>
+                            <td>Great Circle Distance</td>
+                            <td>{{decimal event.summaryStatistics.distance.greatCircle}} m</td>
+                            <td>{{decimal event.summaryStatistics.speed.greatCircle}} m/s</td>
+                        </tr>
                     </table>
                     {{else}}
                     (no GPS)
