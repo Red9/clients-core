@@ -28,6 +28,13 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
                     constraints['expand[]'] = expand[0];
                 }
             }
+
+            if(_.has(constraints, 'id')){
+                constraints.idList = constraints.id;
+                delete constraints.id;
+            }
+
+
             //sandbox.getSchema(resourceType, function(schema) {
                 $.ajax({
                     type: 'GET',
@@ -90,7 +97,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
 
         /** Deletes the resource, and initiates a resource-deleted event
          * when complete.
-         * 
+         *
          * @param {type} resourceType The type, such as 'dataset' or 'event'.
          * @param {type} id A single ID, or array of IDs.
          */

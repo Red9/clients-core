@@ -8816,6 +8816,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 	// file name. Do this after creating the global so that if an AMD module wants
 	// to call noConflict to hide this version of jQuery, it will work.
 	if ( typeof define === "function" && define.amd ) {
+		// SRLM Edit: remove the named first parameter.
 		define( [], function () { return jQuery; } );
 	}
 }
