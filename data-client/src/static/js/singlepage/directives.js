@@ -320,7 +320,12 @@
                     // Search Query variables
                     $scope.searchTitle = '';
                     if (_.has($scope.query, 'tags')) {
-                        $scope.tagList = $scope.query.tags;
+                        if (_.isArray($scope.query.tags)) {
+                            // If there's a single element it will be passed as a single value.
+                            $scope.tagList = $scope.query.tags;
+                        } else {
+                            $scope.tagList = [$scope.query.tags];
+                        }
                     } else {
                         $scope.tagList = [];
                     }
@@ -350,7 +355,7 @@
                         }
 
                         if ($scope.tagList.length > 0) {
-                            result['tags[]'] = $scope.tagList;
+                            result.tags = $scope.tagList;
                         }
 
                         if ($scope.searchTitle.length > 0) {
@@ -458,6 +463,34 @@
                         if (index > -1) {
                             $scope.list.splice(index, 1);
                         }
+                    };
+                }
+            };
+        })
+        .directive('tagHelper', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    tagKey: '@', // The resource key, eg 'tags'
+                    resource: '='
+                },
+                templateUrl: '/static/partials/directives/taghelper.html',
+                controller: function ($scope) {
+                    $scope.$watch('resource', function () {
+                        try {
+                            $scope.tagList = $scope.resource[$scope.tagKey];
+                        } catch (e) {
+                        }
+                    });
+
+                    $scope.addTag = function () {
+                        var value = $scope.newTagInput;
+                        if ($scope.resource[$scope.tagKey].indexOf(value) === -1) {
+                            $scope.resource.addToCollection($scope.tagKey, [value], function () {
+                                $scope.resource[$scope.tagKey].push(value);
+                            });
+                        }
+                        $scope.newTagInput = '';
                     };
                 }
             };
