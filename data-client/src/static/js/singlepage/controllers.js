@@ -16,6 +16,10 @@
                 });
             });
         })
+        .controller('dataanalysis',
+        function ($scope, api) {
+
+        })
         .controller('uploadRNC',
         function ($scope, $upload, current, api) {
             $scope.users = [];

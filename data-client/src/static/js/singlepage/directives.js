@@ -320,7 +320,12 @@
                     // Search Query variables
                     $scope.searchTitle = '';
                     if (_.has($scope.query, 'tags')) {
-                        $scope.tagList = $scope.query.tags;
+                        if (_.isArray($scope.query.tags)) {
+                            // If there's a single element it will be passed as a single value.
+                            $scope.tagList = $scope.query.tags;
+                        } else {
+                            $scope.tagList = [$scope.query.tags];
+                        }
                     } else {
                         $scope.tagList = [];
                     }
@@ -350,7 +355,7 @@
                         }
 
                         if ($scope.tagList.length > 0) {
-                            result['tags[]'] = $scope.tagList;
+                            result.tags = $scope.tagList;
                         }
 
                         if ($scope.searchTitle.length > 0) {

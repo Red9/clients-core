@@ -71,6 +71,8 @@
                         <li>Started On: {{dataset.startTime| date}}</li>
                         <li>Duration: {{dataset.endTime - dataset.startTime| duration}}</li>
                     </ul>
+                    New Data Page: <a href="/analysis/{{dataset.id}}">View <span
+                        class="glyphicon glyphicon-circle-arrow-right"></span></a>
                 </td>
             </tr>
             </tbody>

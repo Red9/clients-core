@@ -86,6 +86,12 @@
                 accessLevel: 'public',
                 title: 'R9: Leaderboard'
             });
+            $routeProvider.when('/analysis/:id', {
+                templateUrl: '/static/partials/dataanalysis.html',
+                controller: 'dataanalysis',
+                accessLevel: 'user',
+                title: 'R9: Data Analysis'
+            });
 
 
             // Pages
