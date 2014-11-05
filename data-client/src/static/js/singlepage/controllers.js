@@ -17,8 +17,10 @@
             });
         })
         .controller('dataanalysis',
-        function ($scope, api) {
-
+        function ($scope, $routeParams, api) {
+            api.dataset.get({id: $routeParams.id}, function (dataset) {
+                $scope.dataset = dataset;
+            });
         })
         .controller('uploadRNC',
         function ($scope, $upload, current, api) {

@@ -13,20 +13,58 @@
      *   - delete
      *
      */
-        .factory('api', function ($resource, $http, $location) {
+        .factory('api', function ($resource, $http) {
             $http.defaults.withCredentials = true;
+            var apiUrl = red9config.apiUrl;
 
             var apiOptions = {
                 update: {method: 'PUT'}
             };
 
-            return {
-                dataset: $resource(red9config.apiUrl + '/dataset/:id', {id: '@id'}, apiOptions),
-                event: $resource(red9config.apiUrl + '/event/:id', {id: '@id'}, apiOptions),
-                comment: $resource(red9config.apiUrl + '/comment/:id', {id: '@id'}, apiOptions),
-                user: $resource(red9config.apiUrl + '/user/:id', {id: '@id'}, apiOptions),
-                video: $resource(red9config.apiUrl + '/video/:id', {id: '@id'}, apiOptions)
+            var result = {
+                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}, apiOptions),
+                event: $resource(apiUrl + '/event/:id', {id: '@id'}, apiOptions),
+                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}, apiOptions),
+                user: $resource(apiUrl + '/user/:id', {id: '@id'}, apiOptions),
+                video: $resource(apiUrl + '/video/:id', {id: '@id'}, apiOptions)
             };
+
+            result.dataset.prototype.addToCollection = function (key, values, callback) {
+                var data = {};
+                data[key] = values;
+                $http.put(apiUrl + '/dataset/' + this.id + '/' + key, data)
+                    .success(callback)
+                    .error(function (data, status) {
+                        console.log('Error: ' + data + ', ' + status);
+                    });
+            };
+
+            result.dataset.prototype.removeFromCollection = function (key, values, callback) {
+                var data = {};
+                data[key] = values;
+                $http.delete(apiUrl + '/dataset/' + this.id + '/' + key, data)
+                    .success(callback)
+                    .error(function (data, status) {
+                        console.log('Error: ' + data + ', ' + status);
+                    });
+            };
+
+
+            //angular.extend(result.dataset.prototype, {
+            //    collections: {
+            //        add: function (key, values, callback) {
+            //            console.dir(this);
+            //            //$http.put(apiUrl + '/dataset/' + this.id,
+            //            //    {key: values})
+            //            //    .success(callback)
+            //            //    .error(function (data, status) {
+            //            //        console.log('Error: ' + data + ', ' + status);
+            //            //    });
+            //        }
+            //    }
+            //});
+
+            return result;
         })
         .factory('authenticate', function ($http, $window, $interval, $location, current, _) {
             $http.defaults.withCredentials = true;
