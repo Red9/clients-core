@@ -16,10 +16,10 @@
     </tr>
     <tr ng-repeat-end ng-repeat="(axis, values) in axisValues">
         <td>{{axis}}</td>
-        <td>{{values.minimum.value | number:2}}</td>
-        <td>{{values.average | number:2}}</td>
-        <td>{{values.maximum.value | number:2}}</td>
-        <td>{{values.sum | number:2}}</td>
+        <td><a ng-href="/{{resourceType}}/{{values.minimum.id}}" target="_self">{{values.minimum.value | number:2}}</a></td>
+        <td><a ng-href="{{listUrl}}">{{values.average | number:2}}</td>
+        <td><a ng-href="/{{resourceType}}/{{values.maximum.id}}" target="_self">{{values.maximum.value | number:2}}</a></td>
+        <td><a ng-href="{{listUrl}}">{{values.sum | number:2}}</a></td>
     </tr>
     </tbody>
 </table>

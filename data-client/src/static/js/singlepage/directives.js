@@ -517,11 +517,12 @@
                 restrict: 'E',
                 scope: {
                     statistics: '=',
+                    idList: '=', // Used to make useful links to the list.
                     resourceType: '@'
-
                 },
                 templateUrl: '/static/partials/directives/compoundstatistics.html',
                 controller: function ($scope) {
+                    $scope.listUrl = '/' + $scope.resourceType + '/?idList=' + $scope.idList.join(',');
                 }
             };
         })
@@ -530,11 +531,12 @@
                 restrict: 'E',
                 scope: {
                     statistics: '=',
+                    idList: '=',
                     resourceType: '@'
-
                 },
                 templateUrl: '/static/partials/directives/temporalstatistics.html',
                 controller: function ($scope) {
+                    $scope.listUrl = '/' + $scope.resourceType + '/?idList=' + $scope.idList.join(',');
                 }
             };
         })
