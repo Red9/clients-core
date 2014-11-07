@@ -111,22 +111,6 @@
                         }
                     }
 
-                    // Create the geoJSON display
-                    function createGeoJSON(list) {
-                        $scope.geojson.data = _.chain(list).filter(function (item) {
-                            return _.has(item, 'boundingCircle');
-                        }).map(function (item) {
-                            return {
-                                type: 'Feature',
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [item.boundingCircle.longitude, item.boundingCircle.latitude]
-                                }
-                            };
-                        }).value();
-                    }
-
-
                     function createMapMarkers(list) {
                         var minimumLatitude = Number.MAX_VALUE;
                         var maximumLatitude = -Number.MAX_VALUE;
@@ -446,10 +430,11 @@
                 restrict: 'E',
                 scope: {
                     list: '=',
+                    deleteItem: '=',
                     displayKey: '@'
                 },
                 templateUrl: '/static/partials/directives/badgelist.html',
-                controller: function ($scope) {
+                controller: function ($scope, _) {
                     $scope.display = function (item) {
                         if ($scope.displayKey) {
                             return item[$scope.displayKey];
@@ -462,6 +447,9 @@
                         var index = $scope.list.indexOf(tag);
                         if (index > -1) {
                             $scope.list.splice(index, 1);
+                            if (_.isFunction($scope.deleteItem)) {
+                                $scope.deleteItem(tag);
+                            }
                         }
                     };
                 }
@@ -483,6 +471,12 @@
                         }
                     });
 
+                    $scope.deleteTag = function (tag) {
+                        $scope.resource.removeFromCollection($scope.tagKey, [tag], function () {
+                            console.log('Deleted.');
+                        });
+                    };
+
                     $scope.addTag = function () {
                         var value = $scope.newTagInput;
                         if ($scope.resource[$scope.tagKey].indexOf(value) === -1) {
@@ -492,6 +486,55 @@
                         }
                         $scope.newTagInput = '';
                     };
+                }
+            };
+        })
+        .directive('eventTypeStatistics', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    type: '@',
+                    events: '='
+                },
+                templateUrl: '/static/partials/directives/eventtypestatistics.html',
+                controller: function ($scope) {
+
+                }
+            };
+        })
+        .directive('aggregateStatistics', function () {
+            return {
+                restrict: 'E',
+                scope: {},
+                templateUrl: '/static/partials/directives/aggregatestatistics.html',
+                controller: function ($scope) {
+
+                }
+            };
+        })
+        .directive('compoundStatistics', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    statistics: '=',
+                    resourceType: '@'
+
+                },
+                templateUrl: '/static/partials/directives/compoundstatistics.html',
+                controller: function ($scope) {
+                }
+            };
+        })
+        .directive('temporalStatistics', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    statistics: '=',
+                    resourceType: '@'
+
+                },
+                templateUrl: '/static/partials/directives/temporalstatistics.html',
+                controller: function ($scope) {
                 }
             };
         })

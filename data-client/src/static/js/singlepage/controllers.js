@@ -18,9 +18,19 @@
         })
         .controller('dataanalysis',
         function ($scope, $routeParams, api) {
-            api.dataset.get({id: $routeParams.id}, function (dataset) {
+            api.dataset.get({id: $routeParams.id, expand: ['owner', 'event', 'comment', 'video']}, function (dataset) {
                 $scope.dataset = dataset;
+
+                console.dir(dataset);
+
+                //$scope.groupedEvents = _.groupBy(dataset.event, 'type');
+
+                //dataset.getPanel();
+
+
             });
+
+
         })
         .controller('uploadRNC',
         function ($scope, $upload, current, api) {

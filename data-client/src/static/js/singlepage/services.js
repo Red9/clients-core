@@ -29,6 +29,22 @@
                 video: $resource(apiUrl + '/video/:id', {id: '@id'}, apiOptions)
             };
 
+            /** Will get a panel, and add it to the dataset under the "panel" key.
+             *
+             * @param options
+             * @returns {$http promise}
+             */
+            result.dataset.prototype.getPanel = function (options) {
+                var self = this;
+                return $http({
+                    url: apiUrl + '/dataset/' + this.id + '/json',
+                    method: 'GET',
+                    params: options
+                }).success(function(data){
+                   self.panel = data;
+                });
+            };
+
             result.dataset.prototype.addToCollection = function (key, values, callback) {
                 var data = {};
                 data[key] = values;
@@ -42,27 +58,12 @@
             result.dataset.prototype.removeFromCollection = function (key, values, callback) {
                 var data = {};
                 data[key] = values;
-                $http.delete(apiUrl + '/dataset/' + this.id + '/' + key, data)
+                $http.patch(apiUrl + '/dataset/' + this.id + '/' + key, data)
                     .success(callback)
                     .error(function (data, status) {
                         console.log('Error: ' + data + ', ' + status);
                     });
             };
-
-
-            //angular.extend(result.dataset.prototype, {
-            //    collections: {
-            //        add: function (key, values, callback) {
-            //            console.dir(this);
-            //            //$http.put(apiUrl + '/dataset/' + this.id,
-            //            //    {key: values})
-            //            //    .success(callback)
-            //            //    .error(function (data, status) {
-            //            //        console.log('Error: ' + data + ', ' + status);
-            //            //    });
-            //        }
-            //    }
-            //});
 
             return result;
         })

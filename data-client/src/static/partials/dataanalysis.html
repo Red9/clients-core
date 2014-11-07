@@ -1,5 +1,20 @@
 <h4>Let's analyze something.</h4>
 
-Dataset Tags:
+
+<h2>{{dataset.title}}</h2>
+<h4><a ng-href="/user/{{dataset.owner.id}}">{{dataset.owner.displayName}}</a></h4>
+
+
+<h4>Dataset Tags:</h4>
 <tag-helper resource="dataset" tag-key="tags"></tag-helper>
 
+
+<div ng-repeat="(type, statistics) in dataset.aggregateStatistics">
+    <h3>{{type}} &nbsp;<small>({{statistics.count}})</small></h3>
+    <temporal-statistics statistics="statistics.temporal" resource-type="event"></temporal-statistics>
+    <compound-statistics statistics="statistics.compound" resource-type="event"></compound-statistics>
+</div>
+
+<!--<div ng-repeat="(type, list) in groupedEvents">-->
+    <!--<event-type-statistics type="{{type}}" events="list"></event-type-statistics>-->
+<!--</div>-->

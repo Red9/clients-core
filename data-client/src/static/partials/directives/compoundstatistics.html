@@ -1,0 +1,25 @@
+<table class="table table-condensed">
+    <thead>
+    <th></th>
+    <th>Min</th>
+    <th>Avg</th>
+    <th>Max</th>
+    <th>Sum</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat-start="(measurement, axisValues) in statistics" class="info">
+        <td><b>{{measurement}}</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat-end ng-repeat="(axis, values) in axisValues">
+        <td>{{axis}}</td>
+        <td>{{values.minimum.value | number:2}}</td>
+        <td>{{values.average | number:2}}</td>
+        <td>{{values.maximum.value | number:2}}</td>
+        <td>{{values.sum | number:2}}</td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,24 @@
+<table class="table table-condensed">
+    <thead>
+    <th></th>
+    <th>Min</th>
+    <th>Avg</th>
+    <th>Max</th>
+    <th>Sum</th>
+    </thead>
+    <tr>
+        <td>Interval</td>
+        <td>{{statistics.interval.minimum | duration:true}}</td>
+        <td>{{statistics.interval.average | duration:true}}</td>
+        <td>{{statistics.interval.maximum | duration:true}}</td>
+        <td>{{statistics.interval.sum | duration:true}}</td>
+
+    </tr>
+    <tr>
+        <td>Duration</td>
+        <td>{{statistics.duration.minimum | duration:true}}</td>
+        <td>{{statistics.duration.average | duration:true}}</td>
+        <td>{{statistics.duration.maximum | duration:true}}</td>
+        <td>{{statistics.duration.sum | duration:true}}</td>
+    </tr>
+</table>
