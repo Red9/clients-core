@@ -1,0 +1,31 @@
+<h3>Event {{type}}</h3>
+{{events.length}}
+
+
+Duration: min/avg/max/total<br/>
+Distance: min/avg/max/total<br/>
+Speed: min/avg/max<br/>
+G-force: min/avg/max<br/>
+
+First: time <br/>
+Last: time <br/>
+Frequency: event/hour<br/>
+Longest time between: <br/>
+Shortest time between: <br/>
+
+
+<h5>Each {{type}}</h5>
+<div class="row" ng-repeat="event in events">
+    <div class="col-sm-3">
+        {{event.duration | duration:true}}
+    </div>
+    <div class="col-sm-3">
+        {{event.summaryStatistics.acceleration.z.average | number:1}} m/s^2
+    </div>
+    <div class="col-sm-3">
+        {{event.summaryStatistics.distance.path | number:1}} m
+    </div>
+    <div class="col-sm-3">
+        {{event.summaryStatistics.gps.speed.average | number:1}} m/s
+    </div>
+</div>
