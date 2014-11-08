@@ -49,6 +49,12 @@
                 accessLevel: 'user',
                 title: 'R9: Event Search'
             });
+            $routeProvider.when('/user/', {
+                templateUrl: '/static/partials/searchuser.html',
+                controller: 'search',
+                accessLevel: 'user',
+                title: 'R9: User Search'
+            });
 
             $routeProvider.when('/user/me', {
                 templateUrl: '/static/partials/myprofile.html',
@@ -91,6 +97,12 @@
                 controller: 'dataanalysis',
                 accessLevel: 'user',
                 title: 'R9: Data Analysis'
+            });
+            $routeProvider.when('/admin/', {
+                templateUrl: '/static/partials/admin.html',
+                controller: 'admin',
+                accessLevel: 'user',
+                title: 'R9: Administrative Tasks'
             });
 
 

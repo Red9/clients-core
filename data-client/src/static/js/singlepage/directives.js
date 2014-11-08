@@ -8,7 +8,7 @@
             return {
                 restrict: 'E',
                 templateUrl: function (element, attributes) {
-                    return '/static/partials/' + attributes.resourceType + 'list.html';
+                    return '/static/partials/directives/' + attributes.resourceType + 'list.html';
                 },
                 scope: {
                     resourceFilters: '=',
@@ -79,7 +79,8 @@
                         },
                         event: {
                             //part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
-                        }
+                        },
+                        user: {}
 
                     };
 
@@ -89,6 +90,9 @@
                         },
                         event: function (event) {
                             return -event.startTime;
+                        },
+                        user: function(user){
+                            return user.displayName;
                         }
                     };
 
@@ -289,13 +293,60 @@
                 }
             };
         })
+        .directive('eventSearch', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    query: '='
+                },
+                templateUrl: '/static/partials/directives/eventsearch.html',
+                controller: function ($scope, _, api) {
+                    $scope.eventTypes = _.pluck(api.event.types, 'name');
+                    $scope.typeList = [];
+                    $scope.typeInput = '';
+
+                    $scope.datasetList = [];
+
+
+                    if (_.has($scope.query, 'type')) {
+                        $scope.typeList = $scope.query.type.split(',');
+                    }
+
+                    if (_.has($scope.query, 'datasetId')) {
+                        api.dataset.query({idList: $scope.query.datasetId}, function (results) {
+                            $scope.datasetList = results;
+                        });
+                    }
+
+                    $scope.addType = function () {
+                        if ($scope.typeList.indexOf($scope.typeInput) === -1) {
+                            $scope.typeList.push($scope.typeInput);
+                        }
+                        $scope.typeInput = '';
+                    };
+
+                    $scope.startSearch = function () {
+                        var result = {};
+                        if ($scope.typeList.length > 0) {
+                            result.type = $scope.typeList.join(',');
+                        }
+
+                        if ($scope.datasetList.length > 0) {
+                            result.datasetId = _.pluck($scope.datasetList, 'id').join(',');
+                        }
+
+                        $scope.query = result;
+                    };
+                }
+            };
+        })
         .directive('datasetSearch', function () {
             return {
                 restrict: 'E',
                 scope: {
                     query: '='
                 },
-                templateUrl: '/static/partials/datasetsearch.html',
+                templateUrl: '/static/partials/directives/datasetsearch.html',
                 controller: function ($scope, $location, _, api) {
 
                     // Working Variable
@@ -489,39 +540,17 @@
                 }
             };
         })
-        .directive('eventTypeStatistics', function () {
-            return {
-                restrict: 'E',
-                scope: {
-                    type: '@',
-                    events: '='
-                },
-                templateUrl: '/static/partials/directives/eventtypestatistics.html',
-                controller: function ($scope) {
-
-                }
-            };
-        })
-        .directive('aggregateStatistics', function () {
-            return {
-                restrict: 'E',
-                scope: {},
-                templateUrl: '/static/partials/directives/aggregatestatistics.html',
-                controller: function ($scope) {
-
-                }
-            };
-        })
         .directive('compoundStatistics', function () {
             return {
                 restrict: 'E',
                 scope: {
                     statistics: '=',
+                    idList: '=', // Used to make useful links to the list.
                     resourceType: '@'
-
                 },
                 templateUrl: '/static/partials/directives/compoundstatistics.html',
                 controller: function ($scope) {
+                    $scope.listUrl = '/' + $scope.resourceType + '/?idList=' + $scope.idList.join(',');
                 }
             };
         })
@@ -530,11 +559,12 @@
                 restrict: 'E',
                 scope: {
                     statistics: '=',
+                    idList: '=',
                     resourceType: '@'
-
                 },
                 templateUrl: '/static/partials/directives/temporalstatistics.html',
                 controller: function ($scope) {
+                    $scope.listUrl = '/' + $scope.resourceType + '/?idList=' + $scope.idList.join(',');
                 }
             };
         })

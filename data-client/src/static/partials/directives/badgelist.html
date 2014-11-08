@@ -1,12 +1,7 @@
-<div ng-if="list.length > 0">
-    <big>
-        <span ng-repeat="item in list">
+<big>
+    <span ng-repeat="item in list">
         <span class="label label-primary">
-            {{display(item)}} <i class="glyphicon glyphicon-remove" ng-click="removeBadge(item)"></i>
+            {{display(item) | limitTo:35}} <i class="glyphicon glyphicon-remove" ng-click="removeBadge(item)"></i>
         </span>&nbsp;
-        </span>
-    </big>
-</div>
-<div ng-if="list.length === 0">
-    [ none ]
-</div>
+    </span>
+</big>

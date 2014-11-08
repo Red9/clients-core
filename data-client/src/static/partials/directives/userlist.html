@@ -1,0 +1,63 @@
+<br/><br/>
+<div ng-if="resourceList.length === 0">
+    <br/><br/>No results found.
+</div>
+<div ng-if="resourceList === null">
+    <span us-spinner></span>
+</div>
+<div ng-if="resourceList.length > 0">
+    <div class="row">
+        <div class="col-xs-9">
+            <!--<div class="btn-toolbar" role="toolbar">-->
+                <!--<div class="btn-group">-->
+                    <!--<button class="btn btn-md btn-default" ng-click="deleteSelected(resourceList)"><span-->
+                            <!--class="glyphicon glyphicon-trash"></span></button>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="col-xs-3 text-right">
+            <p class="text-muted">{{resourceList.length}} results found</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <th>
+                    </th>
+                    <th>Display Name</th>
+                    <th>Email</th>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="user in resourcePage" class="ngFade">
+                        <td><input type="checkbox" ng-model="user.selected"></td>
+                        <td><a href="/user/{{user.id}}">{{user.displayName}}</a></td>
+                        <td>{{user.email}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8">
+            <pagination total-items="resourceList.length" ng-model="resourcePages.currentPage"
+                        items-per-page="resourcePages.itemsPerPage" max-size="resourcePages.maxSize"
+                        boundary-links="true"></pagination>
+        </div>
+        <div class="col-xs-4">
+            <select ng-model="resourcePages.itemsPerPage" class="form-control form-control-inline">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+

@@ -20,17 +20,7 @@
         function ($scope, $routeParams, api) {
             api.dataset.get({id: $routeParams.id, expand: ['owner', 'event', 'comment', 'video']}, function (dataset) {
                 $scope.dataset = dataset;
-
-                console.dir(dataset);
-
-                //$scope.groupedEvents = _.groupBy(dataset.event, 'type');
-
-                //dataset.getPanel();
-
-
             });
-
-
         })
         .controller('uploadRNC',
         function ($scope, $upload, current, api) {
@@ -72,6 +62,26 @@
         .controller('myProfile',
         function ($scope) {
         })
+        .controller('admin',
+        function ($scope, api) {
+            $scope.newUser = {};
+            $scope.createdUsers = [];
+
+            $scope.addNewUser = function () {
+                var createdUser = new api.user({
+                    email: $scope.newUser.email,
+                    displayName: 'unknown',
+                    givenName: 'unknown',
+                    familyName: 'unknown'
+                });
+
+                createdUser.$save();
+                $scope.createdUsers.push(createdUser);
+                $scope.newUser = {};
+                $scope.newUserForm.$setPristine();
+            };
+
+        })
         .controller('userProfile',
         function ($scope, $routeParams, api) {
             api.user.get({id: $routeParams.id}, function (user) {
@@ -79,17 +89,27 @@
             });
         })
         .controller('homeController',
-        function ($scope, current) {
-            $scope.message = 'hello';
-            $scope.datasetFilters = {
-                user: {
-                    'ownerId': current.user.id,
-                    'createTime.gt': Date.now() - 1000 * 60 * 60 * 24 * 30 * 3
-                },
-                allRecent: {
-                    'createTime.gt': Date.now() - 1000 * 60 * 60 * 24 * 30 * 1
-                }
-            };
+        function ($scope, _) {
+            $scope.myInterval = 1000;
+
+            var instagramList = [
+                'u1BeCCTDVE',
+                'uN3fY_zDdF',
+                'uqK1eszDRE',
+                't8vBXQTDZZ',
+                'tvcuznzDdO',
+                'uGJeQSTDXI'
+            ];
+
+            $scope.slides = _.map(instagramList, function (id) {
+                return {
+                    image: 'http://instagram.com/p/' + id + '/media/?size=l',
+                    active: false
+                };
+            });
+            $scope.slides[0].active = true;
+
+
         })
         .controller('unauthenticatedController',
         function ($scope, $location, _) {
@@ -318,5 +338,6 @@
             });
         });
 
-})();
+})
+();
                

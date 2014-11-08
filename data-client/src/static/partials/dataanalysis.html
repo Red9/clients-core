@@ -10,11 +10,12 @@
 
 
 <div ng-repeat="(type, statistics) in dataset.aggregateStatistics">
-    <h3>{{type}} &nbsp;<small>({{statistics.count}})</small></h3>
-    <temporal-statistics statistics="statistics.temporal" resource-type="event"></temporal-statistics>
-    <compound-statistics statistics="statistics.compound" resource-type="event"></compound-statistics>
+    <h3>{{type}} &nbsp;
+        <small>({{statistics.count}})</small>
+    </h3>
+    <temporal-statistics statistics="statistics.temporal" resource-type="event"
+                         id-list="statistics.idList"></temporal-statistics>
+    <compound-statistics statistics="statistics.compound" resource-type="event"
+                         id-list="statistics.idList"></compound-statistics>
 </div>
 
-<!--<div ng-repeat="(type, list) in groupedEvents">-->
-    <!--<event-type-statistics type="{{type}}" events="list"></event-type-statistics>-->
-<!--</div>-->

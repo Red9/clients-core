@@ -29,6 +29,12 @@
                 video: $resource(apiUrl + '/video/:id', {id: '@id'}, apiOptions)
             };
 
+            $http.get(apiUrl + '/eventtype/').success(function (data) {
+                angular.extend(result.event.types, data);
+            });
+            result.event.types = [];
+
+
             /** Will get a panel, and add it to the dataset under the "panel" key.
              *
              * @param options
@@ -40,8 +46,8 @@
                     url: apiUrl + '/dataset/' + this.id + '/json',
                     method: 'GET',
                     params: options
-                }).success(function(data){
-                   self.panel = data;
+                }).success(function (data) {
+                    self.panel = data;
                 });
             };
 
