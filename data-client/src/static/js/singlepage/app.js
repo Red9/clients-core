@@ -21,6 +21,8 @@
         'angularSpinner',
         'angular.filter',
         'angularFileUpload',
+        'angulartics',
+        'angulartics.google.analytics',
         'underscore',
         'redApp.filters',
         'redApp.services',
