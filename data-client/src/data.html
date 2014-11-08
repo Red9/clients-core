@@ -29,11 +29,23 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/upload/rnc">Upload</a></li>
-                <li><a href="/dataset/">Datasets</a></li>
-                <li><a href="/event/">Events</a></li>
-                <li><a href="/leaderboard/">Leaderboards</a></li>
+                <li><a ng-href="/dataset/">Sessions</a></li>
+                <li><a ng-href="/leaderboard/">Leaderboards</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Actions</li>
+                        <li><a href="/upload/rnc">Upload</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Search</li>
+                        <li><a href="/event/">Events</a></li>
+                        <li><a href="/user/">Users</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Settings</li>
+                        <li><a href="/admin">Admin</a></li>
 
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -56,9 +68,19 @@
     <script src="/static/js/vendor/require.js"></script>
     <script src="/static/js/requireconfig.js"></script>
     <script src="/static/js/spa.js"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-56529854-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
 
     <!--<div id="page_parameters" data-apiurl="http://localhost:3000" data-actionurl="http://localhost:3000"-->
-         <!--data-currentuser="fadedcab-0528-e834-b47d-c80e3696846c">-->
+    <!--data-currentuser="fadedcab-0528-e834-b47d-c80e3696846c">-->
     <!--</div>-->
     <div id="modal_div"><!-- Dynamically loaded in.--></div>
 

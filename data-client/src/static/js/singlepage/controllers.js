@@ -113,7 +113,8 @@
         })
         .controller('unauthenticatedController',
         function ($scope, $location, _) {
-            $scope.attemptUrl = $location.search().attemptUrl;
+            $scope.attemptUrl = decodeURIComponent($location.search().attemptUrl);
+
             $scope.error = null;
             if (_.has($location.search(), 'error')) {
                 try {

@@ -35,7 +35,7 @@
             }
         }
         function numberToDecimal(number) {
-            if (typeof number === 'undefined') {
+            if (typeof number === 'undefined' || number === null) {
                 return '';
             }
             if (Math.abs(number) > 9999 || Math.abs(number) < 0.01) {
