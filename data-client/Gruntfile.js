@@ -36,6 +36,31 @@ module.exports = function (grunt) {
                 }
             }
         },
+        htmlmin: {                                     // Task
+            target: {
+                options: {                                 // Target options
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    conservativeCollapse: true
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'release/src/',
+                        src: [
+                            '**/*.html',
+                            '!**/embeddedvideo.fcpxmldialog.html',
+                            '!**/embeddedvideo.html',
+                            '!**/eventdetection.session.html',
+                            '!**/layouteditor.html',
+                            '!**/modifyresource.html',
+                            '!**/panelgraph.settings.html'
+                        ],
+                        dest: 'release/src/'
+                    }
+                ]
+            }
+        },
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
@@ -50,8 +75,6 @@ module.exports = function (grunt) {
                 ignores: ['src/static/js/vendor/*.js', 'src/static/js/vendor_old/*.js'],
                 laxbreak: true // don't warn about putting operators on the next line.
             }
-
-
         },
         useminPrepare: {
             html: 'release/src/index.html',
@@ -72,6 +95,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-usemin');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
     grunt.registerTask('test', ['jshint']);
 
@@ -86,6 +110,7 @@ module.exports = function (grunt) {
             'cssmin:generated',
             'uglify:generated',
             'usemin',
+            'htmlmin',
             'clean:after'
         ]);
 
