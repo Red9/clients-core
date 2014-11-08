@@ -49,6 +49,10 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/handlebars',
                 function (data) {
                     sandbox.currentUser = data.user.id;
 
+                    data.user.name = data.user.displayName;
+
+                    window.analytics.identify(sandbox.currentUser.id, data.user);
+
                     sandbox.buildSandbox();
 
                     sandbox.setPageTitle('Red9 Sensor');
