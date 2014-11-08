@@ -22,7 +22,7 @@
         'angular.filter',
         'angularFileUpload',
         'angulartics',
-        'angulartics.google.analytics',
+        'angulartics.segment.io',
         'underscore',
         'redApp.filters',
         'redApp.services',

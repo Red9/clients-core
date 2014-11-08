@@ -25,6 +25,8 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/history',
             };
         }
         function onHistoryChange() {
+            window.analytics.page();
+
             historyChanging = true;
             var $progressBar = $('#pageloaderspinner');
             $progressBar.show('fast').addClass('active');
