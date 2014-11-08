@@ -91,7 +91,7 @@
                         event: function (event) {
                             return -event.startTime;
                         },
-                        user: function(user){
+                        user: function (user) {
                             return user.displayName;
                         }
                     };
@@ -565,6 +565,17 @@
                 templateUrl: '/static/partials/directives/temporalstatistics.html',
                 controller: function ($scope) {
                     $scope.listUrl = '/' + $scope.resourceType + '/?idList=' + $scope.idList.join(',');
+                }
+            };
+        })
+        .directive('summaryStatistics', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    statistics: '='
+                },
+                templateUrl: '/static/partials/directives/summarystatistics.html',
+                controller: function ($scope) {
                 }
             };
         })

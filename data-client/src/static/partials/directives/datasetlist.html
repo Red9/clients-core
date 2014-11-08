@@ -46,7 +46,9 @@
                         <td><input type="checkbox" ng-model="dataset.selected"></td>
                         <td><a href="/user/{{dataset.ownerId}}">{{dataset.owner.displayName}}</a></td>
                         <td>{{dataset.title| limitTo:60}}<span ng-if="dataset.title.length > 60">...</span></td>
-                        <td><a href="/dataset/{{dataset.id}}" target="_self">View <span
+                        <td><a href="/analysis/{{dataset.id}}">Summary <span
+                                class="glyphicon glyphicon-circle-arrow-right"></span></a> |
+                            <a href="/dataset/{{dataset.id}}" target="_self">Graphs <span
                                 class="glyphicon glyphicon-circle-arrow-right"></span></a></td>
                         <td><span class="badge">{{dataset.count.event > 0 ? dataset.count.event : ''}}</span></td>
                         <td><span class="badge">{{dataset.count.video > 0 ? dataset.count.video : ''}}</span></td>
@@ -65,8 +67,6 @@
                                 <li>Started On: {{dataset.startTime| date}}</li>
                                 <li>Duration: {{dataset.endTime - dataset.startTime| duration}}</li>
                             </ul>
-                            New Data Page: <a href="/analysis/{{dataset.id}}">View <span
-                                class="glyphicon glyphicon-circle-arrow-right"></span></a>
                         </td>
                     </tr>
                     </tbody>
