@@ -122,8 +122,12 @@
                         var maximumLongitude = -Number.MAX_VALUE;
 
 
+                        console.dir(list);
                         $scope.map.markers = _.chain(list).filter(function (item) {
-                            return _.has(item, 'boundingCircle');
+                            return _.has(item, 'boundingCircle')
+                                && _.isObject(item.boundingCircle)
+                                && _.has(item.boundingCircle, 'latitude')
+                                && _.has(item.boundingCircle, 'longitude');
                         }).reduce(function (memo, item) {
                             var key = item.id.replace(/-/g, '');
                             var message = "";
@@ -482,7 +486,9 @@
                 scope: {
                     list: '=',
                     deleteItem: '=',
-                    displayKey: '@'
+                    displayKey: '@',
+                    editable: '@',
+                    muted: '@'
                 },
                 templateUrl: '/static/partials/directives/badgelist.html',
                 controller: function ($scope, _) {
@@ -576,6 +582,30 @@
                 },
                 templateUrl: '/static/partials/directives/summarystatistics.html',
                 controller: function ($scope) {
+                }
+            };
+        })
+        .directive('listGroupSimple', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    list: '=',
+                    editable: '@'
+                },
+                templateUrl: '/static/partials/directives/listgroupsimple.html',
+                controller: function ($scope) {
+                    $scope.newItem = '';
+                    $scope.removeItem = function (item) {
+                        $scope.list.splice($scope.list.indexOf(item), 1);
+                    };
+
+                    $scope.addItem = function () {
+                        if ($scope.newItem.length > 0) {
+                            $scope.list.push($scope.newItem);
+                            $scope.newItem = '';
+                        }
+                    };
+
                 }
             };
         })

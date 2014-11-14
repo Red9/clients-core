@@ -13,21 +13,35 @@
      *   - delete
      *
      */
-        .factory('api', function ($resource, $http) {
+        .factory('api', function ($resource, $http, _) {
             $http.defaults.withCredentials = true;
             var apiUrl = red9config.apiUrl;
 
-            var apiOptions = {
-                update: {method: 'PUT'}
+            var result = {
+                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}),
+                event: $resource(apiUrl + '/event/:id', {id: '@id'}),
+                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}),
+                user: $resource(apiUrl + '/user/:id', {id: '@id'}),
+                video: $resource(apiUrl + '/video/:id', {id: '@id'})
             };
 
-            var result = {
-                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}, apiOptions),
-                event: $resource(apiUrl + '/event/:id', {id: '@id'}, apiOptions),
-                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}, apiOptions),
-                user: $resource(apiUrl + '/user/:id', {id: '@id'}, apiOptions),
-                video: $resource(apiUrl + '/video/:id', {id: '@id'}, apiOptions)
-            };
+            _.each(result, function (resource, type) {
+                /**
+                 *
+                 * @param updateValues {object} a set of key values to PUT to the server
+                 */
+                resource.prototype.update = function (updateValues) {
+                    var self = this;
+                    $http({
+                        url: apiUrl + '/' + type + '/' + self.id,
+                        method: 'PUT',
+                        data: updateValues
+                    }).success(function (data) {
+                        angular.extend(self, updateValues);
+                    });
+                };
+            });
+
 
             $http.get(apiUrl + '/eventtype/').success(function (data) {
                 angular.extend(result.event.types, data);

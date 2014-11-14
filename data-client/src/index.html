@@ -85,6 +85,12 @@
             cursor: inherit;
             display: block;
         }
+
+        /* Taken from http://stackoverflow.com/a/25517025/2557842 */
+        .vertical-align {
+            display: flex;
+            align-items: center;
+        }
     </style>
 
 </head>
@@ -135,7 +141,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{current.user.displayName}}<b
                             class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/{{current.user.id}}/admin">Profile Settings</a></li>
+                        <li><a ng-href="/user/{{current.user.id}}">View Profile</a></li>
+                        <li><a ng-href="/user/{{current.user.id}}/admin">Settings</a></li>
                         <li><a href="" ng-click="authenticate.logout()"><span
                                 class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
                         </li>

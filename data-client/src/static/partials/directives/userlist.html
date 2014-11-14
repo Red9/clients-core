@@ -1,4 +1,3 @@
-<br/><br/>
 <div ng-if="resourceList.length === 0">
     <br/><br/>No results found.
 </div>
@@ -6,7 +5,7 @@
     <span us-spinner></span>
 </div>
 <div ng-if="resourceList.length > 0">
-    <div class="row">
+    <div class="row vertical-align">
         <div class="col-xs-9">
             <!--<div class="btn-toolbar" role="toolbar">-->
                 <!--<div class="btn-group">-->
@@ -42,14 +41,14 @@
 
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-8">
+    <div class="row vertical-align">
+        <div class="col-xs-9">
             <pagination total-items="resourceList.length" ng-model="resourcePages.currentPage"
                         items-per-page="resourcePages.itemsPerPage" max-size="resourcePages.maxSize"
                         boundary-links="true"></pagination>
         </div>
-        <div class="col-xs-4">
-            <select ng-model="resourcePages.itemsPerPage" class="form-control form-control-inline">
+        <div class="col-xs-3">
+            <select ng-model="resourcePages.itemsPerPage" class="form-control form-control-inline pull-right">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>

@@ -57,12 +57,11 @@
                 accessLevel: 'user',
                 title: 'R9: User Search'
             });
-
-            $routeProvider.when('/user/me', {
-                templateUrl: '/static/partials/myprofile.html',
-                controller: 'myProfile',
+            $routeProvider.when('/user/:id/admin', {
+                templateUrl: '/static/partials/edituserprofile.html',
+                controller: 'editUserProfile',
                 accessLevel: 'user',
-                title: 'R9: My Profile'
+                title: 'R9: Edit User Profile'
             });
             $routeProvider.when('/user/:id', {
                 templateUrl: '/static/partials/userprofile.html',

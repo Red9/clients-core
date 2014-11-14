@@ -8,7 +8,7 @@
 
 <div ng-if="resourceList.length > 0">
     <leaflet height="480px" markers="map.markers" layers="map.layers" bounds="map.bounds" center="map.center"></leaflet>
-    <div class="row">
+    <div class="row vertical-align">
         <div class="col-xs-10">
             <div class="btn-group">
                 <label class="btn btn-primary" ng-model="resultDisplay" btn-radio="'table'">Table</label>
@@ -92,14 +92,14 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-11">
+        <div class="row vertical-align">
+            <div class="col-xs-9">
                 <pagination total-items="resourceList.length" ng-model="resourcePages.currentPage"
                             items-per-page="resourcePages.itemsPerPage" max-size="resourcePages.maxSize"
                             boundary-links="true"></pagination>
             </div>
-            <div class="col-xs-1 text-right">
-                <select ng-model="resourcePages.itemsPerPage" class="form-control">
+            <div class="col-xs-3">
+                <select ng-model="resourcePages.itemsPerPage" class="form-control form-control-inline pull-right">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>

@@ -378,7 +378,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async', 'customHandlebarsH
             tile.addToBar("addVideo", "", "glyphicon-plus", function () {
                 var defaults = {
                     startTime: sandbox.focusState.startTime,
-                    dataset: sandbox.getCurrentDatasetId()
+                    datasetId: sandbox.getCurrentDatasetId()
                 };
                 sandbox.showModal('modifyresource', {
                     resourceAction: 'create',
@@ -404,7 +404,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async', 'customHandlebarsH
             tile.addToBar('exportFCPXMLMarkers', '', 'glyphicon-flag', function () {
                 sandbox.get('dataset', {id: sandbox.getCurrentDatasetId()}, function (datasets) {
                     sandbox.get('event', {datasetId: sandbox.getCurrentDatasetId()}, function (events) {
-                        sandbox.get('video', {dataset: sandbox.getCurrentDatasetId()}, function (videos) {
+                        sandbox.get('video', {datasetId: sandbox.getCurrentDatasetId()}, function (videos) {
                             if (videos.length === 0 || datasets.length === 0) {
                                 return; // do nothing
                             }
@@ -521,7 +521,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async', 'customHandlebarsH
             if (typeof datasetId === 'undefined'
                 || datasetId !== newDatasetId) {
                 datasetId = newDatasetId;
-                sandbox.get('video', {dataset: datasetId}, setVideos);
+                sandbox.get('video', {datasetId: datasetId}, setVideos);
             } else { // Otherwise, default to seeking the video to the current time.
                 seekTo(sandbox.focusState.startTime);
             }
