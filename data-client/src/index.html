@@ -85,6 +85,23 @@
             cursor: inherit;
             display: block;
         }
+
+        /* Taken from http://stackoverflow.com/a/25517025/2557842 */
+        .row-vertical-center {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Taken from http://stackoverflow.com/a/13771448/2557842 */
+        .table tbody > tr > td.vertical-center {
+            vertical-align: middle;
+        }
+
+        /* Taken from http://stackoverflow.com/a/2359459/2557842 */
+        span.nobreak {
+            white-space: nowrap;
+        }
+
     </style>
 
 </head>
@@ -135,7 +152,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{current.user.displayName}}<b
                             class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/{{current.user.id}}/admin">Profile Settings</a></li>
+                        <li><a ng-href="/user/{{current.user.id}}">View Profile</a></li>
+                        <li><a ng-href="/user/{{current.user.id}}/admin">Settings</a></li>
                         <li><a href="" ng-click="authenticate.logout()"><span
                                 class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
                         </li>

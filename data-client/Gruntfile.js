@@ -84,6 +84,10 @@ module.exports = function (grunt) {
         },
         usemin: {
             html: 'release/src/index.html'
+        },
+        watch: {
+            files: ['<%= jshint.files %>'],
+            tasks: ['jshint']
         }
     });
 
@@ -96,6 +100,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('test', ['jshint']);
 
@@ -113,7 +118,4 @@ module.exports = function (grunt) {
             'htmlmin',
             'clean:after'
         ]);
-
-    grunt.registerTask('copydir', ['clean', 'copy']);
-
 };

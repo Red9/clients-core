@@ -17,9 +17,15 @@
             });
         })
         .controller('dataanalysis',
-        function ($scope, $routeParams, api) {
+        function ($scope, $routeParams, _, api) {
             api.dataset.get({id: $routeParams.id, expand: ['owner', 'event', 'comment', 'video']}, function (dataset) {
                 $scope.dataset = dataset;
+                $scope.dataset.getPanel();
+
+                _.each($scope.dataset.event, function (event) {
+                    //api.event.getPanel(event);
+                });
+
             });
         })
         .controller('uploadRNC',
@@ -59,9 +65,6 @@
                 $scope.file = $files[0];
             };
         })
-        .controller('myProfile',
-        function ($scope) {
-        })
         .controller('admin',
         function ($scope, api) {
             $scope.newUser = {};
@@ -84,9 +87,29 @@
         })
         .controller('userProfile',
         function ($scope, $routeParams, api) {
+            $scope.datasetSearchQuery = {ownerId: $routeParams.id};
+
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.user = user;
             });
+        })
+        .controller('editUserProfile',
+        function ($scope, $routeParams, api) {
+            $scope.editableUser = {};
+
+
+            api.user.get({id: $routeParams.id}, function (user) {
+                $scope.editableUser.displayName = user.displayName;
+                $scope.editableUser.characteristics = user.characteristics;
+                $scope.editableUser.affiliations = user.affiliations;
+                $scope.editableUser.preferredLayout = user.preferredLayout;
+                $scope.user = user;
+            });
+
+            $scope.saveChanges = function () {
+                $scope.user.update($scope.editableUser);
+            };
+
         })
         .controller('homeController',
         function ($scope, _) {

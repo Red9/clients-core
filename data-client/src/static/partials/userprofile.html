@@ -1,11 +1,15 @@
-<h1><small>User Profile</small></h1>
 <h1>{{user.displayName}}</h1>
-<h4>{{user.givenName}} {{user.familyName}}</h4>
-<h4>{{user.email}}</h4>
-<h4>{{user.id}}</h4>
+<img ng-src="{{user.picture}}"/>
+<h4>{{user.givenName}} {{user.familyName}}
+    <a href="mailto:{{user.email}}"><span class="glyphicon glyphicon-envelope"></span></a>
+</h4>
+<h4>{{user.gender}}</h4>
 
-<h3>Preferred Layouts</h3>
+<h4>Affiliations</h4>
+<list-group-simple list="user.affiliations" editable="false"></list-group-simple>
+<h4>Characteristics</h4>
+<list-group-simple list="user.characteristics" editable="false"></list-group-simple>
 
-<ul>
-    <li ng-repeat="(path, layout) in user.preferredLayout">{{path}}: {{layout}}</li>
-</ul>
+
+<h1>Sessions</h1>
+<resource-list resource-filters="datasetSearchQuery" resource-type="dataset"></resource-list>

@@ -10,7 +10,7 @@ define(['vendor/jquery', 'vendor/underscore', 'sandbox', 'vendor/bootstrap-markd
         this.resourceType = resourceType;
 
         var self = this;
-        sandbox.get('comment', {resource: resourceId}, function(comments) {
+        sandbox.get('comment', {resourceId: resourceId}, function(comments) {
             sandbox.requestTemplate('commentList', function(template) {
 
 
@@ -64,7 +64,7 @@ define(['vendor/jquery', 'vendor/underscore', 'sandbox', 'vendor/bootstrap-markd
                         sandbox.create('comment', {
                             author: sandbox.currentUser.id,
                             resourceType: self.resourceType,
-                            resource: self.resourceId,
+                            resourceId: self.resourceId,
                             body: area.getContent(),
                             startTime: startTime,
                             endTime: endTime

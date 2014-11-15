@@ -13,26 +13,49 @@
      *   - delete
      *
      */
-        .factory('api', function ($resource, $http) {
+        .factory('api', function ($resource, $http, _) {
             $http.defaults.withCredentials = true;
             var apiUrl = red9config.apiUrl;
 
-            var apiOptions = {
-                update: {method: 'PUT'}
+            var result = {
+                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}),
+                event: $resource(apiUrl + '/event/:id', {id: '@id'}),
+                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}),
+                user: $resource(apiUrl + '/user/:id', {id: '@id'}),
+                video: $resource(apiUrl + '/video/:id', {id: '@id'})
             };
 
-            var result = {
-                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}, apiOptions),
-                event: $resource(apiUrl + '/event/:id', {id: '@id'}, apiOptions),
-                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}, apiOptions),
-                user: $resource(apiUrl + '/user/:id', {id: '@id'}, apiOptions),
-                video: $resource(apiUrl + '/video/:id', {id: '@id'}, apiOptions)
-            };
+            _.each(result, function (resource, type) {
+                /**
+                 *
+                 * @param updateValues {object} a set of key values to PUT to the server
+                 */
+                resource.prototype.update = function (updateValues) {
+                    var self = this;
+                    $http({
+                        url: apiUrl + '/' + type + '/' + self.id,
+                        method: 'PUT',
+                        data: updateValues
+                    }).success(function (data) {
+                        angular.extend(self, updateValues);
+                    });
+                };
+            });
+
 
             $http.get(apiUrl + '/eventtype/').success(function (data) {
                 angular.extend(result.event.types, data);
             });
             result.event.types = [];
+
+            result.event.getPanel = function (event) {
+                $http({
+                    url: apiUrl + '/event/' + event.id + '/json?size=sm',
+                    method: 'GET'
+                }).success(function (data) {
+                    event.panel = data;
+                });
+            };
 
 
             /** Will get a panel, and add it to the dataset under the "panel" key.
@@ -40,12 +63,11 @@
              * @param options
              * @returns {$http promise}
              */
-            result.dataset.prototype.getPanel = function (options) {
+            result.dataset.prototype.getPanel = function () {
                 var self = this;
                 return $http({
-                    url: apiUrl + '/dataset/' + this.id + '/json',
-                    method: 'GET',
-                    params: options
+                    url: apiUrl + '/dataset/' + self.id + '/json?size=lg',
+                    method: 'GET'
                 }).success(function (data) {
                     self.panel = data;
                 });

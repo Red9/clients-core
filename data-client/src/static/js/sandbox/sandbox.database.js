@@ -125,24 +125,26 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
 
         };
         sandbox.getPanel = function(id, startTime, endTime, cache, callback) {
-            var panelParameters = {
-                rows: 1000//,
-                //format: 'json',
-                //cache: 'off'
-            };
-            if (typeof startTime !== 'undefined') {
-                panelParameters.startTime = startTime;
+            // Added in a small optimization here to use the new server side caching scheme.
+            var panelUrl;
+            if (typeof startTime !== 'undefined' || typeof endTime !== 'undefined') {
+                var panelParameters = {
+                    rows: 1000
+                };
+                if (typeof startTime !== 'undefined') {
+                    panelParameters.startTime = startTime;
+                }
+                if (typeof endTime !== 'undefined') {
+                    panelParameters.endTime = endTime;
+                }
+                panelUrl = sandbox.apiUrl + '/dataset/' + id + '/json?' + $.param(panelParameters);
+            } else{
+                panelUrl = sandbox.apiUrl + '/dataset/' + id + '/json?size=lg';
             }
-            if (typeof endTime !== 'undefined') {
-                panelParameters.endTime = endTime;
-            }
-            //if (cache === true) {
-            //    panelParameters.cache = 'on';
-            //}
 
             $.ajax({
                 type: 'GET',
-                url: sandbox.apiUrl + '/dataset/' + id + '/json?' + $.param(panelParameters),
+                url: panelUrl,
                 dataType: 'json',
                 success: function(panel) {
                     _.each(panel.values, function(row) {

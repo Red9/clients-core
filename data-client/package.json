@@ -12,6 +12,7 @@
     "grunt-ng-annotate": "latest",
     "grunt-usemin": "latest",
     "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-htmlmin": "latest"
+    "grunt-contrib-htmlmin": "latest",
+    "grunt-contrib-watch": "latest"
   }
 }
