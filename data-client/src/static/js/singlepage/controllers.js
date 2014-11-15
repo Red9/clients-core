@@ -17,10 +17,15 @@
             });
         })
         .controller('dataanalysis',
-        function ($scope, $routeParams, api) {
+        function ($scope, $routeParams, _, api) {
             api.dataset.get({id: $routeParams.id, expand: ['owner', 'event', 'comment', 'video']}, function (dataset) {
                 $scope.dataset = dataset;
                 $scope.dataset.getPanel();
+
+                _.each($scope.dataset.event, function (event) {
+                    //api.event.getPanel(event);
+                });
+
             });
         })
         .controller('uploadRNC',

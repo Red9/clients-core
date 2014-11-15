@@ -820,6 +820,17 @@
                             $scope.map.bounds = bounds.get();
                         }
                     });
+
+                    //$scope.$watch('resource.event', function (newValue) {
+                    //    try {
+                    //        _.each($scope.resource.event, function (event) {
+                    //            var bounds = boundsConstructor();
+                    //            createLeafletPath($scope.map.markers, $scope.map.paths, bounds, event);
+                    //            $scope.map.bounds = bounds.get();
+                    //        });
+                    //    } catch (e) {
+                    //    }
+                    //}, true);
                 }
             };
         })

@@ -48,6 +48,15 @@
             });
             result.event.types = [];
 
+            result.event.getPanel = function (event) {
+                $http({
+                    url: apiUrl + '/event/' + event.id + '/json?size=sm',
+                    method: 'GET'
+                }).success(function (data) {
+                    event.panel = data;
+                });
+            };
+
 
             /** Will get a panel, and add it to the dataset under the "panel" key.
              *
@@ -57,7 +66,7 @@
             result.dataset.prototype.getPanel = function () {
                 var self = this;
                 return $http({
-                    url: apiUrl + '/dataset/' + self.id + '/json?rows=1000',
+                    url: apiUrl + '/dataset/' + self.id + '/json?size=lg',
                     method: 'GET'
                 }).success(function (data) {
                     self.panel = data;
