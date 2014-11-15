@@ -600,7 +600,9 @@
                     };
 
                     $scope.addItem = function () {
+                        console.log('Adding.');
                         if ($scope.newItem.length > 0) {
+                            console.log('pushing');
                             $scope.list.push($scope.newItem);
                             $scope.newItem = '';
                         }
@@ -664,12 +666,12 @@
                     };
 
                     var weight = {
-                        valid: 4,
+                        valid: 3,
                         invalid: 2
                     };
                     var color = {
-                        valid: '#008000',
-                        invalid: '#000080'
+                        valid: '#559141',
+                        invalid: '#C2C2C2'
                     };
                     var startIcon = {
                         iconUrl: 'http://maps.google.com/mapfiles/kml/paddle/go.png',

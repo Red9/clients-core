@@ -7,8 +7,7 @@
 </ul>
 <p class="text-muted" ng-if="list.length === 0"><i>None</i></p>
 
-
-<div class="input-group" ng-if="editable==='true'">
+<div class="input-group" ng-show="editable==='true'">
     <input type="text" class="form-control" ng-model="newItem" placeholder="add new" keypress-enter="addItem()">
     <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="addItem()">
         <span class="glyphicon glyphicon-plus"></span></button></span>
