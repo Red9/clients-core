@@ -32,13 +32,14 @@
                  */
                 resource.prototype.update = function (updateValues) {
                     var self = this;
-                    $http({
+                    var request = $http({
                         url: apiUrl + '/' + type + '/' + self.id,
                         method: 'PUT',
                         data: updateValues
                     }).success(function (data) {
                         angular.extend(self, updateValues);
                     });
+                    return request;
                 };
             });
 

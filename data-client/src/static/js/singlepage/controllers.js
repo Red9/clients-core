@@ -107,7 +107,13 @@
             });
 
             $scope.saveChanges = function () {
-                $scope.user.update($scope.editableUser);
+                $scope.user.update($scope.editableUser)
+                    .success(function () {
+                        alert('Successfully Updated');
+                    })
+                    .error(function () {
+                        alert('Update error. Check Network tab.');
+                    });
             };
 
         })
