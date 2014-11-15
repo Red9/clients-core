@@ -20,6 +20,7 @@
         function ($scope, $routeParams, api) {
             api.dataset.get({id: $routeParams.id, expand: ['owner', 'event', 'comment', 'video']}, function (dataset) {
                 $scope.dataset = dataset;
+                $scope.dataset.getPanel();
             });
         })
         .controller('uploadRNC',

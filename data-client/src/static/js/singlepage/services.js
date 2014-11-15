@@ -54,12 +54,11 @@
              * @param options
              * @returns {$http promise}
              */
-            result.dataset.prototype.getPanel = function (options) {
+            result.dataset.prototype.getPanel = function () {
                 var self = this;
                 return $http({
-                    url: apiUrl + '/dataset/' + this.id + '/json',
-                    method: 'GET',
-                    params: options
+                    url: apiUrl + '/dataset/' + self.id + '/json?rows=1000',
+                    method: 'GET'
                 }).success(function (data) {
                     self.panel = data;
                 });

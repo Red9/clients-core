@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-xs-3 text-right">
-            <p class="text-muted">{{resourceList.length}} results found</p>
+            <p class="text-muted">{{resourceList.length}} results</p>
         </div>
     </div>
     <div class="row">
@@ -41,18 +41,34 @@
                     </thead>
 
                     <tbody>
-                    <tr ng-repeat-start="dataset in resourcePage" class="ngFade" ng-click="dataset.expanded = !dataset.expanded">
-                        <td><input type="checkbox" ng-model="dataset.selected"></td>
-                        <td><a href="/user/{{dataset.ownerId}}">{{dataset.owner.displayName}}</a></td>
-                        <td>
+                    <tr ng-repeat-start="dataset in resourcePage" class="ngFade"
+                        ng-click="dataset.expanded = !dataset.expanded">
+                        <td class="vertical-center">
+                            <input type="checkbox" ng-model="dataset.selected" ng-click="$event.stopPropagation();">
+                        </td>
+                        <td class="vertical-center">
+                            <a ng-href="/user/{{dataset.ownerId}}">
+                                <img ng-src="{{dataset.owner.picture}}?sz=40" width="40px" height="40px"/>
+                                {{dataset.owner.displayName}}
+                            </a>
+                        </td>
+                        <td class="vertical-center">
                             <a ng-href="/analysis/{{dataset.id}}">
                                 {{dataset.title| limitTo:60}}<span ng-if="dataset.title.length > 60">...</span>
                             </a>
                         </td>
-                        <td><badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list></td>
-                        <td><span class="text-muted">{{dataset.count.event > 0 ? dataset.count.event : ''}}</span></td>
-                        <td><span class="text-muted">{{dataset.count.video > 0 ? dataset.count.video : ''}}</span></td>
-                        <td><span class="text-muted">{{dataset.count.comment > 0 ? dataset.count.comment : ''}}</span></td>
+                        <td class="vertical-center">
+                            <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
+                        </td>
+                        <td class="vertical-center">
+                            <span class="text-muted">{{dataset.count.event > 0 ? dataset.count.event : ''}}</span>
+                        </td>
+                        <td class="vertical-center">
+                            <span class="text-muted">{{dataset.count.video > 0 ? dataset.count.video : ''}}</span>
+                        </td>
+                        <td class="vertical-center">
+                            <span class="text-muted">{{dataset.count.comment > 0 ? dataset.count.comment : ''}}</span>
+                        </td>
                     </tr>
                     <tr ng-if="dataset.expanded" ng-repeat-end="">
                         <td colspan="100">
@@ -74,7 +90,7 @@
 
         </div>
     </div>
-    <div class="row vertical-align">
+    <div class="row row-vertical-center">
         <div class="col-xs-9">
             <pagination total-items="resourceList.length" ng-model="resourcePages.currentPage"
                         items-per-page="resourcePages.itemsPerPage" max-size="resourcePages.maxSize"
