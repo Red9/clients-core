@@ -10,14 +10,6 @@ require(['sandbox', 'vendor/jquery', 'vendor/underscore', 'vendor/bootstrap.old'
             sandbox.showModal('layouteditor', {});
         });
 
-        $('#navbar-fixed-bottom-event-detection-button').on('click', function(element) {
-            sandbox.showModal('eventdetection', {});
-        });
-
-        $('#navbar-fixed-bottom-view-summary-statistics-button').on('click', function(element) {
-            sandbox.showModal('summarystatistics', {});
-        });
-
         $('#navbar-fixed-bottom-comments-button').on('click', function(element) {
             sandbox.showModal('comments', {});
         });
@@ -27,17 +19,6 @@ require(['sandbox', 'vendor/jquery', 'vendor/underscore', 'vendor/bootstrap.old'
             sandbox.get('comment', {resourceType: 'dataset', resourceId: sandbox.getCurrentDatasetId()}, function(commentList) {
                 var length = commentList.length === 0 ? '' : commentList.length;
                 $('#navbar-fixed-bottom-comments-button').parent().find('.badge').text(length);
-            });
-        });
-
-        $('#navbar-fixed-bottom-download-panel-button').on('click', function(element) {
-            var id = sandbox.focusState.panel.id;
-            sandbox.get('panel', {id: id}, function(resourceList) {
-                if (resourceList.length === 1) {
-                    sandbox.showModal('downloadpanel', {
-                        resource: resourceList[0]
-                    });
-                }
             });
         });
 
