@@ -135,7 +135,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/xml2json', 'vendor/jquery.
                     }
 
                     return _.map(clip.marker, function (marker) {
-                        return  {
+                        return {
                             time: fcpTimeToMilliseconds(marker._start) + offset,
                             type: marker._value,
                             fcpStart: marker._start
@@ -212,6 +212,18 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/xml2json', 'vendor/jquery.
                     .map(function (event) {
                         event.startTime += videoStartTime;
                         event.endTime += videoStartTime;
+
+                        if (event.type.split(': ').length === 2) {
+                            var temp = event.type.split(': ');
+                            event.type = temp[0];
+                            event.subtype = temp[1];
+                        }
+
+                        event.source = {
+                            type: 'manual',
+                            algorithm: 'fcpxml'
+                        };
+
                         return event;
                     })
                     .each(function (event) {
@@ -262,7 +274,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/xml2json', 'vendor/jquery.
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var fcpxml = reader.result;
-                    sandbox.get('video', {dataset: formValues.datasetId}, function (videoList) {
+                    sandbox.get('video', {datasetId: formValues.datasetId}, function (videoList) {
                         try {
                             if (videoList.length === 0) {
                                 setAlert('Must define at least one video');

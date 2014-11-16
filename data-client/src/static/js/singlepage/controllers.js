@@ -73,15 +73,17 @@
             $scope.addNewUser = function () {
                 var createdUser = new api.user({
                     email: $scope.newUser.email,
-                    displayName: 'unknown',
-                    givenName: 'unknown',
-                    familyName: 'unknown'
+                    displayName: 'unknown'
                 });
 
-                createdUser.$save();
-                $scope.createdUsers.push(createdUser);
-                $scope.newUser = {};
-                $scope.newUserForm.$setPristine();
+                createdUser.$save({}, function () {
+                    $scope.createdUsers.push(createdUser);
+                    $scope.newUser = {};
+                    $scope.newUserForm.$setPristine();
+                }, function (data) {
+                    alert('Error. Please report as bug: ' + JSON.stringify(data.data, null, 3));
+                });
+
             };
 
         })
