@@ -13,7 +13,7 @@
      *   - delete
      *
      */
-        .factory('api', function ($resource, $http, _) {
+        .factory('api', function ($resource, $http, $interval, _) {
             $http.defaults.withCredentials = true;
             var apiUrl = red9config.apiUrl;
 
@@ -71,6 +71,24 @@
                     method: 'GET'
                 }).success(function (data) {
                     self.panel = data;
+                });
+            };
+
+            result.dataset.prototype.getEvents = function () {
+                var self = this;
+                return $http({
+                    url: apiUrl + '/event/?datasetId=' + self.id,
+                    method: 'GET'
+                }).success(function (data) {
+                    self.event = data;
+                });
+            };
+
+            result.dataset.prototype.eventFind = function () {
+                var self = this;
+                return $http({
+                    url: apiUrl + '/dataset/' + self.id + '/eventfind',
+                    method: 'POST'
                 });
             };
 
