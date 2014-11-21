@@ -106,8 +106,8 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/jquery.validate'], functio
 
                         var distance = 'unknown';
                         try {
-                            console.log('event.summaryStatistics.static.route: ' + JSON.stringify(event.summaryStatistics.route, null, '  '));
-                            distance = Math.round(event.summaryStatistics.static.route.path.distance.value);
+                            //console.log('event.summaryStatistics.distance: ' + JSON.stringify(event.summaryStatistics.distance, null, '  '));
+                            distance = Math.round(event.summaryStatistics.distance.path);
                         } catch (e) {
                         }
 
@@ -115,7 +115,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/jquery.validate'], functio
                         if (titleDuration !== 0) {
                             title = {
                                 name: event.type + ' ' + (index + 1) + ' of ' + list.length,
-                                textA: event.stars['acceleration:z'] + ' stars',
+                                textA: 'unknown' + ' stars',
                                 textARef: 'ts' + (titleReferenceCounter++),
                                 textB: distance + ' meters',
                                 textBRef: 'ts' + (titleReferenceCounter++),
@@ -194,7 +194,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/jquery.validate'], functio
                             datasetId: formValues.datasetId,
                             type: formValues.type
                         }, function (eventList) {
-                            sandbox.get('video', {dataset: formValues.datasetId}, function (videoList) {
+                            sandbox.get('video', {datasetId: formValues.datasetId}, function (videoList) {
                                 // In case we have multiple associated videos: use the
                                 // first in time as our base truth.
                                 videoList = _.sortBy(videoList, function (video) {

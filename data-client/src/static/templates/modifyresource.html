@@ -58,8 +58,8 @@
         </div>
 
         <div class="form-group">
-            <label for="owner">Owner</label>
-            <input class="form-control" name="owner" value="{{owner}}" data-default="{{owner}}" type="text">
+            <label for="ownerId">Owner</label>
+            <input class="form-control" name="ownerId" value="{{ownerId}}" data-default="{{ownerId}}" type="text">
             <p class="help-block">The owner of this dataset.</p>
         </div>
 
@@ -77,7 +77,7 @@
         {{/if}}
 
         {{! include the datasetId. If we are editing the event it will be discarded, but it is needed for creating the event.}}
-        <input name="dataset" value="{{dataset}}" data-default="{{dataset}}" type="hidden"/>
+        <input name="datasetId" value="{{datasetId}}" data-default="{{datasetId}}" type="hidden"/>
 
         <div class="form-group">
             <label for="startTime">Start Time</label>
