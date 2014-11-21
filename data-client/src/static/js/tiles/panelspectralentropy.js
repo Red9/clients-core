@@ -1,4 +1,4 @@
-define(['vendor/jquery', 'vendor/underscore', 'vendor/d3'], function($, _, d3) {
+define(['vendor/jquery', 'vendor/underscore', 'vendor/d3.old'], function($, _, d3) {
 
     function panelSpectralEntropy(sandbox, tile, configuration, doneCallback) {
 

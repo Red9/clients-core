@@ -1,0 +1,7 @@
+<table class="table">
+    <tr ng-repeat="event in displayEvents" ng-if="displayEvents.length > 0">
+        <th>{{event.type}} ({{event.count}})</th>
+        <td>{{event.totalDuration | duration:true}}</td>
+    </tr>
+    <!--<tr ng-if="displayEvents.length === 0">No events</tr>-->
+</table>

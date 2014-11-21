@@ -1,5 +1,5 @@
 define(['vendor/jquery', 'vendor/underscore', 'vendor/moment',
-    'vendor/rickshaw', 'vendor/d3'
+    'vendor/rickshaw', 'vendor/d3.old'
 ], function($, _, moment, Rickshaw, d3) {
     function panelGraph(sandbox, tile, configuration, doneCallback) {
         var kMinimumZoomDuration = 100;

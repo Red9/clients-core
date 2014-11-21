@@ -102,6 +102,81 @@
             white-space: nowrap;
         }
 
+
+
+        /* Taken from https://gist.github.com/odiseo42/6731571 */
+        .chart {
+            background: #eee;
+            padding: 3px;
+        }
+
+        .chart div {
+            width: 0;
+            transition: all 1s ease-out;
+            -moz-transition: all 1s ease-out;
+            -webkit-transition: all 1s ease-out;
+        }
+
+        .chart div {
+            font: 10px sans-serif;
+            background-color: steelblue;
+            text-align: right;
+            padding: 3px;
+            margin: 5px;
+            color: white;
+            box-shadow: 2px 2px 2px #666;
+        }
+
+
+
+        /*
+        Event Timeline
+        */
+        .event-timeline-axis path,
+        .event-timeline-axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+            opacity: 0.2;
+        }
+
+        .event-timeline-axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+            opacity: 0.5;
+        }
+
+        .event-timeline-markers {
+            fill: #377eb8;
+            opacity: 0.5;
+        }
+
+        .event-timeline-markers-source-auto {
+            fill: #b87137;
+        }
+
+        .event-timeline-markers-highlight {
+            fill: #FF0000;
+        }
+
+        .event-timeline-markers-select {
+            stroke: #000000;
+            stroke-width: 3;
+        }
+
+        .event-timeline-types {
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+            opacity: 0.5;
+            white-space: nowrap;
+            margin-left: 3px;
+            bottom: 1px;
+        }
+
+        .event-timeline-types-highlight {
+            opacity: 1;
+        }
+
     </style>
 
 </head>
@@ -198,6 +273,7 @@
 <script src="/static/js/vendor/leaflet.js"></script>
 <script src="/static/js/vendor/angular-leaflet-directive.js"></script>
 <script src="/static/js/vendor/leaflet.markercluster.js"></script>
+<script src="/static/js/vendor/d3.js"></script>
 <!-- endbuild -->
 
 <!-- build:js /static/js/client.js -->

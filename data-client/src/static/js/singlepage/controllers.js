@@ -27,6 +27,12 @@
                 });
 
             });
+
+            $scope.eventFind = function (dataset) {
+                $scope.eventFindDisabled = true;
+                dataset.eventFind();
+            };
+
         })
         .controller('uploadRNC',
         function ($scope, $upload, current, api) {
