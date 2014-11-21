@@ -10,7 +10,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/d3.old'
         var xAxis;
 
         // Constants
-        var markerHeight = 10;
+        var markerHeight = 12;
         var rowPadding = 4;
         var leftPadding = 60;
         var minimumMarkerWidth = 4;

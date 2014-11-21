@@ -13,6 +13,7 @@
 
         <div class="form-group">
             <label>Tight Event Type</label>
+
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="tight" value="true" checked>
@@ -23,40 +24,43 @@
 
         <div class="form-group">
             <label class="control-label">Event Stars</label>
+
             <div>
+                <!--
                 <div class="radio">
                     <label>
                         <input type="radio" name="stars" value="5">
-                        {{ratingStars 5}} and up
+                        {{{ratingStars 5}}} and up
                     </label>
                 </div>
                 <div class="radio">
                     <label>
                         <input type="radio" name="stars" value="4">
-                        {{ratingStars 4}} and up
+                        {{{ratingStars 4}}} and up
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="stars" value="3" checked>
-                        {{ratingStars 3}} and up
+                        <input type="radio" name="stars" value="3">
+                        {{{ratingStars 3}}} and up
                     </label>
                 </div>
                 <div class="radio">
                     <label>
                         <input type="radio" name="stars" value="2">
-                        {{ratingStars 2}} and up
+                        {{{ratingStars 2}}} and up
                     </label>
                 </div>
                 <div class="radio">
                     <label>
                         <input type="radio" name="stars" value="1">
-                        {{ratingStars 1}} and up
+                        {{{ratingStars 1}}} and up
                     </label>
                 </div>
+                -->
                 <div class="radio">
                     <label>
-                        <input type="radio" name="stars" value="any">
+                        <input type="radio" name="stars" value="any" checked>
                         Any stars
                     </label>
                 </div>
@@ -81,10 +85,13 @@
         <div class="form-group">
             <label>Title Duration</label>
             <input class="form-control" type="number" name="titleDuration" min="0" value="3">
-            <p class="help-block">The number of seconds to display the title at the beginning of an event. 0 removes titles entirely.</p>
+
+            <p class="help-block">The number of seconds to display the title at the beginning of an event. 0 removes
+                titles entirely.</p>
         </div>
 
 
-        <button class="btn btn-large btn-default pull-right" name="submitButton" type="submit">Create FCPXML File</button>
+        <button class="btn btn-large btn-default pull-right" name="submitButton" type="submit">Create FCPXML File
+        </button>
     </fieldset>
 </form>
