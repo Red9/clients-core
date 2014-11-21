@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['vendor/d3'], function (d3) {
+        define(['vendor/d3.old'], function (d3) {
             return (root.Rickshaw = factory(d3));
         });
     } else if (typeof exports === 'object') {

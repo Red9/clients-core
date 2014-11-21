@@ -12,12 +12,48 @@
                 <small>from</small>
                 <a ng-href="/user/{{dataset.owner.id}}">{{dataset.owner.displayName}}</a>
                 <small>view</small>
-                <a href="/dataset/{{dataset.id}}" target="_self">Graphs</a></h4>
+                <a href="/dataset/{{dataset.id}}" target="_self">Detailed Graphs</a></h4>
         </div>
     </div>
 </div>
 <div class="row">
     <tag-helper resource="dataset" tag-key="tags"></tag-helper>
+</div>
+
+<div class="row">
+    <br/>
+
+    <div class="col-md-6">
+        <table class="table">
+            <tr>
+                <th>Recorded</th>
+                <td>{{dataset.startTime | date:'short'}} ({{dataset.duration | duration:true}})</td>
+            </tr>
+            <tr>
+                <th>Uploaded</th>
+                <td>{{dataset.createTime | date:'short'}}</td>
+            </tr>
+            <tr>
+                <th>GPS On Time</th>
+                <td>{{dataset.gpsLock.validTime | duration:true}} on ({{dataset.gpsLock.percentOn}}%)</td>
+            </tr>
+            <tr>
+                <th>Distance</th>
+                <td>{{dataset.summaryStatistics.distance.path | number:0}} m</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <events-summary events="dataset.event"></events-summary>
+    </div>
+</div>
+
+<div class="row">
+    <br/>
+
+    <div class="col-sm-12">
+        <event-timeline events="dataset.event"></event-timeline>
+    </div>
 </div>
 
 <div class="row">

@@ -33,7 +33,6 @@
                 dataset.eventFind();
             };
 
-
         })
         .controller('uploadRNC',
         function ($scope, $upload, current, api) {
