@@ -71,7 +71,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/handlebars',
                         var preferredLayoutId = sandbox.currentUser.preferredLayout[normalizedPath];
 
                         if (typeof preferredLayoutId === 'undefined') {
-                            alert('Warning: you must set your preferred layout. See your user profile page.');
+                            alert('Warning: you must set your preferred layout. \n\nTo set, click the "T" in the lower left, select the "compact presentation" layout, then click "Apply to profile and refresh".');
                             return;
                         }
 

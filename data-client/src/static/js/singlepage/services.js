@@ -64,11 +64,31 @@
              * @param options
              * @returns {$http promise}
              */
-            result.dataset.prototype.getPanel = function () {
+            result.dataset.prototype.getPanel = function (options) {
                 var self = this;
+
+
+                var queryString = {
+                    size: 'lg'
+                };
+
+                _.each(options, function (value, key) {
+                    if (key === 'axes') {
+                        if (!_.has(queryString, 'fields')) {
+                            queryString.fields = [];
+                        }
+                        queryString.fields.push('panel(' + value.join(',') + ')');
+                    }
+                });
+
+                if (!_.has(queryString, 'fields')) {
+                    queryString.fields = queryString.fields.join(',');
+                }
+
                 return $http({
-                    url: apiUrl + '/dataset/' + self.id + '/json?size=lg',
-                    method: 'GET'
+                    method: 'GET',
+                    url: apiUrl + '/dataset/' + self.id + '/json',
+                    params: queryString
                 }).success(function (data) {
                     self.panel = data;
                 });
