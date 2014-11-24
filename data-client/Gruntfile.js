@@ -50,6 +50,7 @@ module.exports = function (grunt) {
                         src: [
                             '**/*.html',
                             '!**/embeddedvideo.fcpxmldialog.html',
+                            '!**/fcpxml.html',
                             '!**/embeddedvideo.html',
                             '!**/eventdetection.session.html',
                             '!**/layouteditor.html',
