@@ -18,9 +18,40 @@
         })
         .controller('dataanalysis',
         function ($scope, $routeParams, _, api) {
-            api.dataset.get({id: $routeParams.id, expand: ['owner', 'event', 'comment', 'video']}, function (dataset) {
+            var queryOptions = {
+                id: $routeParams.id,
+                fields: [
+                    'id',
+                    'ownerId',
+                    'title',
+                    'createTime',
+                    'duration',
+                    'summaryStatistics',
+                    'source',
+                    'startTime',
+                    'endTime',
+                    'gpsLock',
+                    'tags',
+                    'boundingCircle',
+                    'boundingBox',
+                    // Dynamically added fields
+                    'aggregateStatistics',
+                    'owner',
+                    'event(id,type,subType,startTime,endTime,source(type))',
+                    'comment',
+                    'video'
+                ].join(','),
+                expand: ['owner', 'event', 'comment', 'video']
+            };
+            api.dataset.get(queryOptions, function (dataset) {
                 $scope.dataset = dataset;
-                $scope.dataset.getPanel();
+                $scope.dataset.getPanel({
+                    axes: [
+                        'time',
+                        'gps:latitude',
+                        'gps:longitude'
+                    ]
+                });
 
                 _.each($scope.dataset.event, function (event) {
                     //api.event.getPanel(event);

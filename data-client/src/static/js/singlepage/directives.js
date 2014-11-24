@@ -74,11 +74,12 @@
 
                     var parameters = {
                         dataset: {
+                            fields: 'title,id,createTime,startTime,endTime,owner,count,tags,boundingCircle,owner(displayName,id,picture)',
                             //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
                             'expand': ['owner', 'count']
                         },
                         event: {
-                            //part: 'type,id,startTime,endTime,datasetId,summaryStatistics.static.cse.axes'
+                            fields: 'type,id,startTime,endTime,datasetId,boundingCircle'
                         },
                         user: {}
 

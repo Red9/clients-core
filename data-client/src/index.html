@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title ng-cloak>{{pageTitle}}</title>
+    <title ng-cloak ng-bind="pageTitle">Red9 Sensor</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -16,6 +16,7 @@
     <link href="/static/css/MarkerCluster.css" rel="stylesheet">
     <link href="/static/css/MarkerCluster.Default.css" rel="stylesheet">
     <!-- endbuild -->
+
     <style type="text/css">
         .ngFade.ng-enter {
             transition: 0.1s linear all;
@@ -102,8 +103,6 @@
             white-space: nowrap;
         }
 
-
-
         /* Taken from https://gist.github.com/odiseo42/6731571 */
         .chart {
             background: #eee;
@@ -126,8 +125,6 @@
             color: white;
             box-shadow: 2px 2px 2px #666;
         }
-
-
 
         /*
         Event Timeline
@@ -177,10 +174,33 @@
             opacity: 1;
         }
 
+        /* Taken from http://stackoverflow.com/questions/21294917/creating-a-splash-screen-using-ng-cloak */
+        [ng-cloak].splash {
+            display: block !important;
+        }
+
+        .splash {
+            display: none;
+        }
     </style>
 
 </head>
 <body ng-controller="pageController">
+
+<!-- The splash screen must be first -->
+<div class="splash" ng-cloak>
+    <div class="alert alert-info">
+        <h2>Loading...</h2>
+    </div>
+</div>
+
+<!-- This set of scripts should be first so that we don't get the ugly curly braces on page load. -->
+<!-- build:js /static/js/vendor1.js -->
+<script src="/static/js/vendor/angular-file-upload-html5-shim.js"></script>
+<script src="/static/js/vendor/angular.js"></script>
+<!-- endbuild -->
+
+
 <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation" ng-cloak>
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -250,30 +270,31 @@
     <div ng-view></div>
 </div>
 
-<!-- build:js /static/js/vendor1.js -->
-<script src="/static/js/vendor/spin.js"></script>
-<script src="/static/js/vendor/underscore_no_require.js"></script>
-<script src="/static/js/vendor/angular-file-upload-html5-shim.js"></script>
-<script src="/static/js/vendor/angular.js"></script>
-<script src="/static/js/vendor/angular-file-upload.js"></script>
-<script src="/static/js/vendor/deferred-bootstrap.js"></script>
-<!-- endbuild -->
-
 <!-- build:js /static/js/vendor2.js -->
 <script src="/static/js/vendor/angular-animate.js"></script>
-<script src="/static/js/vendor/angular-resource.js"></script>
-<script src="/static/js/vendor/angular-route.js"></script>
-<script src="/static/js/vendor/angular-cookies.js"></script>
-<script src="/static/js/vendor/angular-spinner.js"></script>
-<script src="/static/js/vendor/angular-filter.js"></script>
-<script src="/static/js/vendor/angulartics.js"></script>
+<script src="/static/js/vendor/d3.js"></script>
+<!-- endbuild -->
+
+<!-- build:js /static/js/vendor3.js -->
 <script src="/static/js/vendor/angulartics-segmentio.js"></script>
+<script src="/static/js/vendor/angular-leaflet-directive.js"></script>
+<script src="/static/js/vendor/leaflet.js"></script>
+<!-- endbuild -->
+
+<!-- build:js /static/js/vendor4.js -->
+<script src="/static/js/vendor/angulartics.js"></script>
+<script src="/static/js/vendor/angular-resource.js"></script>
+<script src="/static/js/vendor/angular-cookies.js"></script>
+<script src="/static/js/vendor/angular-filter.js"></script>
+<script src="/static/js/vendor/angular-file-upload.js"></script>
+<script src="/static/js/vendor/angular-spinner.js"></script>
+<script src="/static/js/vendor/angular-route.js"></script>
+<script src="/static/js/vendor/spin.js"></script>
+<script src="/static/js/vendor/underscore_no_require.js"></script>
+<script src="/static/js/vendor/deferred-bootstrap.js"></script>
 <script src="/static/js/vendor/ui-bootstrap-tpls.js"></script>
 <script src="/static/js/vendor/async.js"></script>
-<script src="/static/js/vendor/leaflet.js"></script>
-<script src="/static/js/vendor/angular-leaflet-directive.js"></script>
 <script src="/static/js/vendor/leaflet.markercluster.js"></script>
-<script src="/static/js/vendor/d3.js"></script>
 <!-- endbuild -->
 
 <!-- build:js /static/js/client.js -->
