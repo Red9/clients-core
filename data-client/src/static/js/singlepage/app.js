@@ -162,15 +162,17 @@
             // Check authentication
             $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
 
-                if ($rootScope.current.user === null && nextLoc.accessLevel !== 'public'){
-                    // Attempting to access a protected page.
-                    $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
-                    $location.path('/page/unauthenticated');
-                }else if($rootScope.current.user.scope.indexOf(nextLoc.accessLevel) === -1) {
-                    // Not enough permissions
-                    alert("You don't have sufficient permissions to access that.");
-                    $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
-                    $location.path('/page/unauthenticated');
+                if (nextLoc.accessLevel !== 'public') {
+                    if ($rootScope.current.user === null) {
+                        // Attempting to access a protected page.
+                        $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
+                        $location.path('/page/unauthenticated');
+                    } else if ($rootScope.current.user.scope.indexOf(nextLoc.accessLevel) === -1) {
+                        // Not enough permissions
+                        alert("You don't have sufficient permissions to access that.");
+                        $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
+                        $location.path('/page/unauthenticated');
+                    }
                 }
             });
 
