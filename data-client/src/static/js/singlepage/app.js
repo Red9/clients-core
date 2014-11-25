@@ -96,7 +96,7 @@
             $routeProvider.when('/analysis/:id', {
                 templateUrl: '/static/partials/dataanalysis.html',
                 controller: 'dataanalysis',
-                accessLevel: 'user',
+                accessLevel: 'public',
                 title: 'R9: Data Analysis'
             });
             $routeProvider.when('/admin/', {
