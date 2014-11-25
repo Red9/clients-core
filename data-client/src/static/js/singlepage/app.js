@@ -36,43 +36,43 @@
             $routeProvider.when('/', {
                 templateUrl: '/static/partials/home.html',
                 controller: 'homeController',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'Red9: Measure Up to You'
             });
             $routeProvider.when('/dataset/', {
                 templateUrl: '/static/partials/searchdataset.html',
                 controller: 'search',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: Dataset Search'
             });
             $routeProvider.when('/event/', {
                 templateUrl: '/static/partials/searchevent.html',
                 controller: 'search',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: Event Search'
             });
             $routeProvider.when('/user/', {
                 templateUrl: '/static/partials/searchuser.html',
                 controller: 'search',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: User Search'
             });
             $routeProvider.when('/user/:id/admin', {
                 templateUrl: '/static/partials/edituserprofile.html',
                 controller: 'editUserProfile',
-                accessLevel: 'user',
+                accessLevel: 'admin',
                 title: 'R9: Edit User Profile'
             });
             $routeProvider.when('/user/:id', {
                 templateUrl: '/static/partials/userprofile.html',
                 controller: 'userProfile',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: User Profile'
             });
             $routeProvider.when('/aggregate/sitestatistics', {
                 templateUrl: '/static/partials/aggregate/sitestatistics.html',
                 controller: 'siteStatistics',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: Site Statistics'
             });
             $routeProvider.when('/page/unauthenticated', { // TODO: Users shouldn't be able to access this page when they are signed in.
@@ -84,7 +84,7 @@
             $routeProvider.when('/upload/rnc', {
                 templateUrl: '/static/partials/uploadrnc.html',
                 controller: 'uploadRNC',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: Upload'
             });
             $routeProvider.when('/leaderboard/', {
@@ -96,13 +96,13 @@
             $routeProvider.when('/analysis/:id', {
                 templateUrl: '/static/partials/dataanalysis.html',
                 controller: 'dataanalysis',
-                accessLevel: 'user',
+                accessLevel: 'public',
                 title: 'R9: Data Analysis'
             });
             $routeProvider.when('/admin/', {
                 templateUrl: '/static/partials/admin.html',
                 controller: 'admin',
-                accessLevel: 'user',
+                accessLevel: 'basic',
                 title: 'R9: Administrative Tasks'
             });
 
@@ -161,8 +161,14 @@
 
             // Check authentication
             $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
-                if ($rootScope.current.user === null && nextLoc.accessLevel !== 'public') {
+
+                if ($rootScope.current.user === null && nextLoc.accessLevel !== 'public'){
                     // Attempting to access a protected page.
+                    $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
+                    $location.path('/page/unauthenticated');
+                }else if($rootScope.current.user.scope.indexOf(nextLoc.accessLevel) === -1) {
+                    // Not enough permissions
+                    alert("You don't have sufficient permissions to access that.");
                     $location.search('attemptUrl', encodeURIComponent($location.absUrl()));
                     $location.path('/page/unauthenticated');
                 }
