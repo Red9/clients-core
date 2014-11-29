@@ -1,0 +1,47 @@
+<div class="well">
+    <form name="form" role="form" novalidate>
+        <div class="form-group">
+            <label>FCPXML Template</label>
+            <select class="form-control" ng-model="options.template"
+                    ng-init="options.template = dataset.fcpxmlOptions.template[0]" required>
+                <option ng-repeat="template in dataset.fcpxmlOptions.template">{{template}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Title duration</label>
+            <span class="help-block">The number of seconds to display the title at the beginning of an event. 0 removes titles entirely.</span>
+            <input type="number" class="form-control" placeholder="seconds" ng-model="options.titleDuration" min="0"
+                   step="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>Event Type</label>
+            <select class="form-control" ng-model="options.eventType" required>
+                <option ng-repeat="eventType in dataset.fcpxmlOptions.eventType">{{eventType}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Video Type</label>
+            <select class="form-control" ng-model="options.videoType" required>
+                <option ng-repeat="(key, videoType) in dataset.fcpxmlOptions.videoType" value="{{key}}">
+                    {{videoType.name}}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Video Files</label>
+            <span class="help-block">File paths on your computer to the original video(s)</span>
+            <!-- This is used so that an empty array is considered invalid -->
+            <input type="hidden" name="files" ng-model="options.files" required>
+            <list-group-simple list="options.files" editable="true" name="files"></list-group-simple>
+
+        </div>
+        <hr/>
+        <a class="btn btn-lg btn-primary" ng-disabled="form.$invalid" ng-href="{{fcpxmlUrl}}">
+            Download
+        </a>
+    </form>
+</div>

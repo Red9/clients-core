@@ -601,9 +601,10 @@
                     };
 
                     $scope.addItem = function () {
-                        console.log('Adding.');
                         if ($scope.newItem.length > 0) {
-                            console.log('pushing');
+                            if (!$scope.list) {
+                                $scope.list = [];
+                            }
                             $scope.list.push($scope.newItem);
                             $scope.newItem = '';
                         }
@@ -845,7 +846,6 @@
                     events: '='
                 },
                 link: function (scope, element, attrs) {
-                    console.log('Running link');
                     var events = scope.events;
 
                     var graphHeight = 200; // Make an initial guess.
@@ -1042,7 +1042,6 @@
                     update();
 
                     scope.$watch('events', function (newValue, oldValue) {
-                        console.log('Calling update...');
                         update();
                     });
 
@@ -1065,7 +1064,6 @@
                 controller: function ($scope, _) {
                     $scope.displayEvents = [];
                     function update() {
-                        console.log('running events-summary update');
                         $scope.displayEvents = _.chain($scope.events)
                             .groupBy('type')
                             .map(function (eventsByType) {
@@ -1097,6 +1095,43 @@
 
                     $scope.$watch('events', update);
                     update();
+                }
+            };
+        })
+        .directive('fcpxmlDownload', function () {
+            return {
+                restrict: 'E',
+                templateUrl: '/static/partials/directives/fcpxmldownload.html',
+                scope: {
+                    dataset: '='
+                },
+                controller: function ($scope) {
+                    function update() {
+                        if ($scope.dataset) {
+                            $scope.dataset.getFcpxmlOptions().success(function (options) {
+                                $scope.options.template = options.template[0];
+                                $scope.options.eventType = options.eventType[0];
+                                $scope.options.videoType = Object.keys(options.videoType)[0];
+                                $scope.options.titleDuration = 3;
+                                $scope.options.files = [];
+                            });
+                        }
+                    }
+
+                    $scope.$watch('dataset', update);
+                    update();
+
+
+                    $scope.options = {};
+
+                    $scope.$watch('options', function () {
+                        // For some reason, the form is valid on page load.
+                        // So, we add in the test to make sure that we have a dataset.
+                        $scope.fcpxmlUrl = $scope.form.$valid && $scope.dataset ?
+                            $scope.dataset.getFcpxmlUrl($scope.options) :
+                            '';
+                    }, true);
+
                 }
             };
         })
