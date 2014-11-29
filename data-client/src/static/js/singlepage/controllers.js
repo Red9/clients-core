@@ -143,6 +143,7 @@
                 $scope.editableUser.affiliations = user.affiliations;
                 $scope.editableUser.preferredLayout = user.preferredLayout;
                 $scope.editableUser.scope = user.scope;
+                $scope.editableUser.location = user.location;
                 $scope.user = user;
             });
 

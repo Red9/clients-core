@@ -94,6 +94,28 @@
                 });
             };
 
+            result.dataset.prototype.getFcpxmlOptions = function () {
+                var self = this;
+                return $http({
+                    method: 'GET',
+                    url: apiUrl + '/dataset/' + self.id + '/fcpxml/options'
+                }).success(function (options) {
+                    self.fcpxmlOptions = options;
+                });
+            };
+
+            result.dataset.prototype.getFcpxmlUrl = function (options_) {
+                var self = this;
+                var options = angular.copy(options_);
+                options.files = options.files.join(',');
+                var params = [];
+                angular.forEach(options, function (value, key) {
+                    this.push(key + '=' + value);
+                }, params);
+                console.dir(params);
+                return apiUrl + '/dataset/' + self.id + '/fcpxml?' + params.join('&');
+            };
+
             result.dataset.prototype.getEvents = function () {
                 var self = this;
                 return $http({

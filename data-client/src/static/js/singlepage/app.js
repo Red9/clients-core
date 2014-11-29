@@ -178,7 +178,6 @@
 
             // Set page title
             $rootScope.$on('$routeChangeSuccess', function (event, currentRoute, previousRoute) {
-                console.log('Setting title: ' + currentRoute.title);
                 $rootScope.pageTitle = currentRoute.title;
             });
         });
