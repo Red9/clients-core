@@ -204,8 +204,7 @@
             $scope.leaderboardTags = ['Team Leardboard', 'PE Leaderboard', 'Leaderboard Random'];    
             $scope.dateOptions = {
                 showWeeks: false
-
-            }
+            };
 
             $scope.startDate = {
                 //date: new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000), // Last week
