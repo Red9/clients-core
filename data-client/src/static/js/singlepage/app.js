@@ -87,7 +87,7 @@
                 accessLevel: 'basic',
                 title: 'R9: Upload'
             });
-            $routeProvider.when('/leaderboard/', {
+            $routeProvider.when('/leaderboard/:tag?', {
                 templateUrl: '/static/partials/leaderboard.html',
                 css: '/static/css/leaderboard.css',
                 controller: 'leaderboard',

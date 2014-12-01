@@ -197,15 +197,20 @@
             }
         })
         .controller('leaderboard',
-        function ($scope, _, api) {
+        function ($scope, $routeParams, api) {
 
-            $scope.format = 'dd-MMMM-yyyy';
+            $scope.format = 'MMM dd, yyyy';
             $scope.userList = null;
+            $scope.leaderboardTags = ['Team Leardboard', 'PE Leaderboard', 'Leaderboard Random'];    
+            $scope.dateOptions = {
+                showWeeks: false
+
+            }
 
             $scope.startDate = {
                 //date: new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000), // Last week
                 //date: new Date((new Date()).getTime() - 4 * 31 * 24 * 60 * 60 * 1000), // Four months ago
-                date: new Date((new Date()).getTime() - 7 * 7 * 24 * 60 * 60 * 1000), // Seven weeks ago
+                date: null,
                 opened: false,
                 open: function ($event) {
                     $event.preventDefault();
@@ -215,7 +220,7 @@
             };
 
             $scope.endDate = {
-                date: new Date(), // Today
+                date: null,
                 opened: false,
                 open: function ($event) {
                     $event.preventDefault();
@@ -225,13 +230,14 @@
             };
 
             $scope.runSearch = function () {
-                $scope.startTime = $scope.startDate.date.getTime();
-                $scope.endTime = $scope.endDate.date.getTime();
+                $scope.startTime = $scope.startDate.date ? $scope.startDate.date.getTime() : (new Date((new Date()).getTime() - 7 * 7 * 24 * 60 * 60 * 1000)).getTime();
+                $scope.endTime = $scope.endDate.date ? $scope.endDate.date.getTime() : (new Date()).getTime();
                 $scope.leaderboardData = null;
                 var datasetQuery = {
                     'expand[]': ['owner', 'event'],
-                    'startTime.gt': $scope.startDate.date.getTime(),
-                    'endTime.lt': $scope.endDate.date.getTime()
+                    'startTime.gt': $scope.startTime,
+                    'endTime.lt': $scope.endTime,
+                    'tags': $routeParams.tag
                 };
                 api.dataset.query(datasetQuery, function (datasetList) {
                     // Filter to just the event type that we're interested in
@@ -250,24 +256,49 @@
                             }, 0) / eventList.length;
                     }
 
+                    function calculateTotalDuration(eventList) {
+                        return _.reduce(eventList, function (memo, event) {
+                                return memo + (event.endTime - event.startTime);
+                            }, 0);
+                    }
+
+                    function calculateTotalDistance(eventList) {
+                        return _.reduce(eventList, function (memo, event) {
+                                return memo + event.summaryStatistics.distance.path;
+                            }, 0);
+                    }
+
                     $scope.leaderboardData = _.chain(datasetList).groupBy('ownerId').map(function (userDatasets, userId) {
+                        var datasetId
                         var maximumEventCount;
                         var maximumEventDuration;
+                        var wavesPerHour;
+                        var totalDistance;
+                        var averageDistancePerWave = 0; 
                         var points = 0;
 
                         _.each(userDatasets, function (dataset) {
                             if (!_.isObject(maximumEventCount)
                                 || dataset.event.length > maximumEventCount.count) {
+                                
                                 maximumEventCount = {
                                     count: dataset.event.length,
                                     datasetId: dataset.id
                                 };
                             }
 
+                            console.log('waves = ' + dataset.event.length + ' duration= ' + dataset.duration);
+
+
+                            wavesPerHour = dataset.event.length / (dataset.duration / 3600000);
+                            totalDistance = calculateTotalDistance(dataset.event);
+                            averageDistancePerWave = (totalDistance / dataset.event.length) || 0;
+
                             var datasetEventDuration = calculateAverageDuration(dataset.event);
                             if (!_.isObject(maximumEventDuration)
                                 || _.isNaN(maximumEventDuration.duration)
                                 || datasetEventDuration > maximumEventDuration.duration) {
+
                                 maximumEventDuration = {
                                     duration: datasetEventDuration,
                                     datasetId: dataset.id
@@ -278,12 +309,14 @@
                                 points += 2 * datasetEventDuration / 1000 * dataset.event.length;
                             }
                         });
-
                         return {
                             user: userDatasets[0].owner,
                             points: Math.round(userDatasets.length * 100 + points),
                             maximumEventCount: maximumEventCount,
                             maximumEventDuration: maximumEventDuration,
+                            wavesPerHour: wavesPerHour,
+                            totalDistance: totalDistance,
+                            averageDistancePerWave: averageDistancePerWave,
                             datasets: userDatasets
                         };
                     }).value();

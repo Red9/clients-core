@@ -19,7 +19,53 @@ $headerColor: rgb(0, 61, 84);
 $placeHolderColor: rgb(175,175,175);
 
 
-// Common Dimensions
+.leaderboards {
+
+	// Date selection column
+	.date-wrapper {
+		position: relative;
+	}
+
+	.btn-leaderboard {
+		padding: 1px 10px;
+		color: white;
+		background-color: #8ec549;
+		font-size: 0.9em;
+		max-width: 177px;
+		border-radius: 2px;
+	}	
+
+	input[type="text"] {
+		padding: 0 10px;
+		line-height: normal;
+		height: 25px;
+		border-radius: 0;
+	}
+
+	.dropdown-menu td .btn, .dropdown-menu th .btn {
+		background: transparent;
+		border-radius: 0;
+		border: 0;
+	}
+	// End Date selection column
+
+	// Leaderboard table
+	.leaderboard td, .leaderboard th {
+		border-right: solid 1px #d5d5d5;
+		text-align: center;
+	
+		&:last-child {
+			border-right: 0;
+		}
+	}
+
+	.surfer img {
+		border-radius: 50%;
+	}
+	// End Leaderboard table
+
+
+}
 
 
 
