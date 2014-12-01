@@ -269,7 +269,7 @@
                     }
 
                     $scope.leaderboardData = _.chain(datasetList).groupBy('ownerId').map(function (userDatasets, userId) {
-                        var datasetId
+                        var datasetId;
                         var maximumEventCount;
                         var maximumEventDuration;
                         var wavesPerHour;
