@@ -24,6 +24,16 @@ $placeHolderColor: rgb(175,175,175);
 	// Date selection column
 	.date-wrapper {
 		position: relative;
+		margin-left: 10px;
+
+		@media (min-width: 768px) {
+			top: 40px;
+			float: left;
+			border: solid 1px #ccc;
+			border-radius: 3px;
+			padding: 10px;
+			margin: 10px 20px 10px 0;
+		}
 	}
 
 	.btn-leaderboard {
@@ -58,9 +68,27 @@ $placeHolderColor: rgb(175,175,175);
 			border-right: 0;
 		}
 	}
-
-	.surfer img {
-		border-radius: 50%;
+	.leaderboard td {
+		font-size: 1.5em;
+		font-weight: 300;
+	}
+	.leaderboard td.surfer {
+		white-space: nowrap;
+		
+		img {
+			display: inline-block;
+			border-radius: 50%;
+			height: 55px;
+			margin-right: 10px;
+			box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); // from material design fab
+			
+		}
+		.name, .team {
+			display: inline-block;
+			font-size: .8em;
+			// vertical-align: top;
+			// margin-top: 5px;
+		}
 	}
 	// End Leaderboard table
 

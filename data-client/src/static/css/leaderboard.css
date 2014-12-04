@@ -4,7 +4,16 @@
  *
  **/
 .leaderboards .date-wrapper {
-  position: relative; }
+  position: relative;
+  margin-left: 10px; }
+  @media (min-width: 768px) {
+    .leaderboards .date-wrapper {
+      top: 40px;
+      float: left;
+      border: solid 1px #ccc;
+      border-radius: 3px;
+      padding: 10px;
+      margin: 10px 20px 10px 0; } }
 .leaderboards .btn-leaderboard {
   padding: 1px 10px;
   color: white;
@@ -26,7 +35,19 @@
   text-align: center; }
   .leaderboards .leaderboard td:last-child, .leaderboards .leaderboard th:last-child {
     border-right: 0; }
-.leaderboards .surfer img {
-  border-radius: 50%; }
+.leaderboards .leaderboard td {
+  font-size: 1.5em;
+  font-weight: 300; }
+.leaderboards .leaderboard td.surfer {
+  white-space: nowrap; }
+  .leaderboards .leaderboard td.surfer img {
+    display: inline-block;
+    border-radius: 50%;
+    height: 55px;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  .leaderboards .leaderboard td.surfer .name, .leaderboards .leaderboard td.surfer .team {
+    display: inline-block;
+    font-size: .8em; }
 
 /*# sourceMappingURL=leaderboard.css.map */

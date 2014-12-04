@@ -1,6 +1,6 @@
 <h2>Beta Leaderboard</h2>
 <div class="row leaderboards">
-    <div class="date-wrapper col-sm-3">
+    <div class="date-wrapper">
         <br />
         <div>
             <p class="input-group">
@@ -29,6 +29,7 @@
             <div class="table-responsive">
                 <table class="table table-hover table-condensed leaderboard">
                     <thead>
+                    <th>Rank</th>
                     <th>Surfer</th>
                     <th>Waves / hour</th>
                     <th>Distance / Wave</th>
@@ -42,6 +43,10 @@
 
                     <tbody>
                     <tr ng-repeat="row in leaderboardData|orderBy:'sessions':true" class="ngFade">
+                        <td class="vertical-center rank">
+                            {{ $index + 1}}
+
+                        </td>
                         <td class="vertical-center surfer">
                             <a ng-href="/user/{{row.user.id}}">
                                 <img ng-src="{{row.user.picture}}?sz=40" />
