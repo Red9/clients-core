@@ -201,10 +201,12 @@
 
             $scope.format = 'MMM dd, yyyy';
             $scope.userList = null;
-            $scope.leaderboardTags = ['Team Leardboard', 'PE Leaderboard', 'Leaderboard Random'];    
             $scope.dateOptions = {
                 showWeeks: false
             };
+            $scope.team = $routeParams.tag;  // This is temporary.  We should assign a team to the surfer.
+            $scope.orderByField = 
+            $scope.reverseSort = false;
 
             $scope.startDate = {
                 //date: new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000), // Last week
@@ -236,7 +238,7 @@
                     'expand[]': ['owner', 'event'],
                     'startTime.gt': $scope.startTime,
                     'endTime.lt': $scope.endTime,
-                    'tags': $routeParams.tag
+                    'tags': $scope.tag
                 };
                 api.dataset.query(datasetQuery, function (datasetList) {
                     // Filter to just the event type that we're interested in
@@ -316,7 +318,8 @@
                             wavesPerHour: wavesPerHour,
                             totalDistance: totalDistance,
                             averageDistancePerWave: averageDistancePerWave,
-                            datasets: userDatasets
+                            datasets: userDatasets,
+                            sessions: userDatasets[0].event.length // is this dangerous? probably! (FIXME)
                         };
                     }).value();
                 });
