@@ -35,11 +35,11 @@
             </tr>
             <tr>
                 <th>GPS On Time</th>
-                <td>{{dataset.gpsLock.validTime | duration:true}} on ({{dataset.gpsLock.percentOn}}%)</td>
+                <td>{{dataset.gpsLock.validTime | duration:true}} on ({{dataset.gpsLock.validPercent}}%)</td>
             </tr>
             <tr>
                 <th>Distance</th>
-                <td>{{dataset.summaryStatistics.distance.path | number:0}} m</td>
+                <td>{{dataset.summaryStatistics.distance.path | units:'meters':'miles' | number:2}} miles ({{dataset.summaryStatistics.distance.path | number:0}} meters)</td>
             </tr>
         </table>
     </div>
@@ -62,7 +62,17 @@
     <br/>
 </div>
 
+<div ng-repeat="(type,events) in dataset.event | groupBy:'type'" class="row">
+    <h3>{{type}}</h3>
+
+    <div ng-include="'/static/partials/eventsummary/' + type.replace(' ', '_').toLowerCase() + '.group.html'"></div>
+    <br/>
+</div>
+
 <div class="row">
+    <h3>Statistics</h3>
+
+    <div class="alert alert-info" role="alert">All values in this section are in SI units</div>
     <tabset>
         <tab heading="Summary Statistics">
             <summary-statistics statistics="dataset.summaryStatistics"></summary-statistics>
@@ -146,6 +156,9 @@
 <hr/>
 
 <div ng-if="$root.current.user.scope.indexOf('admin') !== -1">
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
     <div class="row"><h1>Admin Tools</h1></div>
 
     <div class="row">

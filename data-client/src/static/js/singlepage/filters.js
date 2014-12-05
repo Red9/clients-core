@@ -4,6 +4,28 @@
     /* Filters */
 
     angular.module('redApp.filters', [])
+        .filter('units', function () {
+            return function (value, fromUnits, toUnits) {
+                if (fromUnits === 'knots' && toUnits === 'mph') {
+                    return value * 1.15077945;
+                } else if (fromUnits === 'meters' && toUnits === 'feet') {
+                    return value * 3.280
+                } else if (fromUnits === 'meters' && toUnits === 'miles') {
+                    return value * 0.000621371
+                }
+                else {
+                    return value;
+                }
+            };
+        })
+        .filter('sumDuration', function (_) {
+            return function (resources) {
+                return _.reduce(resources, function (memo, resource) {
+                    memo += (resource.endTime - resource.startTime);
+                    return memo;
+                }, 0);
+            };
+        })
         .filter('duration', function (_) {
             return function (totalMilliseconds, tight) {
                 if (_.isNaN(totalMilliseconds)) {
