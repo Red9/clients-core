@@ -1,83 +1,78 @@
-<h2>Beta Leaderboard</h2>
-
-<h4>From</h4>
-<div class="row">
-    <div class="col-md-6">
-        <p class="input-group">
-            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate.date"
-                   is-open="startDate.opened" ng-required="true" close-text="Close"/>
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="startDate.open($event)"><i
-                        class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-        </p>
-    </div>
-</div>
-
-<h4>To</h4>
-<div class="row">
-    <div class="col-md-6">
-        <p class="input-group">
-            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate.date"
-                   is-open="endDate.opened" ng-required="true" close-text="Close"/>
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="endDate.open($event)"><i
-                        class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-        </p>
-    </div>
-</div>
-
-<button type="button" class="btn btn-default" ng-click="runSearch()">Apply Dates</button>
-
-<br/><br/>
-<div ng-if="leaderboardData.length === 0">
-    <br/><br/>No results found.
-</div>
-<div ng-if="leaderboardData === null">
-    <span us-spinner></span>
-</div>
-<div ng-if="leaderboardData.length > 0">
-
-    <div class="row">
-        <div class="col-xs-9">
+<h2 class="row">Beta Leaderboard</h2>
+<div class="row leaderboards">
+    <div class="date-wrapper">
+        <h4>Date Range</h4>
+        <div>
+            <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ format }}" datepicker-options="dateOptions" ng-model="startDate.date"
+                       is-open="startDate.opened" ng-required="true" close-text="Close" ng-click="startDate.open($event)" placeholder="Start date"/>
+            </p>
         </div>
-        <div class="col-xs-3 text-right">
-            <p class="text-muted">{{leaderboardData.length}} results</p>
+
+        <div>
+            <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ format }}" datepicker-options="dateOptions" ng-model="endDate.date"
+                       is-open="endDate.opened" ng-required="true" close-text="Close" ng-click="endDate.open($event)" placeholder="End date" />
+            </p>
+        </div>
+        <button type="button" class="btn btn-leaderboard col-sm-12" ng-click="runSearch()">Apply</button>
+    </div>
+    <br />
+    <div class="leaderboard-container">
+        <div ng-if="leaderboardData.length === 0">
+            <br/><br/>No results found.
+        </div>
+        <div ng-if="leaderboardData === null">
+            <span us-spinner></span>
+        </div>
+        <div ng-if="leaderboardData.length > 0">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed leaderboard">
+                    <thead>
+                    <th>Rank</th>
+                    <th>Surfer</th>
+                    <th>Waves / hour</th>
+                    <th>Distance / Wave</th>
+                    <th>Total Wave Distance</th>
+                    <th>
+                        <!-- <a href="#" ng-click="orderByField='sessions'; reverseSort = !reverseSort"> -->
+                        Sessions
+                        <!-- </a> -->
+                    </th>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="row in leaderboardData|orderBy:'sessions':true" class="ngFade">
+                        <td class="vertical-center rank">
+                            {{ $index + 1}}
+
+                        </td>
+                        <td class="vertical-center surfer">
+                            <a ng-href="/user/{{row.user.id}}">
+                                <img ng-src="{{row.user.picture}}?sz=40" />
+                                <span class="name">{{row.user.displayName}}</span>
+                                <!-- <span class="team">{{team || "General"}}</span> -->
+                            </a>
+                        </td>
+                        <td class="vertical-center waves-per-hour">
+                            {{row.wavesPerHour | number:1}}
+                        </td>
+                        <td class="vertical-center distance-per-wave">
+                            {{row.averageDistancePerWave | number:1}} m
+                        </td>
+                        <td class="vertical-center total-distance">
+                            {{row.totalDistance | number:0}} m
+                        </td>
+                        <td class="vertical-center sessions">
+                            <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.sessions | number:0}}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <div class="table-responsive">
-        <table class="table table-hover table-condensed">
-            <thead>
-            <th>User</th>
-            <th>Session Count</th>
-            <th>Max Waves per Session</th>
-            <th>Average Wave Time per Session</th>
-            <th>Points</th>
-            </thead>
-
-            <tbody>
-            <tr ng-repeat="row in leaderboardData" class="ngFade">
-                <td class="vertical-center">
-                    <a ng-href="/user/{{row.user.id}}">
-                        <img ng-src="{{row.user.picture}}?sz=40" width="40px" height="40px"/>
-                        {{row.user.displayName}}
-                    </a>
-                </td>
-                <td class="vertical-center">
-                    <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.datasets.length}}</a>
-                </td>
-                <td class="vertical-center">
-                    <a ng-href="/dataset/{{row.maximumEventCount.datasetId}}" target="_self">{{row.maximumEventCount.count}}</a>
-                </td>
-                <td class="vertical-center">
-                    <a ng-href="/dataset/{{row.maximumEventDuration.datasetId}}">{{row.maximumEventDuration.duration |
-                    duration}}</a></td>
-                <td class="vertical-center">{{row.points}}</td>
-            </tr>
-
-            </tbody>
-        </table>
+    <div class="col-sm-12 text-right">
+        <p class="text-muted">{{leaderboardData.length}} surfers</p>
     </div>
 </div>

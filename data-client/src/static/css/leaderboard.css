@@ -1,0 +1,58 @@
+/* 
+ * Red9 Sensor Common
+ * Author: Merwan Rodriguez 
+ *
+ **/
+.leaderboards .date-wrapper {
+  position: relative;
+  margin-left: 10px; }
+  @media (min-width: 768px) {
+    .leaderboards .date-wrapper {
+      top: 40px;
+      float: left;
+      border: solid 1px #ccc;
+      border-radius: 3px;
+      padding: 10px;
+      margin: 10px 20px 10px 0; } }
+  .leaderboards .date-wrapper h4 {
+    margin-top: 0;
+    font-weight: 300; }
+.leaderboards .btn-leaderboard {
+  padding: 1px 10px;
+  color: white;
+  background-color: #8ec549;
+  font-size: 0.9em;
+  max-width: 177px;
+  border-radius: 2px; }
+.leaderboards input[type="text"] {
+  padding: 0 10px;
+  line-height: normal;
+  height: 25px;
+  border-radius: 0; }
+.leaderboards .dropdown-menu td .btn, .leaderboards .dropdown-menu th .btn {
+  background: transparent;
+  border-radius: 0;
+  border: 0; }
+.leaderboards .leaderboard td, .leaderboards .leaderboard th {
+  border-right: solid 1px #d5d5d5;
+  text-align: center; }
+  .leaderboards .leaderboard td:last-child, .leaderboards .leaderboard th:last-child {
+    border-right: 0; }
+.leaderboards .leaderboard td {
+  font-size: 1.5em;
+  font-weight: 300; }
+.leaderboards .leaderboard td.surfer {
+  white-space: nowrap;
+  text-align: left;
+  padding-left: 10px; }
+  .leaderboards .leaderboard td.surfer img {
+    display: inline-block;
+    border-radius: 50%;
+    height: 55px;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  .leaderboards .leaderboard td.surfer .name, .leaderboards .leaderboard td.surfer .team {
+    display: inline-block;
+    font-size: .8em; }
+
+/*# sourceMappingURL=leaderboard.css.map */
