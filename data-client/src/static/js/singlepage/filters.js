@@ -9,9 +9,9 @@
                 if (fromUnits === 'knots' && toUnits === 'mph') {
                     return value * 1.15077945;
                 } else if (fromUnits === 'meters' && toUnits === 'feet') {
-                    return value * 3.280
+                    return value * 3.280;
                 } else if (fromUnits === 'meters' && toUnits === 'miles') {
-                    return value * 0.000621371
+                    return value * 0.000621371;
                 }
                 else {
                     return value;
