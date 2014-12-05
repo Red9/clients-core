@@ -37,7 +37,7 @@
                     // Dynamically added fields
                     'aggregateStatistics',
                     'owner',
-                    'event(id,type,subType,startTime,endTime,source(type))',
+                    'event(id,type,subType,startTime,endTime,source,summaryStatistics(gps,distance))',
                     'comment',
                     'video'
                 ].join(','),
