@@ -109,7 +109,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/xml2json', 'vendor/jquery.
             try {
                 clips = x2js.xml_str2json(xml).fcpxml.library.event.project.sequence.spine.clip;
             } catch (e) {
-                setAlert('XML structure not valid. Make sure that you hav the following nesting of elements: fcpxml.library.event.project.sequence.spine.clip');
+                setAlert('XML structure not valid. Make sure that you have the following nesting of elements: fcpxml.library.event.project.sequence.spine.clip');
                 return;
             }
 
@@ -121,8 +121,16 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/xml2json', 'vendor/jquery.
 
             var parsedEvents = _.chain(clips)
                 // For each clip get all the markers, and with the correct times calculated
+                // In FCP, offset is the alignment relative to siblings
+                // start is some arbitrary base time that all siblings share
+                // Eg, start is like milliseconds since epoch for the dataset, and offset is eventStartTime - datasetStartTime
                 .map(function (clip) {
                     var offset = fcpTimeToMilliseconds(clip._offset);
+
+                    var clipStart = 0;
+                    if (_.has(clip, '_start')) {
+                        clipStart = fcpTimeToMilliseconds(clip._start);
+                    }
 
                     // If the marker is a single element then we need to convert
                     // it to an array.
@@ -136,7 +144,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/xml2json', 'vendor/jquery.
 
                     return _.map(clip.marker, function (marker) {
                         return {
-                            time: fcpTimeToMilliseconds(marker._start) + offset,
+                            time: fcpTimeToMilliseconds(marker._start) + offset - clipStart,
                             type: marker._value,
                             fcpStart: marker._start
 
