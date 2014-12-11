@@ -205,8 +205,8 @@
                 showWeeks: false
             };
             $scope.team = $routeParams.tag;  // This is temporary.  We should assign a team to the surfer.
-            $scope.orderByField = 
-            $scope.reverseSort = false;
+            $scope.predicate = "sessions";
+            $scope.reverse = true;
 
             $scope.startDate = {
                 //date: new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000), // Last week

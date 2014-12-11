@@ -33,6 +33,8 @@
   background: transparent;
   border-radius: 0;
   border: 0; }
+.leaderboards .leaderboard {
+  min-width: 960px; }
 .leaderboards .leaderboard td, .leaderboards .leaderboard th {
   border-right: solid 1px #d5d5d5;
   text-align: center; }
@@ -54,5 +56,15 @@
   .leaderboards .leaderboard td.surfer .name, .leaderboards .leaderboard td.surfer .team {
     display: inline-block;
     font-size: .8em; }
+.leaderboards .leaderboard th a:after {
+  font-family: FontAwesome;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  content: " "; }
+.leaderboards .leaderboard .sorted.down:after {
+  content: "\f107"; }
+.leaderboards .leaderboard .sorted.up:after {
+  content: "\f106"; }
 
 /*# sourceMappingURL=leaderboard.css.map */
