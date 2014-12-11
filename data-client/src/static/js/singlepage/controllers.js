@@ -251,75 +251,39 @@
                     });
 
                     // Utility function to help us out.
-                    function calculateAverageDuration(eventList) {
-                        return _.reduce(eventList, function (memo, event) {
-                                return memo + (event.endTime - event.startTime);
-                            }, 0) / eventList.length;
-                    }
-
-                    function calculateTotalDuration(eventList) {
-                        return _.reduce(eventList, function (memo, event) {
-                                return memo + (event.endTime - event.startTime);
-                            }, 0);
-                    }
-
                     function calculateTotalDistance(eventList) {
                         return _.reduce(eventList, function (memo, event) {
-                                return memo + event.summaryStatistics.distance.path;
-                            }, 0);
+                            return memo + event.summaryStatistics.distance.path; // SRLM: What if there is no distance for a particular event?
+                        }, 0);
                     }
 
                     $scope.leaderboardData = _.chain(datasetList).groupBy('ownerId').map(function (userDatasets, userId) {
-                        var datasetId;
-                        var maximumEventCount;
-                        var maximumEventDuration;
-                        var wavesPerHour;
-                        var totalDistance;
-                        var averageDistancePerWave = 0; 
-                        var points = 0;
+                        var totalEventDistance = 0;
+                        var eventCount = 0;
+                        var totalDuration = 0;
 
                         _.each(userDatasets, function (dataset) {
-                            if (!_.isObject(maximumEventCount)
-                                || dataset.event.length > maximumEventCount.count) {
-                                
-                                maximumEventCount = {
-                                    count: dataset.event.length,
-                                    datasetId: dataset.id
-                                };
-                            }
-
-                            //console.log('waves = ' + dataset.event.length + ' duration= ' + dataset.duration);
-
-
-                            wavesPerHour = dataset.event.length / (dataset.duration / 3600000);
-                            totalDistance = calculateTotalDistance(dataset.event);
-                            averageDistancePerWave = (totalDistance / dataset.event.length) || 0;
-
-                            var datasetEventDuration = calculateAverageDuration(dataset.event);
-                            if (!_.isObject(maximumEventDuration)
-                                || _.isNaN(maximumEventDuration.duration)
-                                || datasetEventDuration > maximumEventDuration.duration) {
-
-                                maximumEventDuration = {
-                                    duration: datasetEventDuration,
-                                    datasetId: dataset.id
-                                };
-                            }
-
-                            if (!_.isNaN(datasetEventDuration)) {
-                                points += 2 * datasetEventDuration / 1000 * dataset.event.length;
-                            }
+                            totalDuration += dataset.duration;
+                            totalEventDistance += calculateTotalDistance(dataset.event);
+                            eventCount += dataset.event.length;
                         });
+
+                        var averageEventDistance = 0;
+                        if (eventCount !== 0) {
+                            averageEventDistance = totalEventDistance / eventCount
+                        }
+
+                        var averageEventsPerHour = 0;
+                        if (totalDuration !== 0) {
+                            averageEventsPerHour = eventCount / (totalDuration / 1000 / 60 / 60);
+                        }
+
                         return {
                             user: userDatasets[0].owner,
-                            points: Math.round(userDatasets.length * 100 + points),
-                            maximumEventCount: maximumEventCount,
-                            maximumEventDuration: maximumEventDuration,
-                            wavesPerHour: wavesPerHour,
-                            totalDistance: totalDistance,
-                            averageDistancePerWave: averageDistancePerWave,
-                            datasets: userDatasets,
-                            sessions: userDatasets[0].event.length // is this dangerous? probably! (FIXME)
+                            eventsPerHour: averageEventsPerHour,
+                            totalEventDistance: totalEventDistance,
+                            averageEventDistance: averageEventDistance,
+                            datasets: userDatasets
                         };
                     }).value();
                 });

@@ -31,10 +31,10 @@
                     <thead>
                     <th></th>
                     <th><a href="" ng-class="{'sorted': (predicate == 'user.displayName'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'user.displayName'; reverse=!reverse">Surfer</a></th>
-                    <th><a href="" ng-class="{'sorted': (predicate == 'wavesPerHour'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'wavesPerHour'; reverse=!reverse">Waves / hour</a></th>
-                    <th><a href="" ng-class="{'sorted': (predicate == 'averageDistancePerWave'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'averageDistancePerWave'; reverse=!reverse">Distance / Wave</a></th>
-                    <th><a href="" ng-class="{'sorted': (predicate == 'totalDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'totalDistance'; reverse=!reverse">Total Wave Distance</a></th>
-                    <th><a href="" ng-class="{'sorted': (predicate == 'sessions'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'sessions'; reverse=!reverse">Sessions</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'eventsPerHour'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'eventsPerHour'; reverse=!reverse">Waves / hour</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'averageEventDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'averageEventDistance'; reverse=!reverse">Distance / Wave</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'totalEventDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'totalEventDistance'; reverse=!reverse">Total Wave Distance</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'datasets.length'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'datasets.length'; reverse=!reverse">Sessions</a></th>
                     </thead>
 
                     <tbody>
@@ -50,16 +50,16 @@
                             </a>
                         </td>
                         <td class="vertical-center waves-per-hour">
-                            {{row.wavesPerHour | number:1}}
+                            {{row.eventsPerHour | number:1}}
                         </td>
                         <td class="vertical-center distance-per-wave">
-                            {{row.averageDistancePerWave | number:1}} m
+                            {{row.averageEventDistance | number:1}} m
                         </td>
                         <td class="vertical-center total-distance">
-                            {{row.totalDistance | number:0}} m
+                            {{row.totalEventDistance | number:0}} m
                         </td>
                         <td class="vertical-center sessions">
-                            <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.sessions | number:0}}</a>
+                            <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.datasets.length}}</a>
                         </td>
                     </tr>
                     </tbody>
