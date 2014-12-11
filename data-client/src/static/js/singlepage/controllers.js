@@ -238,7 +238,7 @@
                     'expand[]': ['owner', 'event'],
                     'startTime.gt': $scope.startTime,
                     'endTime.lt': $scope.endTime,
-                    'tags': $scope.tag
+                    'tags': $scope.team
                 };
                 api.dataset.query(datasetQuery, function (datasetList) {
                     // Filter to just the event type that we're interested in
@@ -288,7 +288,7 @@
                                 };
                             }
 
-                            console.log('waves = ' + dataset.event.length + ' duration= ' + dataset.duration);
+                            //console.log('waves = ' + dataset.event.length + ' duration= ' + dataset.duration);
 
 
                             wavesPerHour = dataset.event.length / (dataset.duration / 3600000);
