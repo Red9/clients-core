@@ -270,7 +270,7 @@
 
                         var averageEventDistance = 0;
                         if (eventCount !== 0) {
-                            averageEventDistance = totalEventDistance / eventCount
+                            averageEventDistance = totalEventDistance / eventCount;
                         }
 
                         var averageEventsPerHour = 0;
