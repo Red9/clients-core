@@ -64,6 +64,9 @@ $placeHolderColor: rgb(175,175,175);
 	// End Date selection column
 
 	// Leaderboard table
+	.leaderboard {
+		min-width: 960px;
+	}
 	.leaderboard td, .leaderboard th {
 		border-right: solid 1px #d5d5d5;
 		text-align: center;
@@ -95,6 +98,19 @@ $placeHolderColor: rgb(175,175,175);
 			// vertical-align: top;
 			// margin-top: 5px;
 		}
+	}
+	.leaderboard th a:after {
+        font-family: FontAwesome;
+		display: inline-block;
+		width: 20px;
+		height: 20px;		
+		content: " ";
+	}
+	.leaderboard .sorted.down:after {
+		content: "\f107";
+	}
+	.leaderboard .sorted.up:after {
+		content: "\f106";
 	}
 	// End Leaderboard table
 

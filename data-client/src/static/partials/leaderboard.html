@@ -29,23 +29,18 @@
             <div class="table-responsive">
                 <table class="table table-hover table-condensed leaderboard">
                     <thead>
-                    <th>Rank</th>
-                    <th>Surfer</th>
-                    <th>Waves / hour</th>
-                    <th>Distance / Wave</th>
-                    <th>Total Wave Distance</th>
-                    <th>
-                        <!-- <a href="#" ng-click="orderByField='sessions'; reverseSort = !reverseSort"> -->
-                        Sessions
-                        <!-- </a> -->
-                    </th>
+                    <th></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'user.displayName'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'user.displayName'; reverse=!reverse">Surfer</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'eventsPerHour'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'eventsPerHour'; reverse=!reverse">Waves / hour</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'averageEventDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'averageEventDistance'; reverse=!reverse">Distance / Wave</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'totalEventDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'totalEventDistance'; reverse=!reverse">Total Wave Distance</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'datasets.length'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'datasets.length'; reverse=!reverse">Sessions</a></th>
                     </thead>
 
                     <tbody>
-                    <tr ng-repeat="row in leaderboardData|orderBy:'sessions':true" class="ngFade">
+                    <tr ng-repeat="row in leaderboardData | orderBy:predicate:reverse" class="ngFade">
                         <td class="vertical-center rank">
                             {{ $index + 1}}
-
                         </td>
                         <td class="vertical-center surfer">
                             <a ng-href="/user/{{row.user.id}}">
@@ -55,16 +50,16 @@
                             </a>
                         </td>
                         <td class="vertical-center waves-per-hour">
-                            {{row.wavesPerHour | number:1}}
+                            {{row.eventsPerHour | number:1}}
                         </td>
                         <td class="vertical-center distance-per-wave">
-                            {{row.averageDistancePerWave | number:1}} m
+                            {{row.averageEventDistance | number:1}} m
                         </td>
                         <td class="vertical-center total-distance">
-                            {{row.totalDistance | number:0}} m
+                            {{row.totalEventDistance | number:0}} m
                         </td>
                         <td class="vertical-center sessions">
-                            <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.sessions | number:0}}</a>
+                            <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.datasets.length}}</a>
                         </td>
                     </tr>
                     </tbody>
