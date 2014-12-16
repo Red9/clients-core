@@ -77,6 +77,7 @@
             });
             $routeProvider.when('/page/unauthenticated', { // TODO: Users shouldn't be able to access this page when they are signed in.
                 templateUrl: '/static/partials/unauthenticated.html',
+                css: '/static/css/unauthenticated.css',
                 controller: 'unauthenticatedController',
                 accessLevel: 'public',
                 title: 'R9: Not Authenticated'

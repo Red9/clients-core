@@ -1,0 +1,29 @@
+html {
+  height: 100%; }
+
+body {
+  background-image: url(/static/images/wave-for-login-page.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  min-height: 100%;
+  background-color: #0A1131; }
+
+.unauthenticated-wrapper {
+  -webkit-font-smoothing: antialiased;
+  background-color: rgba(0, 0, 0, 0.68);
+  color: whitesmoke;
+  margin: 20px 0;
+  padding: 15px 20px 100px;
+  border-radius: 5px;
+  border: solid 1px #222;
+  font-weight: normal; }
+  .unauthenticated-wrapper h2 {
+    margin: 5px 0; }
+  .unauthenticated-wrapper h3 {
+    color: #8ec549; }
+  .unauthenticated-wrapper p {
+    font-size: 1.2em; }
+  .unauthenticated-wrapper a {
+    color: #7fe1c0; }
+
+/*# sourceMappingURL=unauthenticated.css.map */
