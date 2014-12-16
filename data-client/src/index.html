@@ -12,11 +12,10 @@
     <!-- build:css /static/css/app.css -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">    
     <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
-    <link href="/static/css/overrides.css" rel="stylesheet">
     <link href="/static/css/leaflet.css" rel="stylesheet">
     <link href="/static/css/MarkerCluster.css" rel="stylesheet">
     <link href="/static/css/MarkerCluster.Default.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> <!-- using cdn for now -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <!-- endbuild -->
 
     <style type="text/css">
@@ -182,6 +181,9 @@
         }
 
         .splash {
+            position: absolute;
+            width: 100%;
+            top: 0;
             display: none;
         }
     </style>
@@ -275,8 +277,6 @@
 </nav>
 
 <div class="container" ng-cloak>
-    <br/><br/><br/>
-
     <div ng-view></div>
 </div>
 

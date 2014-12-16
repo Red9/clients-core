@@ -35,6 +35,7 @@
             // Resources
             $routeProvider.when('/', {
                 templateUrl: '/static/partials/home.html',
+                css: '/static/css/home.css',
                 controller: 'homeController',
                 accessLevel: 'basic',
                 title: 'Red9: Measure Up to You'
