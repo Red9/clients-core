@@ -35,12 +35,14 @@
             // Resources
             $routeProvider.when('/', {
                 templateUrl: '/static/partials/home.html',
+                css: '/static/css/home.css',
                 controller: 'homeController',
                 accessLevel: 'basic',
                 title: 'Red9: Measure Up to You'
             });
             $routeProvider.when('/dataset/', {
                 templateUrl: '/static/partials/searchdataset.html',
+                css: '/static/css/dataset.css',
                 controller: 'search',
                 accessLevel: 'basic',
                 title: 'R9: Dataset Search'
@@ -77,6 +79,7 @@
             });
             $routeProvider.when('/page/unauthenticated', { // TODO: Users shouldn't be able to access this page when they are signed in.
                 templateUrl: '/static/partials/unauthenticated.html',
+                css: '/static/css/unauthenticated.css',
                 controller: 'unauthenticatedController',
                 accessLevel: 'public',
                 title: 'R9: Not Authenticated'
@@ -97,6 +100,7 @@
             $routeProvider.when('/analysis/:id', {
                 templateUrl: '/static/partials/dataanalysis.html',
                 controller: 'dataanalysis',
+                css: '/static/css/dataanalysis.css',
                 accessLevel: 'public',
                 title: 'R9: Data Analysis'
             });

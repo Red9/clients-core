@@ -1,6 +1,14 @@
-<h2 class="row">Beta Leaderboard</h2>
-<div class="row leaderboards">
-    <div class="date-wrapper">
+<div class="row leaderboards jumbotron">
+    <h1>Leaderboard</h1>
+    <p class="teams">
+        <a href="/leaderboard/leaderboard-team" ng-class="{'current': team == 'leaderboard-team'}">Mira Costa Team</a> |
+        <a href="/leaderboard/leaderboard-pe" ng-class="{'current': team == 'leaderboard-pe'}">Mira Costa PE</a> |
+        <a href="/leaderboard/leaderboard-general" ng-class="{'current': team == 'leaderboard-general'}">General Leaderboard</a>
+    </p>
+</div>
+
+<div class="row leaderboards well">
+    <!--div class="date-wrapper">
         <h4>Date Range</h4>
         <div>
             <p class="input-group">
@@ -16,9 +24,9 @@
             </p>
         </div>
         <button type="button" class="btn btn-leaderboard col-sm-12" ng-click="runSearch()">Apply</button>
-    </div>
+    </div-->
     <br />
-    <div class="leaderboard-container">
+    <div class="leaderboard-container ">
         <div ng-if="leaderboardData.length === 0">
             <br/><br/>No results found.
         </div>
@@ -45,9 +53,9 @@
                         <td class="vertical-center surfer">
                             <a ng-href="/user/{{row.user.id}}">
                                 <img ng-src="{{row.user.picture}}?sz=40" />
+                            </a>
                                 <span class="name">{{row.user.displayName}}</span>
                                 <!-- <span class="team">{{team || "General"}}</span> -->
-                            </a>
                         </td>
                         <td class="vertical-center waves-per-hour">
                             {{row.eventsPerHour | number:1}}
@@ -67,7 +75,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 text-right">
+    <!--div class="col-sm-12 text-right">
         <p class="text-muted">{{leaderboardData.length}} surfers</p>
-    </div>
+    </div-->
 </div>

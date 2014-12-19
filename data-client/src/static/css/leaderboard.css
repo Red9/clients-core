@@ -1,8 +1,117 @@
 /* 
- * Red9 Sensor Common
+ * Red9 Sensor Leaderboard (will adapt to rest of site soon)
  * Author: Merwan Rodriguez 
  *
  **/
+body {
+  background-image: url(/static/images/wave-for-login-page.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100%;
+  background-color: #01001f;
+  min-height: 100%; }
+
+hr {
+  border-top: solid 1px rgba(255, 255, 255, 0.125); }
+
+.alert.alert-info {
+  background-image: none;
+  background-color: #003d54;
+  color: #8ec549;
+  border: 0;
+  box-shadow: none;
+  font-size: 1.2em;
+  font-weight: 200; }
+
+.table > tbody > tr.info > td {
+  background-color: #003d54;
+  border-top: solid 7px transparent;
+  border-bottom: solid 2px;
+  text-transform: uppercase; }
+
+.profile-pic {
+  border-radius: 50%;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+
+.container .jumbotron {
+  -webkit-font-smoothing: antialiased;
+  background-color: rgba(0, 42, 64, 0.95);
+  color: whitesmoke;
+  margin: 20px 0;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-radius: 5px;
+  border: solid 1px #222;
+  font-weight: normal; }
+  .container .jumbotron h1 {
+    font-weight: 300;
+    font-size: 40px;
+    letter-spacing: 1px;
+    color: whitesmoke;
+    text-transform: uppercase; }
+  .container .jumbotron a {
+    font-weight: normal;
+    color: #8ec549; }
+
+.well {
+  -webkit-font-smoothing: antialiased;
+  background-color: rgba(0, 42, 64, 0.95);
+  background-image: none;
+  color: #f5f5f5;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 5px;
+  border: solid 1px #003d54;
+  font-weight: normal;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
+  .well h2 {
+    color: #8ec549;
+    font-weight: 300; }
+  .well h3 {
+    font-weight: normal;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.125);
+    padding-bottom: 5px;
+    margin-top: 25;
+    color: #8ec549;
+    font-weight: 300; }
+  .well a {
+    color: #8ec549;
+    text-shadow: 0 1px #333;
+    text-shadow: 0px -1px rgba(0, 0, 0, 0.68); }
+    .well a:hover {
+      text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
+      text-decoration: none; }
+
+body .btn-default {
+  box-shadow: 0px 2px 1px -1px rgba(255, 255, 255, 0.5);
+  background-color: #003d54;
+  background-image: none;
+  color: white;
+  text-shadow: 0 1px #333;
+  line-height: 1;
+  padding: 7px 15px;
+  font-size: 16px; }
+
+.btn-primary.btn.red9-button {
+  background-color: #003d54;
+  background-image: none;
+  padding: 4px 10px; }
+
+.leaderboards h2 {
+  font-weight: 300; }
+.leaderboards .teams a {
+  display: inline-block;
+  height: 20px; }
+  .leaderboards .teams a.current {
+    font-weight: bold;
+    display: inline-block;
+    height: 27px;
+    border-bottom: solid 1px; }
+  .leaderboards .teams a.current:hover {
+    font-weight: bold;
+    text-decoration: none; }
 .leaderboards .date-wrapper {
   position: relative;
   margin-left: 10px; }
@@ -35,14 +144,32 @@
   border: 0; }
 .leaderboards .leaderboard {
   min-width: 960px; }
+.leaderboards .leaderboard tr:first-child {
+  height: auto; }
+.leaderboards .leaderboard tr {
+  height: 80px; }
+.leaderboards .leaderboard tr:hover {
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8); }
 .leaderboards .leaderboard td, .leaderboards .leaderboard th {
-  border-right: solid 1px #d5d5d5;
+  border-right: solid 1px rgba(255, 255, 255, 0.1);
   text-align: center; }
   .leaderboards .leaderboard td:last-child, .leaderboards .leaderboard th:last-child {
     border-right: 0; }
+.leaderboards .leaderboard th {
+  border-bottom: 0;
+  font-size: 1.4em;
+  font-weight: normal;
+  background-color: #003d54;
+  text-transform: uppercase; }
+.leaderboards .leaderboard thead tr {
+  border-top-radius-right: 3px; }
+.leaderboards .leaderboard thead tr:hover {
+  background-color: #003d54; }
 .leaderboards .leaderboard td {
   font-size: 1.5em;
-  font-weight: 300; }
+  font-weight: 300;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.1); }
 .leaderboards .leaderboard td.surfer {
   white-space: nowrap;
   text-align: left;
@@ -55,16 +182,17 @@
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
   .leaderboards .leaderboard td.surfer .name, .leaderboards .leaderboard td.surfer .team {
     display: inline-block;
-    font-size: .8em; }
+    font-size: 1em; }
 .leaderboards .leaderboard th a:after {
   font-family: FontAwesome;
-  display: inline-block;
+  display: inline-block; }
+.leaderboards .leaderboard .sorted.down:after {
   width: 20px;
   height: 20px;
-  content: " "; }
-.leaderboards .leaderboard .sorted.down:after {
   content: "\f107"; }
 .leaderboards .leaderboard .sorted.up:after {
+  width: 20px;
+  height: 20px;
   content: "\f106"; }
 
 /*# sourceMappingURL=leaderboard.css.map */

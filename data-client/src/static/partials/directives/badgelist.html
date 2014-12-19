@@ -2,7 +2,7 @@
     <big>
 <span ng-repeat="item in list">
 <span class="label label-primary">
-{{display(item) | limitTo:35}} <i ng-if="editable==='true'" class="glyphicon glyphicon-remove"
+{{display(item) | limitTo:35}} <i ng-if="editable==='true'" class="fa fa-close"
                                   ng-click="removeBadge(item)"></i>
 </span>&nbsp;
 </span>
@@ -12,7 +12,7 @@
 <div ng-if="muted === 'true'">
 <span ng-repeat="item in list">
     <span class="text-muted">
-        [ {{display(item) | limitTo:35}} <i ng-if="editable==='true'" class="glyphicon glyphicon-remove"
+        [ {{display(item) | limitTo:35}} <i ng-if="editable==='true'" class="fa fa-close"
                                             ng-click="removeBadge(item)"></i> ]
     </span>&nbsp;
 </span>
