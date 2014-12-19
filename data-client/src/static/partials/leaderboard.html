@@ -1,10 +1,13 @@
-<div class="row leaderboards well">
-    <h2>Leaderboard</h2>
-    <p>
-        <a href="/leaderboard/leaderboard-team">Mira Costa Team</a> |
-        <a href="/leaderboard/leaderboard-pe">Mira Costa PE</a> |
-        <a href="/leaderboard/leaderboard-general">General Leaderboard</a>
+<div class="row leaderboards jumbotron">
+    <h1>Leaderboard</h1>
+    <p class="teams">
+        <a href="/leaderboard/leaderboard-team" ng-class="{'current': team == 'leaderboard-team'}">Mira Costa Team</a> |
+        <a href="/leaderboard/leaderboard-pe" ng-class="{'current': team == 'leaderboard-pe'}">Mira Costa PE</a> |
+        <a href="/leaderboard/leaderboard-general" ng-class="{'current': team == 'leaderboard-general'}">General Leaderboard</a>
     </p>
+</div>
+
+<div class="row leaderboards well">
     <!--div class="date-wrapper">
         <h4>Date Range</h4>
         <div>

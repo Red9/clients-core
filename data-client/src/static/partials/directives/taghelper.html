@@ -1,8 +1,9 @@
-<div class="row row-vertical-center">
+<div class="row row-vertical-center tags">
+	<div class="col-xs-4">
+	    <input type="text" class="form-control" ng-model="newTagInput" placeholder="Add a tag" keypress-enter="addTag()">
+	</div>
     <div class="col-xs-8">
         <badge-list list="tagList" delete-item="deleteTag" editable="true"></badge-list>
     </div>
-    <div class="col-xs-4">
-        <input type="text" class="form-control" ng-model="newTagInput" placeholder="new tag" keypress-enter="addTag()">
-    </div>
+
 </div>

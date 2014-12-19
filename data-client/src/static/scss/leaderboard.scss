@@ -1,32 +1,33 @@
 /* 
- * Red9 Sensor Common
+ * Red9 Sensor Leaderboard (will adapt to rest of site soon)
  * Author: Merwan Rodriguez 
  *
  **/
 
 // @import "resets";
-// @import "mixins";
-
-// Fonts
-$helvetica: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-$notoSans: "Noto Sans", sans-serif; 
-
-// Colors
-
-$baseColor: rgb(0,42,64);
-$green: rgb(142,197,73);
-$headerColor: rgb(0, 61, 84);
-$placeHolderColor: rgb(175,175,175);
-
-
+@import "variables";
+@import "red9theme";
 .leaderboards {
-
 	h2 {
 		font-weight: 300;	
 	}
-	a {
-		color: rgb(127, 225, 192);	
+
+	.teams a {
+		display: inline-block;
+		height: 20px;
+
+		&.current {
+			font-weight: bold;
+			display: inline-block;
+			height: 27px;
+			border-bottom: solid 1px;
+		}
+		&.current:hover {
+			font-weight: bold;
+			text-decoration: none;
+		}
 	}
+
 
 	// Date selection column
 	.date-wrapper {
@@ -82,9 +83,10 @@ $placeHolderColor: rgb(175,175,175);
 	}
 	.leaderboard tr:hover {
 		color: #333;
+		background-color: rgba(255,255,255, 0.8);
 	}
 	.leaderboard td, .leaderboard th {
-		border-right: solid 1px rgba(255, 255, 255, 0.35);
+		border-right: solid 1px rgba(255, 255, 255, 0.1);
 		text-align: center;
 	
 		&:last-child {
@@ -95,10 +97,19 @@ $placeHolderColor: rgb(175,175,175);
 		border-bottom: 0;
 		font-size: 1.4em;
 		font-weight: normal;
+		background-color: $headerColor;
+		text-transform: uppercase;
+	}
+	.leaderboard thead tr {
+		border-top-radius-right: 3px;
+	}
+	.leaderboard thead tr:hover { // for header.
+		background-color: $headerColor;
 	}
 	.leaderboard td {
 		font-size: 1.5em;
-		font-weight: normal;
+		font-weight: 300;
+		border-bottom: solid 1px rgba(255, 255, 255, 0.1);
 	}
 	.leaderboard td.surfer {
 		white-space: nowrap;
@@ -123,47 +134,21 @@ $placeHolderColor: rgb(175,175,175);
 	.leaderboard th a:after {
         font-family: FontAwesome;
 		display: inline-block;
-		width: 20px;
-		height: 20px;		
-		content: " ";
 	}
 	.leaderboard .sorted.down:after {
+		width: 20px;
+		height: 20px;		
 		content: "\f107";
 	}
 	.leaderboard .sorted.up:after {
+		width: 20px;
+		height: 20px;		
 		content: "\f106";
 	}
 	// End Leaderboard table
 }
 
-body .well {
-	-webkit-font-smoothing: antialiased;
-	background-color: rgba(0,0,0,.68);
-	background-image: none;
-	color: #f5f5f5;
-	margin: 20px 0;
-	padding: 0 20px 20px;
-	border-radius: 5px;
-	border: solid 1px #222;
-	font-weight: normal;
-	
-	h3 {
-		font-weight: normal;
-		border-bottom: solid 1px rgba(255,255,255, .35);
-		padding-bottom: 5px;		
-		margin-top: 50px;
-	}
-	a {
-		text-shadow: 0px -1px #909090;
-	}
-}
-body {
-	background-image: url(/static/images/wave-for-login-page.jpg);
-	background-repeat: no-repeat;
-	background-size: 100%;
-	min-height: 100%;
-	background-color: #0A1131;
-}
+
 
 
 

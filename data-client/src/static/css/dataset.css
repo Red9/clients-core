@@ -94,7 +94,9 @@ body .btn-default {
   background-image: none;
   padding: 4px 10px; }
 
-html {
-  height: 100%; }
+.displayName {
+  font-size: 1.1em;
+  display: inline-block;
+  padding-left: 10px; }
 
-/*# sourceMappingURL=unauthenticated.css.map */
+/*# sourceMappingURL=dataset.css.map */

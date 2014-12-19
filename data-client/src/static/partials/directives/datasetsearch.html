@@ -1,35 +1,31 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-4">
-                <input type="search" class="form-control" placeholder="title" ng-model="searchTitle">
-            </div>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" placeholder="tags" keypress-enter="addTag()"
-                       ng-model="tagInput">
-            </div>
-            <div class="col-sm-4">
-                <user-input list="userList" placeholder="owner"></user-input>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-sm-4">
+        <input type="search" class="form-control" placeholder="title" ng-model="searchTitle">
+    </div>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" placeholder="tags" keypress-enter="addTag()"
+               ng-model="tagInput">
+    </div>
+    <div class="col-sm-4">
+        <user-input list="userList" placeholder="owner"></user-input>
+    </div>
+</div>
 
-        <div class="row">
-            <div class="col-sm-4">
-                &nbsp;
-            </div>
-            <div class="col-sm-4">
-                <badge-list list="tagList" editable="true"></badge-list>
-            </div>
-            <div class="col-sm-4">
-                <badge-list list="userList" display-key="displayName" editable="true"></badge-list>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8"></div>
-            <div class="col-sm-4 text-right">
-                <button class="btn" ng-click="startSearch()">Search</button>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-sm-4">
+        &nbsp;
+    </div>
+    <div class="col-sm-4">
+        <badge-list list="tagList" editable="true"></badge-list>
+    </div>
+    <div class="col-sm-4">
+        <badge-list list="userList" display-key="displayName" editable="true"></badge-list>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-4 text-right">
+        <button class="btn btn-primary" ng-click="startSearch()">Search</button>
     </div>
 </div>
 <!--TODO: Search by date, has events/video/comments-->

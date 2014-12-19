@@ -94,7 +94,24 @@ body .btn-default {
   background-image: none;
   padding: 4px 10px; }
 
-html {
-  height: 100%; }
+.graph {
+  background-color: white;
+  border-radius: 0px;
+  box-shadow: inset 0px 0px 7px 1px rgba(1, 0, 31, 0.8);
+  padding-top: 20px; }
 
-/*# sourceMappingURL=unauthenticated.css.map */
+h1 .duration {
+  color: rgba(150, 150, 150, 0.95);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: lowercase; }
+
+.tags {
+  margin-top: 30px; }
+  .tags .label.label-primary {
+    padding: 7px 10px;
+    background-color: transparent;
+    box-shadow: inset 0px 0px 1px 0px rgba(255, 255, 255, 0.8);
+    font-weight: 300; }
+
+/*# sourceMappingURL=dataanalysis.css.map */

@@ -1,39 +1,8 @@
+// I will merge all of these into a common theme once I do the whole site.
+
+@import "variables";
+@import "red9theme";
+
 html {
 	height: 100%;
 }
-body {
-	background-image: url(/static/images/wave-for-login-page.jpg);
-	background-repeat: no-repeat;
-	background-size: 100%;
-	min-height: 100%;
-	background-color: #0A1131;
-}
-
-.unauthenticated-wrapper {
-	-webkit-font-smoothing: antialiased;
-	background-color: rgba(0,0,0,.68);
-	color: #f5f5f5;
-	margin: 20px 0;
-	padding: 15px 20px 100px;
-	border-radius: 5px;
-	border: solid 1px #222;
-	font-weight: normal;
-	
-	h2 {
-		margin: 5px 0;
-	}
-	h3 {
-		color: rgb(142, 197, 73);
-	}
-	p {
-		font-size: 1.2em;
-	}
-	a {
-		color: rgba(127, 225, 192, 1);
-		
-		img {
-			opacity: .87;
-		}
-	}
-}
-

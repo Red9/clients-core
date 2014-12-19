@@ -42,6 +42,7 @@
             });
             $routeProvider.when('/dataset/', {
                 templateUrl: '/static/partials/searchdataset.html',
+                css: '/static/css/dataset.css',
                 controller: 'search',
                 accessLevel: 'basic',
                 title: 'R9: Dataset Search'
@@ -99,6 +100,7 @@
             $routeProvider.when('/analysis/:id', {
                 templateUrl: '/static/partials/dataanalysis.html',
                 controller: 'dataanalysis',
+                css: '/static/css/dataanalysis.css',
                 accessLevel: 'public',
                 title: 'R9: Data Analysis'
             });
