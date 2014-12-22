@@ -62,6 +62,17 @@ module.exports = function (grunt) {
                 ]
             }
         },
+        sass: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/static/scss/',
+                    src: ['**/*.scss'],
+                    dest: 'src/static/css/',
+                    ext: '.css'
+                }]
+            }
+        },
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
@@ -102,6 +113,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-sass');
 
     grunt.registerTask('test', ['jshint']);
 
@@ -109,6 +121,7 @@ module.exports = function (grunt) {
         [
             'jshint',
             'clean:before',
+            'sass',
             'copy',
             'ngAnnotate',
             'useminPrepare',
