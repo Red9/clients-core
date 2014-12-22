@@ -99,6 +99,7 @@
 		font-weight: normal;
 		background-color: $headerColor;
 		text-transform: uppercase;
+		padding-bottom: 10px;
 	}
 	.leaderboard thead tr {
 		border-top-radius-right: 3px;
@@ -144,6 +145,10 @@
 		width: 20px;
 		height: 20px;		
 		content: "\f106";
+	}
+	.leaderboard .rank {
+		font-size: 2.5em;
+		font-weight: bold;
 	}
 	// End Leaderboard table
 }

@@ -205,7 +205,7 @@
                 showWeeks: false
             };
             $scope.team = $routeParams.tag;  // This is temporary.  We should assign a team to the surfer.
-            $scope.predicate = "sessions";
+            $scope.predicate = "topSpeed";
             $scope.reverse = true;
 
             $scope.startDate = {
@@ -252,20 +252,34 @@
 
                     // Utility function to help us out.
                     function calculateTotalDistance(eventList) {
-                        return _.reduce(eventList, function (memo, event) {
-                            return memo + event.summaryStatistics.distance.path; // SRLM: What if there is no distance for a particular event?
-                        }, 0);
+                        if (eventList.length) {
+                            return _.reduce(eventList, function (memo, event) {
+                                return memo + event.summaryStatistics.distance.path; // SRLM: What if there is no distance for a particular event?
+                            }, 0);
+                        }
+                    }
+
+                    function calculateTopSpeed(eventList) {
+                        var topSpeed = 0;
+
+                        _.each(eventList, function (event) {
+                            var gpsSpeed = event.summaryStatistics.gps.speed.maximum;
+                            topSpeed = Math.max(gpsSpeed, topSpeed);
+                        });
+                        return topSpeed || 0;
                     }
 
                     $scope.leaderboardData = _.chain(datasetList).groupBy('ownerId').map(function (userDatasets, userId) {
                         var totalEventDistance = 0;
                         var eventCount = 0;
                         var totalDuration = 0;
+                        var topSpeed = 0;
 
                         _.each(userDatasets, function (dataset) {
                             totalDuration += dataset.duration;
                             totalEventDistance += calculateTotalDistance(dataset.event);
                             eventCount += dataset.event.length;
+                            topSpeed = Math.max(calculateTopSpeed(dataset.event), topSpeed);
                         });
 
                         var averageEventDistance = 0;
@@ -277,19 +291,20 @@
                         if (totalDuration !== 0) {
                             averageEventsPerHour = eventCount / (totalDuration / 1000 / 60 / 60);
                         }
-
                         return {
                             user: userDatasets[0].owner,
                             eventsPerHour: averageEventsPerHour,
                             totalEventDistance: totalEventDistance,
                             averageEventDistance: averageEventDistance,
-                            datasets: userDatasets
+                            datasets: userDatasets,
+                            topSpeed: topSpeed
                         };
                     }).value();
                 });
             };
 
             $scope.runSearch(); // Initial run
+
         })
         .controller('siteStatistics',
         function ($scope, _, api) {

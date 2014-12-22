@@ -1,8 +1,10 @@
+@import "mixins/keyframes";
+
 body {
-	background-image: url(/static/images/wave-for-login-page.jpg);
+	background-image: url("/static/images/Indo_TelosIslands_RailGrab small.jpeg");
 	background-repeat: no-repeat;
 	background-attachment:fixed;
-	background-size: 100%;
+	background-size: 100% 100%;
 	background-color: $bodycolor;
 	
 	min-height: 100%;
@@ -23,9 +25,11 @@ hr {
 }
 .table > tbody > tr.info > td {  // overrides a bootstrap rule
 	background-color: $headerColor;
-	border-top: solid 7px transparent;
+	padding-top: 20px;
 	border-bottom: solid 2px;
+	
 	text-transform: uppercase;
+	letter-spacing: 2px;
 }
 
 .profile-pic {
@@ -61,7 +65,7 @@ hr {
 }
 .well {
 	-webkit-font-smoothing: antialiased;
-	background-color: rgba(0, 42, 64, .95);
+	background-color: rgba(0, 42, 64, .85);
 	background-image: none;
 	color: #f5f5f5;
 	margin: 20px 0;
@@ -70,6 +74,9 @@ hr {
 	border: solid 1px $headerColor;
 	font-weight: normal;
     box-shadow: 0 0 6px rgba(0,0,0,.8);
+    float: left;
+    width: 100%;
+    
 	h2 {
 		color: $green;
 		font-weight: 300;
@@ -84,15 +91,42 @@ hr {
 	}
 	a {
 		color: $green;	
-		text-shadow: 0 1px #333;
-		text-shadow: 0px -1px rgba(0, 0, 0, 0.68);
-		
+		font-weight: bold;
+				
 		&:hover {
-			text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);	
-			text-decoration: none;
+			// text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);	
+			// text-decoration: none;
 		}
 	}
+}
 
+.jumbotron, .well {
+	.table tr {
+		background-color: $tableRowColor;
+		
+		td, th {
+			padding: 10px 20px;
+			font-size: 1.2em;
+			border-bottom: solid 1px rgba(255, 255, 255, 0.125)
+		}
+		th {
+			padding-bottom: 0;
+			vertical-align: bottom;
+		}
+	}
+	.table.horizontal th {
+		padding-bottom: 10px;
+	}
+	.map {
+		height: auto;
+		opacity: .9;
+		background-color: $headerColor;
+		
+		.embed-responsive {
+			max-width: 96%;
+			margin: 0 auto;
+		}
+	}
 }
 
 body .btn-default {
@@ -111,4 +145,64 @@ body .btn-default {
   background-color: $headerColor;
   background-image: none;
   padding: 4px 10px;
+}
+
+@include keyframes(pulsate) {
+	0% {-webkit-transform: scale(0.9, 0.9); opacity: 0.6;}
+	75% {opacity: 1.0;}
+	100% {-webkit-transform: scale(1.1, 1.1); opacity: 0.6;}
+}
+
+// Spinner
+.spinner-wrapper {
+	// color: rgba(238,20,91, .9);
+	text-align: center;
+	width: 100%;
+	
+
+	.red9logo {
+		background-image: url(/static/images/red9-logo-sm.png);
+		background-repeat: no-repeat;
+		background-position: center center;		
+		display: inline-block;
+		
+		@include animation('pulsate 4s 0s infinite');		
+		
+		&.large {
+			height: 60px;
+			width: 60px;
+		}
+
+		&.med {
+			height: 50px;
+			width: 50px;
+		}
+
+		&.small {
+			height: 40px;
+			width: 40px;
+		}
+		&.large:after {
+			content: "Loading...";
+			display: block;
+			height: 30px;
+			width: 100px;
+			color: rgba(238, 20, 91, 0.9);
+			position: absolute;
+			bottom: -26px;
+			left: -16px;
+			font-weight: bold;
+			font-style: normal;
+		}
+	}	
+}
+
+// Tabs 
+.nav-tabs > li > a {
+	margin-right: 2px;
+	line-height: 17px;
+	border: 1px solid transparent;
+	border-radius: 7px 7px 0 0;
+	border: solid 1px #f7f7f7;
+	cursor: pointer;
 }
