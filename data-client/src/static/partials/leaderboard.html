@@ -30,8 +30,8 @@
         <div ng-if="leaderboardData.length === 0">
             <br/><br/>No results found.
         </div>
-        <div ng-if="leaderboardData === null">
-            <span us-spinner></span>
+        <div ng-if="leaderboardData === null" class="spinner-wrapper">
+            <i class="red9logo large pulse"></i>
         </div>
         <div ng-if="leaderboardData.length > 0">
             <div class="table-responsive">
@@ -42,7 +42,7 @@
                     <th><a href="" ng-class="{'sorted': (predicate == 'eventsPerHour'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'eventsPerHour'; reverse=!reverse">Waves / hour</a></th>
                     <th><a href="" ng-class="{'sorted': (predicate == 'averageEventDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'averageEventDistance'; reverse=!reverse">Distance / Wave</a></th>
                     <th><a href="" ng-class="{'sorted': (predicate == 'totalEventDistance'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'totalEventDistance'; reverse=!reverse">Total Wave Distance</a></th>
-                    <th><a href="" ng-class="{'sorted': (predicate == 'datasets.length'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'datasets.length'; reverse=!reverse">Sessions</a></th>
+                    <th><a href="" ng-class="{'sorted': (predicate == 'topSpeed'), 'up': !reverse, 'down': reverse}"  ng-click="predicate = 'topSpeed'; reverse=!reverse">Top Speed</a></th>
                     </thead>
 
                     <tbody>
@@ -67,7 +67,7 @@
                             {{row.totalEventDistance | number:0}} m
                         </td>
                         <td class="vertical-center sessions">
-                            <a ng-href="/dataset/?ownerId={{row.user.id}}&startTime.gt={{startTime}}&endTime.lt={{endTime}}">{{row.datasets.length}}</a>
+                            {{row.topSpeed}} kn
                         </td>
                     </tr>
                     </tbody>
