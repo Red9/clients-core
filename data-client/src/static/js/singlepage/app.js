@@ -61,12 +61,14 @@
             });
             $routeProvider.when('/user/:id/admin', {
                 templateUrl: '/static/partials/edituserprofile.html',
+                css: '/static/css/edituserprofile.css',
                 controller: 'editUserProfile',
                 accessLevel: 'admin',
                 title: 'R9: Edit User Profile'
             });
             $routeProvider.when('/user/:id', {
                 templateUrl: '/static/partials/userprofile.html',
+                css: '/static/css/userprofile.css',
                 controller: 'userProfile',
                 accessLevel: 'basic',
                 title: 'R9: User Profile'

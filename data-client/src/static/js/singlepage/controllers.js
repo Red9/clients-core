@@ -127,6 +127,14 @@
         .controller('userProfile',
         function ($scope, $routeParams, api) {
             $scope.datasetSearchQuery = {ownerId: $routeParams.id};
+            $scope.toggleEditable = function ($event) {
+                debugger;
+                var target = $event.target;
+                var isEditable = target.contentEditable !== 'true';
+
+                
+                target.setAttribute('contenteditable', !isEditable);
+            }
 
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.user = user;
