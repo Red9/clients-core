@@ -294,10 +294,10 @@
                         return {
                             user: userDatasets[0].owner,
                             eventsPerHour: averageEventsPerHour,
-                            totalEventDistance: totalEventDistance,
-                            averageEventDistance: averageEventDistance,
+                            totalEventDistance: parseInt((totalEventDistance * 3.28084), 10), // convert to feet (temporary)
+                            averageEventDistance: parseInt((averageEventDistance * 3.28084), 10), // same
                             datasets: userDatasets,
-                            topSpeed: topSpeed
+                            topSpeed: parseInt((topSpeed * 1.15078), 10) // convert to mph (temporary)
                         };
                     }).value();
                 });
