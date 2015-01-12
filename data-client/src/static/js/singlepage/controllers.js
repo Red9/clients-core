@@ -139,11 +139,8 @@
 
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.editableUser.displayName = user.displayName;
-                $scope.editableUser.characteristics = user.characteristics;
-                $scope.editableUser.affiliations = user.affiliations;
                 $scope.editableUser.preferredLayout = user.preferredLayout;
                 $scope.editableUser.scope = user.scope;
-                $scope.editableUser.location = user.location;
                 $scope.user = user;
             });
 
