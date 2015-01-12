@@ -3,3 +3,4 @@ release/
 node_modules/
 .idea/
 .sass-cache/
+*.map
