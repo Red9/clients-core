@@ -54,20 +54,22 @@
                             <a ng-href="/user/{{row.user.id}}">
                                 <img ng-src="{{row.user.picture}}?sz=40" />
                             </a>
+                            <a ng-href="/user/{{row.user.id}}">
                                 <span class="name">{{row.user.displayName}}</span>
+                            </a>
                                 <!-- <span class="team">{{team || "General"}}</span> -->
                         </td>
                         <td class="vertical-center waves-per-hour">
                             {{row.eventsPerHour | number:1}}
                         </td>
                         <td class="vertical-center distance-per-wave">
-                            {{row.averageEventDistance | number:1}} m
+                            {{row.averageEventDistance | number:1}} ft
                         </td>
                         <td class="vertical-center total-distance">
-                            {{row.totalEventDistance | number:0}} m
+                            {{row.totalEventDistance | number:0}} ft
                         </td>
                         <td class="vertical-center sessions">
-                            {{row.topSpeed}} kn
+                            {{row.topSpeed}} mph
                         </td>
                     </tr>
                     </tbody>
