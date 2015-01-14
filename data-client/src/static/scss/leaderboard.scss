@@ -72,84 +72,86 @@
 	// End Date selection column
 
 	// Leaderboard table
-	.leaderboard {
-		min-width: 960px;
-	}
-	.leaderboard tr:first-child {
-		height: auto;
-	}
-	.leaderboard tr {
-		height: 80px;
-	}
-	.leaderboard tr:hover {
-		color: #333;
-		background-color: rgba(255,255,255, 0.8);
-	}
-	.leaderboard td, .leaderboard th {
-		border-right: solid 1px rgba(255, 255, 255, 0.1);
-		text-align: center;
-	
-		&:last-child {
-			border-right: 0;
+	.leaderboard-container {
+		.leaderboard {
+			min-width: 960px;
 		}
-	}
-	.leaderboard-container .leaderboard th {
-		border-bottom: 0;
-		font-size: 14px;
-		font-weight: normal;
-		background-color: $headerColor;
-		text-transform: uppercase;
-		padding-bottom: 10px;
-	}
-	.leaderboard thead tr {
-		border-top-radius-right: 3px;
-	}
-	.leaderboard thead tr:hover { // for header.
-		background-color: $headerColor;
-	}
-	.leaderboard-container .leaderboard td {
-		font-size: 24px;
-		font-weight: 300;
-		border-bottom: solid 1px rgba(255, 255, 255, 0.1);
-	}
-	.leaderboard td.surfer {
-		white-space: nowrap;
-		text-align: left;
-		padding-left: 10px;
+		.leaderboard tr:first-child {
+			height: auto;
+		}
+		.leaderboard tr {
+			height: 80px;
+		}
+		.leaderboard tr:hover {
+			color: #333;
+			background-color: rgba(255,255,255, 0.8);
+		}
+		.leaderboard td, .leaderboard th {
+			border-right: solid 1px rgba(255, 255, 255, 0.1);
+			text-align: center;
 		
-		img {
-			display: inline-block;
-			border-radius: 50%;
-			height: 55px;
-			margin-right: 10px;
-			box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); // from material design fab
-			
+			&:last-child {
+				border-right: 0;
+			}
 		}
-		.name, .team {
-			display: inline-block;
-			font-size: 20px;
+		.leaderboard th {
+			border-bottom: 0;
+			font-size: 14px;
 			font-weight: normal;
-			// vertical-align: top;
-			// margin-top: 5px;
+			background-color: $headerColor;
+			text-transform: uppercase;
+			padding-bottom: 10px;
 		}
-	}
-	.leaderboard th a:after {
-        font-family: FontAwesome;
-		display: inline-block;
-	}
-	.leaderboard .sorted.down:after {
-		width: 20px;
-		height: 20px;		
-		content: "\f107";
-	}
-	.leaderboard .sorted.up:after {
-		width: 20px;
-		height: 20px;		
-		content: "\f106";
-	}
-	.leaderboard .rank {
-		font-size: 2.5em;
-		font-weight: bold;
+		.leaderboard thead tr {
+			border-top-radius-right: 3px;
+		}
+		.leaderboard thead tr:hover { // for header.
+			background-color: $headerColor;
+		}
+		.leaderboard td {
+			font-size: 24px;
+			font-weight: 300;
+			border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+		}
+		.leaderboard td.surfer {
+			white-space: nowrap;
+			text-align: left;
+			padding-left: 10px;
+			
+			img {
+				display: inline-block;
+				border-radius: 50%;
+				height: 55px;
+				margin-right: 10px;
+				box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); // from material design fab
+				
+			}
+			.name, .team {
+				display: inline-block;
+				font-size: 20px;
+				font-weight: normal;
+				// vertical-align: top;
+				// margin-top: 5px;
+			}
+		}
+		.leaderboard th a:after {
+	        font-family: FontAwesome;
+			display: inline-block;
+		}
+		.leaderboard .sorted.down:after {
+			width: 20px;
+			height: 20px;		
+			content: "\f107";
+		}
+		.leaderboard .sorted.up:after {
+			width: 20px;
+			height: 20px;		
+			content: "\f106";
+		}
+		.leaderboard .rank {
+			font-size: 2.5em;
+			font-weight: bold;
+		}
 	}
 	// End Leaderboard table
 }
