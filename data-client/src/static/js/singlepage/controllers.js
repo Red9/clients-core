@@ -127,18 +127,57 @@
         .controller('userProfile',
         function ($scope, $routeParams, api) {
             $scope.datasetSearchQuery = {ownerId: $routeParams.id};
-            $scope.toggleEditable = function ($event) {
-                debugger;
-                var target = $event.target;
-                var isEditable = target.contentEditable !== 'true';
-
-                
-                target.setAttribute('contenteditable', !isEditable);
-            }
 
             api.user.get({id: $routeParams.id}, function (user) {
+                $scope.editable = user.id === $scope.current.user.id
                 $scope.user = user;
+                
+                $scope.userDetails = {
+                    'height': $scope.user.height,
+                    'weight': $scope.user.weight,
+                    'sport': { 
+                        'surf': {
+                            'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : 'regular',
+                            'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
+                            'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : undefined,
+                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined
+                        }
+                    },
+                    'tagline': $scope.user.tagline,
+                    'city': $scope.user.city,
+                    'state': $scope.user.state
+                };
+                $scope.startDateDisplay = new Date($scope.userDetails.sport.surf.startDate);
+
+                var inches = Math.round($scope.userDetails.height * 39.3700787)
+                $scope.heightDisplay = Math.floor(inches / 12) + '\'' + (inches % 12) + '"';
+
+                $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.2, 10) + ' lbs';
             });
+
+            $scope.saveChanges = function () {
+                $scope.saving = true;
+                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.getTime(); 
+
+                var feetInches = $scope.heightDisplay.split('\'');
+                var feet = parseInt(feetInches[0], 10);
+                var inches = parseInt(feetInches[1], 10);
+                var meters = ((feet * 12 + inches) * 0.0254) 
+
+                $scope.userDetails.height = meters;
+                $scope.userDetails.weight = parseInt($scope.weightDisplay, 10) / 2.2;
+
+                $scope.user.update($scope.userDetails)
+                    .success(function () {
+                        // nothing to do here :)
+                    })
+                    .error(function () {
+                        console.log('error saving'); // TODO: this. better.
+                    })
+                    .finally(function () {
+                        $scope.saving = false;
+                    });
+            };
         })
         .controller('editUserProfile',
         function ($scope, $routeParams, api) {
