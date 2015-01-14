@@ -51,7 +51,7 @@
                             <input type="checkbox" ng-model="dataset.selected" ng-click="$event.stopPropagation();">
                         </td>
                         <td class="vertical-center">
-                            <a ng-href="/user/{{dataset.ownerId}}">
+                            <a ng-href="/user/{{dataset.owner.id}}">
                                 <img ng-src="{{dataset.owner.picture}}?sz=40" width="40px" height="40px" class="profile-pic"/>
                                 <span class="displayName">{{dataset.owner.displayName}}</span>
                             </a>
