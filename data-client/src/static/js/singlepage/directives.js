@@ -1054,6 +1054,24 @@
                 }
             };
         })
+        .directive('userDetails', function () {
+            return {
+                restrict: 'E',
+                templateUrl: '/static/partials/directives/userdetails.html',
+                controller: function ($scope, _) {
+
+                }
+            };
+        })
+        .directive('aggregateStatistics', function () {
+            return {
+                restrict: 'E',
+                templateUrl: '/static/partials/directives/aggregateStatistics.html',
+                controller: function ($scope, _) {
+                    
+                }
+            };
+        })
         .directive('eventsSummary', function () {
             return {
                 restrict: 'E',

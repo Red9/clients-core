@@ -1,9 +1,29 @@
-<h1>{{user.displayName}}</h1>
-<img ng-src="{{user.picture}}"/>
-<h4>{{user.givenName}} {{user.familyName}}
-    <a href="mailto:{{user.email}}"><span class="glyphicon glyphicon-envelope"></span></a>
-</h4>
-<h4>{{user.gender}}</h4>
+<div class="jumbotron">
+	<div class="media">
+	    <a class="media-left" href="/user/{{dataset.owner.id}}">
+	        <img ng-src="{{user.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
+	    </a>
 
-<h1>Sessions</h1>
-<resource-list resource-filters="datasetSearchQuery" resource-type="dataset"></resource-list>
+	    <div class="media-body">
+	    	<h1 class="media-heading"> {{user.displayName}}</h1>
+	    	<h4>
+	    	    {{user.email}}
+	    	</h4>
+	    	
+	    </div>
+	</div>
+	<br />
+	<user-details />
+</div>
+
+<div class="well">
+	<h2>Stats</h2>
+	<aggregate-statistics />
+</div>
+
+
+<!-- <div class="well map">
+	<div style="background-color: red;">
+		<resource-list resource-filters="datasetSearchQuery" resource-type="dataset"></resource-list>
+	</div>
+</div> -->
