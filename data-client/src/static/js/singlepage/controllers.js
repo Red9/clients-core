@@ -22,9 +22,9 @@
                 id: $routeParams.id,
                 fields: [
                     'id',
-                    'ownerId',
+                    'userId',
                     'title',
-                    'createTime',
+                    'createdAt',
                     'duration',
                     'summaryStatistics',
                     'source',
@@ -36,12 +36,12 @@
                     'boundingBox',
                     // Dynamically added fields
                     'aggregateStatistics',
-                    'owner',
+                    'user',
                     'event(id,type,subType,startTime,endTime,source,summaryStatistics(gps,distance))',
                     'comment',
                     'video'
                 ].join(','),
-                expand: ['owner', 'event', 'comment', 'video']
+                expand: ['user', 'event', 'comment', 'video']
             };
             api.dataset.get(queryOptions, function (dataset) {
                 $scope.dataset = dataset;
@@ -53,7 +53,7 @@
                     ]
                 });
 
-                _.each($scope.dataset.event, function (event) {
+                _.each($scope.dataset.events, function (event) {
                     //api.event.getPanel(event);
                 });
 
@@ -71,7 +71,7 @@
             $scope.uploadPercent = 0;
             $scope.upload = {};
 
-            $scope.owner = current.user;
+            $scope.user = current.user;
 
             api.user.query({}, function (users) {
                 $scope.users = users;
@@ -83,7 +83,7 @@
                     method: 'POST',
                     withCredentials: true,
                     data: {
-                        ownerId: $scope.owner.id,
+                        userId: $scope.user.id,
                         title: $scope.title
                     },
                     file: $scope.file,
@@ -126,7 +126,7 @@
         })
         .controller('userProfile',
         function ($scope, $routeParams, api) {
-            $scope.datasetSearchQuery = {ownerId: $routeParams.id};
+            $scope.datasetSearchQuery = {userId: $routeParams.id};
 
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.editable = user.id === $scope.current.user.id
@@ -279,16 +279,16 @@
                 $scope.endTime = $scope.endDate.date ? $scope.endDate.date.getTime() : (new Date()).getTime();
                 $scope.leaderboardData = null;
                 var datasetQuery = {
-                    'expand[]': ['owner', 'event'],
+                    'expand[]': ['user', 'event'],
                     'startTime.gt': $scope.startTime,
                     'endTime.lt': $scope.endTime,
-                    'tags': $scope.team
+                    'tags[]': $scope.team
                 };
                 api.dataset.query(datasetQuery, function (datasetList) {
                     // Filter to just the event type that we're interested in
                     var searchString = "wave";
                     datasetList = _.map(datasetList, function (dataset) {
-                        dataset.event = _.filter(dataset.event, function (event) {
+                        dataset.events = _.filter(dataset.events, function (event) {
                             return event.type.toUpperCase().indexOf(searchString.toUpperCase()) != -1;
                         });
                         return dataset;
@@ -313,7 +313,7 @@
                         return topSpeed || 0;
                     }
 
-                    $scope.leaderboardData = _.chain(datasetList).groupBy('ownerId').map(function (userDatasets, userId) {
+                    $scope.leaderboardData = _.chain(datasetList).groupBy('userId').map(function (userDatasets, userId) {
                         var totalEventDistance = 0;
                         var eventCount = 0;
                         var totalDuration = 0;
@@ -321,9 +321,9 @@
 
                         _.each(userDatasets, function (dataset) {
                             totalDuration += dataset.duration;
-                            totalEventDistance += calculateTotalDistance(dataset.event);
-                            eventCount += dataset.event.length;
-                            topSpeed = Math.max(calculateTopSpeed(dataset.event), topSpeed);
+                            totalEventDistance += calculateTotalDistance(dataset.events);
+                            eventCount += dataset.events.length;
+                            topSpeed = Math.max(calculateTopSpeed(dataset.events), topSpeed);
                         });
 
                         var averageEventDistance = 0;
@@ -336,7 +336,7 @@
                             averageEventsPerHour = eventCount / (totalDuration / 1000 / 60 / 60);
                         }
                         return {
-                            user: userDatasets[0].owner,
+                            user: userDatasets[0].user,
                             eventsPerHour: averageEventsPerHour,
                             totalEventDistance: parseInt((totalEventDistance * 3.28084), 10), // convert to feet (temporary)
                             averageEventDistance: parseInt((averageEventDistance * 3.28084), 10), // same
@@ -354,7 +354,7 @@
         function ($scope, _, api) {
             var parameters = {
                 dataset: {
-                    'expand': ['owner', 'count']
+                    'expand': ['user']
                 },
                 event: {}
 
@@ -383,7 +383,7 @@
 
                 $scope.datasetUsers = _.chain(datasets)
                     .groupBy(function (dataset) {
-                        return dataset.ownerId;
+                        return dataset.userId;
                     })
                     .map(function (list) {
                         return _.reduce(list, function (memo, dataset) {
@@ -392,13 +392,13 @@
                             memo.count += 1;
 
                             // A bit wasteful to set it on every iteration, but oh well.
-                            memo.ownerId = dataset.ownerId;
-                            memo.owner.displayName = dataset.owner.displayName;
+                            memo.userId = dataset.userId;
+                            memo.user.displayName = dataset.user.displayName;
                             return memo;
                         }, {
                             sumDuration: 0,
                             count: 0,
-                            owner: {}
+                            user: {}
                         });
                     })
                     .value();
