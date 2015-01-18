@@ -1,16 +1,15 @@
 define(['vendor/jquery', 'vendor/underscore', 'sandbox', 'vendor/bootstrap-markdown'], function($,_, sandbox) {
 
-    var CommentList = function(myPlace, resourceId, resourceType) {
-        if(typeof resourceId === 'undefined' || resourceId === ''){
+    var CommentList = function(myPlace, datasetId) {
+        if(typeof datasetId === 'undefined' || datasetId === ''){
             return;
         }
         
         this.myPlace = myPlace;
-        this.resourceId = resourceId;
-        this.resourceType = resourceType;
-
+        this.datasetId = datasetId;
+        
         var self = this;
-        sandbox.get('comment', {resourceId: resourceId}, function(comments) {
+        sandbox.get('comment', {datasetId: datasetId}, function(comments) {
             sandbox.requestTemplate('commentList', function(template) {
 
 
@@ -18,7 +17,7 @@ define(['vendor/jquery', 'vendor/underscore', 'sandbox', 'vendor/bootstrap-markd
                 self.myPlace.html(template({
                     commentCount: comments.length,
                     comments: _.map(_.sortBy(comments, function(comment) {
-                        return comment.createTime;
+                        return comment.createdAt;
                     }), function(comment) {
                         if (comment.startTime !== 0) {
                             if (comment.endTime !== 0) {
@@ -62,9 +61,8 @@ define(['vendor/jquery', 'vendor/underscore', 'sandbox', 'vendor/bootstrap-markd
 
 
                         sandbox.create('comment', {
-                            authorId: sandbox.currentUser.id,
-                            resourceType: self.resourceType,
-                            resourceId: self.resourceId,
+                            userId: sandbox.currentUser.id,
+                            datasetId: self.datasetId,
                             body: area.getContent(),
                             startTime: startTime,
                             endTime: endTime
@@ -74,15 +72,15 @@ define(['vendor/jquery', 'vendor/underscore', 'sandbox', 'vendor/bootstrap-markd
                     }
                 });
             });
-        }, ['author']);
+        }, ['user']);
     };
 
-    $.fn.commentList = function(resourceId, resourceType) {
+    $.fn.commentList = function(datasetId) {
         return this.each(function() {
             var $this = $(this);
             var data = $this.data('commentList');
             if (!data) {
-                $this.data('commentList', (data = new CommentList($this, resourceId, resourceType)));
+                $this.data('commentList', (data = new CommentList($this, datasetId)));
             }
         });
     };

@@ -93,7 +93,7 @@ define(['vendor/jquery', 'vendor/underscore'
                                 });
                         callbackDone();
                     });
-                }, ['owner']);
+                }, ['user']);
             }
         };
     }

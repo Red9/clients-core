@@ -40,7 +40,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/jquery.validate'], functio
                         title: {
                             required: create
                         },
-                        ownerId: {
+                        userId: {
                             required: create
                         },
                         timezone: {

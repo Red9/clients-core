@@ -3,7 +3,7 @@
     {{#each comments}}
     <div data-commentid="{{id}}" data-starttime="{{startTime}}" data-endtime="{{endTime}}">
         <div class="pull-left">
-            <a href="/user/{{author.id}}">{{author.displayName}}</a>&nbsp;<span class="text-muted">{{date createTime}} {{time createTime}}</span>
+            <a href="/user/{{user.id}}">{{user.displayName}}</a>&nbsp;<span class="text-muted">{{date createdAt}} {{time createdAt}}</span>
             {{#if viewRange}}
             <a data-name="commentFocus" data-starttime="{{startTime}}" data-endtime="{{endTime}}">view</a>
             {{/if}}

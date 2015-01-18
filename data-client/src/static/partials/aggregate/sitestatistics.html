@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="dataset in datasetUsers | orderBy:'sumDuration':true">
-            <td>{{dataset.owner.displayName}}
+            <td>{{dataset.user.displayName}}
             </td>
             <td>
                 {{dataset.sumDuration | duration:true}}

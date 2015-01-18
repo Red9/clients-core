@@ -13,16 +13,18 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/history',
             var State = History.getState(); // Note: We are using History.getState() instead of event.state
             var uri = URI(State.url);
 
-            var uuidMatch = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g;
+            var uuidMatch = /\/[0-9]+/g;
 
-            return {
+            var result = {
                 url: State.url,
                 path: uri.path(),
-                normalizedPath: uri.path().replace(uuidMatch, ':id'),
+                normalizedPath: uri.path().replace(uuidMatch, '/:id'),
                 query: uri.query(true),
                 resource: uri.directory(),
                 id: uri.filename()
             };
+            console.dir(result);
+            return result;
         }
         function onHistoryChange() {
             window.analytics.page();
@@ -56,7 +58,7 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/history',
             var uri = URI();
             if (typeof type !== 'undefined' && typeof id !== 'undefined') {
                 uri.directory(type);
-                uri.filename(id);
+                uri.filename('' + id); // Make sure that we're passing a string, and not a number
             } else { // Default to dataset ID
                 throw 'Must define a resource type and id to focus on.';
             }

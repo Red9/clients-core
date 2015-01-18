@@ -16,7 +16,7 @@ require(['sandbox', 'vendor/jquery', 'vendor/underscore', 'vendor/bootstrap.old'
 
         $(sandbox).on('totalState-resource-focused', function(event, parameters) {
             // Update with the number of comments
-            sandbox.get('comment', {resourceType: 'dataset', resourceId: sandbox.getCurrentDatasetId()}, function(commentList) {
+            sandbox.get('comment', {datasetId: sandbox.getCurrentDatasetId()}, function(commentList) {
                 var length = commentList.length === 0 ? '' : commentList.length;
                 $('#navbar-fixed-bottom-comments-button').parent().find('.badge').text(length);
             });

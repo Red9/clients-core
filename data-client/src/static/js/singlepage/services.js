@@ -104,15 +104,20 @@
                 });
             };
 
-            result.dataset.prototype.getFcpxmlUrl = function (options_) {
-                var self = this;
-                var options = angular.copy(options_);
+            result.dataset.prototype.getFcpxmlUrl = function (options) {
+
+                // This function seems to get called at an inappropriate time...
+                // HACK to make sure it doesn't error out.
+                if (!options.files) {
+                    return '';
+                }
+
                 options.files = options.files.join(',');
+
                 var params = [];
                 angular.forEach(options, function (value, key) {
                     this.push(key + '=' + value);
                 }, params);
-                console.dir(params);
                 return apiUrl + '/dataset/' + self.id + '/fcpxml?' + params.join('&');
             };
 
@@ -122,7 +127,7 @@
                     url: apiUrl + '/event/?datasetId=' + self.id,
                     method: 'GET'
                 }).success(function (data) {
-                    self.event = data;
+                    self.events = data;
                 });
             };
 

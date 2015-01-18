@@ -39,9 +39,6 @@
                     <th>User</th>
                     <th>Session</th>
                     <th><span class="pull-right">Tags&nbsp;</span></th>
-                    <th><abbr title="Events">Evt.</abbr></th>
-                    <th><abbr title="Videos">Vid.</abbr></th>
-                    <th><abbr title="Comments">Com.</abbr></th>
                     </thead>
 
                     <tbody>
@@ -51,9 +48,9 @@
                             <input type="checkbox" ng-model="dataset.selected" ng-click="$event.stopPropagation();">
                         </td>
                         <td class="vertical-center">
-                            <a ng-href="/user/{{dataset.owner.id}}">
-                                <img ng-src="{{dataset.owner.picture}}?sz=40" width="40px" height="40px" class="profile-pic"/>
-                                <span class="displayName">{{dataset.owner.displayName}}</span>
+                            <a ng-href="/user/{{dataset.user.id}}">
+                                <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px" class="profile-pic"/>
+                                <span class="displayName">{{dataset.user.displayName}}</span>
                             </a>
                         </td>
                         <td class="vertical-center">
@@ -64,21 +61,12 @@
                         <td class="vertical-center">
                             <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
                         </td>
-                        <td class="vertical-center">
-                            <span class="text-muted">{{dataset.count.event > 0 ? dataset.count.event : ''}}</span>
-                        </td>
-                        <td class="vertical-center">
-                            <span class="text-muted">{{dataset.count.video > 0 ? dataset.count.video : ''}}</span>
-                        </td>
-                        <td class="vertical-center">
-                            <span class="text-muted">{{dataset.count.comment > 0 ? dataset.count.comment : ''}}</span>
-                        </td>
                     </tr>
                     <tr ng-if="dataset.expanded" ng-repeat-end="" class="expanded-info">
                         <td colspan="100">
                             <ul class="list-unstyled">
                                 <li><span class="text-muted">Recorded</span> {{dataset.startTime| date}}</li>
-                                <li><span class="text-muted">Uploaded</span> {{dataset.createTime| date}}</li>
+                                <li><span class="text-muted">Uploaded</span> {{dataset.createdAt| date}}</li>
                                 <li>
                                     <span class="text-muted">Duration</span>
                                     {{dataset.endTime - dataset.startTime| duration}}

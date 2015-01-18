@@ -82,6 +82,11 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/d3.old'
 
         function setVideoMarker(time) {
             var x = xScale(time);
+
+            if(_.isNaN(x)){
+                x = 0;
+            }
+
             graphSvg.selectAll('.videomarker')
                     .attr('x1', x)
                     .attr('x2', x)
