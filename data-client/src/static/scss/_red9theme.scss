@@ -23,6 +23,11 @@ hr {
 	font-size: 1.2em;
 	font-weight: 200;
 }
+.list-group-item {
+	background-color: $headerColor;
+	font-weight: bold;
+	font-size: 18px;
+}
 .table > tbody > tr.info > td {  // overrides a bootstrap rule
 	background-color: $headerColor;
 	padding-top: 20px;
@@ -119,15 +124,24 @@ hr {
 	.table.horizontal th {
 		padding-bottom: 10px;
 	}
-	.map {
+	.map-container {
 		height: auto;
 		opacity: .9;
 		background-color: $headerColor;
 		
-		.embed-responsive {
-			max-width: 96%;
-			margin: 0 auto;
-		}
+	}
+	.map {
+		padding-top: 20px;
+		margin-bottom: 10px;
+		box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, 0.625);
+		background-color: $headerColor;
+		border-radius: 5px;
+	}
+
+	.map .embed-responsive {
+		max-width: 96%;
+		margin: 0 auto;
+		opacity: .85;
 	}
 }
 
