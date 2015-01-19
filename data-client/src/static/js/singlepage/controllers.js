@@ -129,7 +129,7 @@
             $scope.datasetSearchQuery = {userId: $routeParams.id};
 
             api.user.get({id: $routeParams.id}, function (user) {
-                $scope.editable = user.id === $scope.current.user.id
+                $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
                 
                 $scope.userDetails = {
@@ -149,7 +149,7 @@
                 };
                 $scope.startDateDisplay = new Date($scope.userDetails.sport.surf.startDate);
 
-                var inches = Math.round($scope.userDetails.height * 39.3700787)
+                var inches = Math.round($scope.userDetails.height * 39.3700787);
                 $scope.heightDisplay = Math.floor(inches / 12) + '\'' + (inches % 12) + '"';
 
                 $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.2, 10) + ' lbs';
@@ -162,7 +162,7 @@
                 var feetInches = $scope.heightDisplay.split('\'');
                 var feet = parseInt(feetInches[0], 10);
                 var inches = parseInt(feetInches[1], 10);
-                var meters = ((feet * 12 + inches) * 0.0254) 
+                var meters = ((feet * 12 + inches) * 0.0254);
 
                 $scope.userDetails.height = meters;
                 $scope.userDetails.weight = parseInt($scope.weightDisplay, 10) / 2.2;
