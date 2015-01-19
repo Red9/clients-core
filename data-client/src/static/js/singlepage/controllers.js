@@ -140,7 +140,8 @@
                             'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : 'regular',
                             'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
                             'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : undefined,
-                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined
+                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined,
+                            'favoriteBoard': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteBoard : undefined
                         }
                     },
                     'tagline': $scope.user.tagline,
@@ -152,7 +153,7 @@
                 var inches = Math.round($scope.userDetails.height * 39.3700787);
                 $scope.heightDisplay = Math.floor(inches / 12) + '\'' + (inches % 12) + '"';
 
-                $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.2, 10) + ' lbs';
+                $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.20462, 10) + ' lbs';
             });
 
             $scope.saveChanges = function () {

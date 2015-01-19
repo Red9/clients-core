@@ -1,17 +1,68 @@
 <section class="user-details row">
 	<h5 class="col-md-12" ng-if="editable">Click on a field to edit it <small ng-if="saving">(Saving<i class="fa fa-spinner fa-spin"></i>)</small></h5>
 	<ul class="fields col-md-6">
-		<li class="field"><span class="name">Height</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="heightDisplay" /></li>
-		<li class="field"><span class="name">Weight</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="weightDisplay" /></li>
-		<li class="field"><span class="name">Stance</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.stance" /></li>
-		<li class="field"><span class="name">Surfing Since</span><input type="date" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="startDateDisplay" /></li>
+		<li class="field"><label><span class="name">Height</span>
+			<select ng-model="heightDisplay" ng-change="saveChanges()" class="height-dropdown value" ng-disabled="!editable">
+				<option value="4'0&quot;">4'0&quot;</option>
+				<option value="4'1&quot;">4'1&quot;</option>
+				<option value="4'2&quot;">4'2&quot;</option>
+				<option value="4'3&quot;">4'3&quot;</option>
+				<option value="4'4&quot;">4'4&quot;</option>
+				<option value="4'5&quot;">4'5&quot;</option>
+				<option value="4'6&quot;">4'6&quot;</option>
+				<option value="4'7&quot;">4'7&quot;</option>
+				<option value="4'8&quot;">4'8&quot;</option>
+				<option value="4'9&quot;">4'9&quot;</option>
+				<option value="4'10&quot;">4'10&quot;</option>
+				<option value="4'11&quot;">4'11&quot;</option>
+				<option value="5'0&quot;">5'0&quot;</option>
+				<option value="5'1&quot;">5'1&quot;</option>
+				<option value="5'2&quot;">5'2&quot;</option>
+				<option value="5'3&quot;">5'3&quot;</option>
+				<option value="5'4&quot;">5'4&quot;</option>
+				<option value="5'5&quot;">5'5&quot;</option>
+				<option value="5'6&quot;">5'6&quot;</option>
+				<option value="5'7&quot;">5'7&quot;</option>
+				<option value="5'8&quot;">5'8&quot;</option>
+				<option value="5'9&quot;">5'9&quot;</option>
+				<option value="5'10&quot;">5'10&quot;</option>
+				<option value="5'11&quot;">5'11&quot;</option>
+				<option value="6'0&quot;">6'0&quot;</option>
+				<option value="6'1&quot;">6'1&quot;</option>
+				<option value="6'2&quot;">6'2&quot;</option>
+				<option value="6'3&quot;">6'3&quot;</option>
+				<option value="6'4&quot;">6'4&quot;</option>
+				<option value="6'5&quot;">6'5&quot;</option>
+				<option value="6'6&quot;">6'6&quot;</option>
+				<option value="6'7&quot;">6'7&quot;</option>
+				<option value="6'8&quot;">6'8&quot;</option>
+				<option value="6'9&quot;">6'9&quot;</option>
+				<option value="6'10&quot;">6'10&quot;</option>
+				<option value="6'11&quot;">6'11&quot;</option>
+				<option value="7'0&quot;">7'0</option>
+			</select>
+		</li>
+
+
+
+		<li class="field"><label><span class="name">Weight</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="weightDisplay" /></label></li>
+		<li class="field"><label><span class="name">Stance</span>
+			<select ng-model="userDetails.sport.surf.stance" ng-change="saveChanges()" class="stance-dropdown value" ng-disabled="!editable">
+				<option value="regular">Regular</option>
+				<option value="goofy">Goofy</option>
+				<option value="switch">Switch</option>
+			</select>
+			</label>
+		</li>
+		<li class="field"><label><span class="name">Surfing Since</span><input type="date" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="startDateDisplay" /></label></li>
 	</ul>
 	<ul class="fields col-md-6">
-		<li class="field"><span class="name">Local Break</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.localBreak" /></li>
-		<li class="field"><span class="name">Favorite Shop</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.favoriteShop" /></li>
-		<li class="field"><span class="name">Tag Line</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.tagline" /></li>
-		<li class="field"><span class="name">City, State</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value city" ng-model="userDetails.city" />, 
-			<select ng-model="userDetails.state" ng-change="saveChanges()" class="state-dropdown" ng-disabled="!editable">
+		<li class="field"><label><span class="name">Local Break</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.localBreak" /></label></li>
+		<li class="field"><label><span class="name">Favorite Shop</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.favoriteShop" /></label></li>
+		<li class="field"><label><span class="name">Tag Line</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.tagline" /></label></li>
+		<li class="field"><label><span class="name">City, State</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value city" ng-model="userDetails.city" />, 
+			<select ng-model="userDetails.state" ng-change="saveChanges()" class="state-dropdown value" ng-disabled="!editable">
+				<option value="">State</option>
 				<option value="AL">AL</option>
 				<option value="AK">AK</option>
 				<option value="AZ">AZ</option>
@@ -63,6 +114,7 @@
 				<option value="WI">WI</option>
 				<option value="WY">WI</option>
 			</select>
+		</label>
 		</li>
 	</ul>
 </section>
