@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <th>Owner</th>
-                <td><a href="/user/{{dataset.owner.id}}">{{{dataset.owner.displayName}}}</a>
+                <td><a href="/user/{{dataset.user.id}}">{{{dataset.user.displayName}}}</a>
                 </td>
             </tr>
             <tr>
@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <th>Created</th>
-                <td>{{date dataset.createTime}}&nbsp;&nbsp;&nbsp;{{time dataset.createTime}}</td>
+                <td>{{date dataset.createdAt}}&nbsp;&nbsp;&nbsp;{{time dataset.createdAt}}</td>
             </tr>
             <tr>
                 <th>Start Time</th>

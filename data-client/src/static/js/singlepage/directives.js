@@ -74,12 +74,12 @@
 
                     var parameters = {
                         dataset: {
-                            fields: 'title,id,createTime,startTime,endTime,owner,count,tags,boundingCircle,owner(displayName,id,picture)',
+                            //fields: 'title,id,createdAt,startTime,endTime,owner,count,tags,boundingCircle,owner(displayName,id,picture)',
                             //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
-                            'expand': ['owner', 'count']
+                            'expand': ['user']
                         },
                         event: {
-                            fields: 'type,id,startTime,endTime,datasetId,boundingCircle'
+                            //fields: 'type,id,startTime,endTime,datasetId,boundingCircle'
                         },
                         user: {}
 
@@ -87,7 +87,7 @@
 
                     var sortBy = {
                         dataset: function (dataset) {
-                            return -dataset.createTime;
+                            return -dataset.createdAt;
                         },
                         event: function (event) {
                             return -event.startTime;
@@ -130,7 +130,7 @@
                                 && _.has(item.boundingCircle, 'latitude')
                                 && _.has(item.boundingCircle, 'longitude');
                         }).reduce(function (memo, item) {
-                            var key = item.id.replace(/-/g, '');
+                            var key = item.id;
                             var message = "";
                             if (_.has(item, 'title')) {
                                 message = item.title;
@@ -370,8 +370,8 @@
                         $scope.tagList = [];
                     }
 
-                    if (_.has($scope.query, 'ownerId')) {
-                        api.user.query({idList: $scope.query.ownerId}, function (results) {
+                    if (_.has($scope.query, 'userId')) {
+                        api.user.query({idList: $scope.query.userId}, function (results) {
                             $scope.userList = results;
                         });
                     }
@@ -391,11 +391,11 @@
                         var result = {};
 
                         if ($scope.userList.length > 0) {
-                            result.ownerId = _.pluck($scope.userList, 'id').join(',');
+                            result.userId = _.pluck($scope.userList, 'id').join(',');
                         }
 
                         if ($scope.tagList.length > 0) {
-                            result.tags = $scope.tagList;
+                            result['tags[]'] = $scope.tagList;
                         }
 
                         if ($scope.searchTitle.length > 0) {
@@ -733,7 +733,7 @@
                     }
 
                     function createLeafletPath(markers, paths, bounds, resource) {
-                        var minimalId = 'hello' + resource.id.replace(/-/gi, '');
+                        var minimalId = 'hello' + resource.id;
 
 
                         var leafletPoints = [];
@@ -1051,6 +1051,24 @@
                 },
                 controller: function ($scope) {
 
+                }
+            };
+        })
+        .directive('userDetails', function () {
+            return {
+                restrict: 'E',
+                templateUrl: '/static/partials/directives/userdetails.html',
+                controller: function ($scope, _) {
+
+                }
+            };
+        })
+        .directive('aggregateStatistics', function () {
+            return {
+                restrict: 'E',
+                templateUrl: '/static/partials/directives/aggregateStatistics.html',
+                controller: function ($scope, _) {
+                    
                 }
             };
         })
