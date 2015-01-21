@@ -17,12 +17,47 @@
             $http.defaults.withCredentials = true;
             var apiUrl = red9config.apiUrl;
 
+            function transformResponse(data) {
+                var wrappedResult = angular.fromJson(data);
+                wrappedResult.data.$meta = wrappedResult.meta;
+                return wrappedResult.data;
+            }
+
+            function responseInterceptor(response) {
+                response.resource.$meta = response.data.$meta;
+                return response.resource;
+            }
+
+            var endpoint = {
+                single: {
+                    method: 'GET',
+                    isArray: false,
+                    transformResponse: transformResponse,
+                    interceptor: {response: responseInterceptor}
+                },
+                list: {
+                    method: 'GET',
+                    isArray: true,
+                    transformResponse: transformResponse,
+                    interceptor: {response: responseInterceptor}
+                }
+            };
+
+            var metadataFormat = {
+                get: endpoint.single,
+                save: endpoint.single,
+                update: endpoint.single,
+                query: endpoint.list,
+                remove: endpoint.single,
+                delete: endpoint.single
+            };
+
             var result = {
-                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}),
-                event: $resource(apiUrl + '/event/:id', {id: '@id'}),
-                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}),
-                user: $resource(apiUrl + '/user/:id', {id: '@id'}),
-                video: $resource(apiUrl + '/video/:id', {id: '@id'})
+                dataset: $resource(apiUrl + '/dataset/:id', {id: '@id'}, metadataFormat),
+                event: $resource(apiUrl + '/event/:id', {id: '@id'}, metadataFormat),
+                comment: $resource(apiUrl + '/comment/:id', {id: '@id'}, metadataFormat),
+                user: $resource(apiUrl + '/user/:id', {id: '@id'}, metadataFormat),
+                video: $resource(apiUrl + '/video/:id', {id: '@id'}, metadataFormat)
             };
 
             _.each(result, function (resource, type) {
@@ -123,12 +158,18 @@
 
             result.dataset.prototype.getEvents = function () {
                 var self = this;
-                return $http({
-                    url: apiUrl + '/event/?datasetId=' + self.id,
-                    method: 'GET'
-                }).success(function (data) {
-                    self.events = data;
-                });
+                var eventQuery = {
+                    aggregateStatistics: true,
+                    aggregateStatisticsGroupBy: 'type',
+                    datasetId: self.id
+                };
+
+                return result.event
+                    .query(eventQuery)
+                    .$promise
+                    .then(function (events) {
+                        self.events = events;
+                    });
             };
 
             result.dataset.prototype.eventFind = function () {

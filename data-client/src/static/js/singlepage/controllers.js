@@ -6,7 +6,6 @@
             $scope.logout = authenticate.logout;
         })
         .controller('search', function ($scope, $location, _) {
-            console.dir($location.search());
             $scope.query = $location.search();
 
             $scope.$watch('query', function (newValue, oldValue) {
@@ -41,21 +40,27 @@
                     'comment',
                     'video'
                 ].join(','),
-                expand: ['user', 'event', 'comment', 'video']
+                expand: ['user', 'comment', 'video']
             };
             api.dataset.get(queryOptions, function (dataset) {
-                $scope.dataset = dataset;
-                $scope.dataset.getPanel({
-                    axes: [
-                        'time',
-                        'gps:latitude',
-                        'gps:longitude'
-                    ]
-                });
+                dataset
+                    .getEvents()
+                    .then(function() {
+                        console.log('Here');
+                        console.dir(dataset);
+                        $scope.dataset = dataset;
+                        $scope.dataset.getPanel({
+                            axes: [
+                                'time',
+                                'gps:latitude',
+                                'gps:longitude'
+                            ]
+                        });
 
-                _.each($scope.dataset.events, function (event) {
-                    //api.event.getPanel(event);
-                });
+                        _.each($scope.dataset.events, function (event) {
+                            //api.event.getPanel(event);
+                        });
+                    });
 
             });
 

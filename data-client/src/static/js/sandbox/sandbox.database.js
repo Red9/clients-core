@@ -40,9 +40,9 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
                     type: 'GET',
                     url: sandbox.apiUrl + '/' + resourceType + '/?' + $.param(constraints),
                     dataType: 'json',
-                    success: function(resourceList) {
+                    success: function(response) {
                         //sandbox.getTimezoneOffset()
-                        callback(resourceList);
+                        callback(response.data);
                     }
 
                 });
@@ -70,9 +70,9 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/async'
                 url: sandbox.apiUrl + '/' + resourceType + '/',
                 dataType: 'json',
                 data: newResource,
-                success: function(data) {
-                    callback(undefined, data);
-                    sandbox.initiateResourceCreatedEvent(resourceType, data);
+                success: function(response) {
+                    callback(undefined, response.data);
+                    sandbox.initiateResourceCreatedEvent(resourceType, response.data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     callback(textStatus + '---' + errorThrown + ' --- ' + jqXHR.responseText);
