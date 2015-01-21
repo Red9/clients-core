@@ -86,7 +86,7 @@
 
                 <tab heading="Aggregate Statistics">
                     <tabset>
-                        <tab ng-repeat="(type, statistics) in dataset.aggregateStatistics"
+                        <tab ng-repeat="(type, statistics) in dataset.events.$meta.aggregateStatistics.groupedBy"
                              heading="{{type}} ({{statistics.count}})">
                             <temporal-statistics statistics="statistics.temporal" resource-type="event"
                                                  id-list="statistics.idList"></temporal-statistics>

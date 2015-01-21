@@ -122,8 +122,6 @@
                         var minimumLongitude = Number.MAX_VALUE;
                         var maximumLongitude = -Number.MAX_VALUE;
 
-
-                        console.dir(list);
                         $scope.map.markers = _.chain(list).filter(function (item) {
                             return _.has(item, 'boundingCircle')
                                 && _.isObject(item.boundingCircle)
@@ -192,6 +190,7 @@
                                 // in the page
                                 $scope.resourcePages.currentPage = 1;
                                 $scope.resourceList = _.sortBy(data, sortBy[$scope.resourceType]);
+                                $scope.resourceList.$meta = data.$meta; // Hack for now since _.sort strips the meta, and while we're still doing all this client side stuff.
                                 createMapMarkers(data);
                             });
                     });
@@ -449,17 +448,11 @@
 
                     $scope.selected = $scope.selectedUser;
 
-                    console.log('placeholder: ' + $scope.placeholder);
-
-
                     if (_.isUndefined($scope.selectedUser)) {
                         $scope.selectedUser = null;
                     }
 
-                    console.dir($scope);
-
                     $scope.$watch('selected', function (newValue, oldValue) {
-                        console.log('Selected changed!');
                         if (_.isObject($scope.selected)) {  // Make sure that we've got an addition, not a clearing of the input
                             $scope.selectedUser = $scope.selected;
 

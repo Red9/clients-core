@@ -23,7 +23,6 @@ define(['vendor/jquery', 'vendor/underscore', 'vendor/history',
                 resource: uri.directory(),
                 id: uri.filename()
             };
-            console.dir(result);
             return result;
         }
         function onHistoryChange() {
