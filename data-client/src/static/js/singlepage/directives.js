@@ -356,7 +356,12 @@
                     $scope.tagInput = '';
 
                     // Search Query variables
-                    $scope.searchTitle = '';
+                    if (_.has($scope.query, 'title')) {
+                        $scope.searchTitle = $scope.query.title;
+                    } else {
+                        $scope.seachTitle = '';
+                    }
+
                     if (_.has($scope.query, 'tags')) {
                         if (_.isArray($scope.query.tags)) {
                             // If there's a single element it will be passed as a single value.
@@ -1060,7 +1065,7 @@
                 restrict: 'E',
                 templateUrl: '/static/partials/directives/aggregateStatistics.html',
                 controller: function ($scope, _) {
-                    
+
                 }
             };
         })
