@@ -1,5 +1,5 @@
 <section class="user-details row">
-	<h5 class="col-md-12" ng-if="editable">Click on a field to edit it <small ng-if="saving">(Saving<i class="fa fa-spinner fa-spin"></i>)</small></h5>
+	<h5 class="col-md-12" ng-if="editable">Click on a field to edit it <span ng-if="saving">(Saving <i class="fa fa-spinner fa-spin"></i> )</span></h5>
 	<ul class="fields col-md-6">
 		<li class="field"><label><span class="name">Height</span>
 			<select ng-model="heightDisplay" ng-change="saveChanges()" class="height-dropdown value" ng-disabled="!editable">
@@ -45,22 +45,22 @@
 
 
 
-		<li class="field"><label><span class="name">Weight</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="weightDisplay" /></label></li>
+		<li class="field"><label><span class="name">Weight</span><input type="text" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" ng-disabled="!editable" class="value" ng-model="weightDisplay" /></label></li>
 		<li class="field"><label><span class="name">Stance</span>
-			<select ng-model="userDetails.sport.surf.stance" ng-change="saveChanges()" class="stance-dropdown value" ng-disabled="!editable">
+			<select ng-model="userDetails.sport.surf.stance" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" class="stance-dropdown value" ng-disabled="!editable">
 				<option value="regular">Regular</option>
 				<option value="goofy">Goofy</option>
 				<option value="switch">Switch</option>
 			</select>
 			</label>
 		</li>
-		<li class="field"><label><span class="name">Surfing Since</span><input type="date" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="startDateDisplay" /></label></li>
+		<li class="field"><label><span class="name">Surfing Since</span><input type="text" placeholder="YYYY" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" ng-disabled="!editable" class="value" ng-model="startDateDisplay" /></label></li>
 	</ul>
 	<ul class="fields col-md-6">
-		<li class="field"><label><span class="name">Local Break</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.localBreak" /></label></li>
-		<li class="field"><label><span class="name">Favorite Shop</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.favoriteShop" /></label></li>
-		<li class="field"><label><span class="name">Tag Line</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.tagline" /></label></li>
-		<li class="field"><label><span class="name">City, State</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value city" ng-model="userDetails.city" />, 
+		<li class="field"><label><span class="name">Local Break</span><input type="text" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.localBreak" /></label></li>
+		<li class="field"><label><span class="name">Favorite Shop</span><input type="text" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.favoriteShop" /></label></li>
+		<li class="field"><label><span class="name">Tag Line</span><input type="text" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.tagline" /></label></li>
+		<li class="field"><label><span class="name">City, State</span><input type="text" ng-model-options="{ updateOn: 'blur' }" ng-change="saveChanges()" ng-disabled="!editable" class="value city" ng-model="userDetails.city" />, 
 			<select ng-model="userDetails.state" ng-change="saveChanges()" class="state-dropdown value" ng-disabled="!editable">
 				<option value="">State</option>
 				<option value="AL">AL</option>

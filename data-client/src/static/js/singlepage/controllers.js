@@ -138,17 +138,18 @@
                     'sport': { 
                         'surf': {
                             'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : 'regular',
-                            'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
-                            'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : undefined,
-                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined,
-                            'favoriteBoard': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteBoard : undefined
+                            'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : null,
+                            'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : null,
+                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : null,
+                            'favoriteBoard': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteBoard : null
                         }
                     },
                     'tagline': $scope.user.tagline,
                     'city': $scope.user.city,
                     'state': $scope.user.state
                 };
-                $scope.startDateDisplay = new Date($scope.userDetails.sport.surf.startDate);
+                $scope.oldUserDetails = angular.copy($scope.userDetails);
+                $scope.startDateDisplay = (new Date($scope.userDetails.sport.surf.startDate)).getFullYear();
 
                 var inches = Math.round($scope.userDetails.height * 39.3700787)
                 $scope.heightDisplay = Math.floor(inches / 12) + '\'' + (inches % 12) + '"';
@@ -158,15 +159,22 @@
 
             $scope.saveChanges = function () {
                 $scope.saving = true;
-                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.getTime(); 
+                 
 
                 var feetInches = $scope.heightDisplay.split('\'');
                 var feet = parseInt(feetInches[0], 10);
                 var inches = parseInt(feetInches[1], 10);
                 var meters = ((feet * 12 + inches) * 0.0254) 
 
-                $scope.userDetails.height = meters;
-                $scope.userDetails.weight = parseInt($scope.weightDisplay, 10) / 2.2;
+                $scope.userDetails.sport.surf.favoriteShop = $scope.userDetails.sport.surf.favoriteShop.length > 0 ? $scope.userDetails.sport.surf.favoriteShop : undefined;
+                $scope.userDetails.sport.surf.localBreak = $scope.userDetails.sport.surf.localBreak.length > 0 ? $scope.userDetails.sport.surf.localBreak : undefined;            
+                //$scope.userDetails.sport.surf.favoriteBoard = $scope.userDetails.sport.surf.favoriteBoard.length > 0 ? $scope.userDetails.sport.surf.favoriteBoard : undefined;            
+                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.length > 0 ? (new Date('1/1/' + $scope.startDateDisplay)).getTime() : undefined;
+                $scope.userDetails.height = $scope.heightDisplay ? meters : undefined;
+                $scope.userDetails.weight = $scope.weightDisplay ? parseInt($scope.weightDisplay, 10) / 2.2 : undefined;                
+                $scope.userDetails.tagline = $scope.userDetails.tagline ? $scope.userDetails.tagline : undefined;
+                $scope.userDetails.city = $scope.userDetails.city ? $scope.userDetails.city : undefined;
+                $scope.userDetails.state = $scope.userDetails.state ? $scope.userDetails.state : undefined;
 
                 $scope.user.update($scope.userDetails)
                     .success(function () {
