@@ -166,10 +166,10 @@
                 var inches = parseInt(feetInches[1], 10);
                 var meters = ((feet * 12 + inches) * 0.0254) 
 
-                $scope.userDetails.sport.surf.favoriteShop = $scope.userDetails.sport.surf.favoriteShop.length > 0 ? $scope.userDetails.sport.surf.favoriteShop : undefined;
-                $scope.userDetails.sport.surf.localBreak = $scope.userDetails.sport.surf.localBreak.length > 0 ? $scope.userDetails.sport.surf.localBreak : undefined;            
-                //$scope.userDetails.sport.surf.favoriteBoard = $scope.userDetails.sport.surf.favoriteBoard.length > 0 ? $scope.userDetails.sport.surf.favoriteBoard : undefined;            
-                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.length > 0 ? (new Date('1/1/' + $scope.startDateDisplay)).getTime() : undefined;
+                $scope.userDetails.sport.surf.favoriteShop = $scope.userDetails.sport.surf.favoriteShop ? $scope.userDetails.sport.surf.favoriteShop : undefined;
+                $scope.userDetails.sport.surf.localBreak = $scope.userDetails.sport.surf.localBreak ? $scope.userDetails.sport.surf.localBreak : undefined;       
+                $scope.userDetails.sport.surf.favoriteBoard = $scope.userDetails.sport.surf.favoriteBoard ? $scope.userDetails.sport.surf.favoriteBoard : undefined;            
+                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay ? (new Date('1/1/' + $scope.startDateDisplay)).getTime() : undefined;
                 $scope.userDetails.height = $scope.heightDisplay ? meters : undefined;
                 $scope.userDetails.weight = $scope.weightDisplay ? parseInt($scope.weightDisplay, 10) / 2.2 : undefined;                
                 $scope.userDetails.tagline = $scope.userDetails.tagline ? $scope.userDetails.tagline : undefined;
