@@ -251,7 +251,6 @@
                             $scope.datasetGroups = _.chain(newValue)
                                 .groupBy('datasetId')
                                 .reduce(function (memo, eventList, datasetId, index) {
-                                    console.log('index: ' + index);
                                     if (memo[memo.length - 1].length === 3) {
                                         memo.push([]);
                                     }
