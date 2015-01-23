@@ -12,8 +12,8 @@
 <div ng-if="muted === 'true'">
 <span ng-repeat="item in list">
     <span class="text-muted">
-        [ {{display(item) | limitTo:35}} <i ng-if="editable==='true'" class="fa fa-close"
-                                            ng-click="removeBadge(item)"></i> ]
-    </span>&nbsp;
+        [&nbsp;{{display(item) | limitTo:35}} <i ng-if="editable==='true'" class="fa fa-close"
+                                            ng-click="removeBadge(item)"></i>&nbsp;]
+    </span>
 </span>
 </div>

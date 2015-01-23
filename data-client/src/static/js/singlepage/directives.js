@@ -74,12 +74,12 @@
 
                     var parameters = {
                         dataset: {
-                            fields: 'title,id,createTime,startTime,endTime,owner,count,tags,boundingCircle,owner(displayName,id,picture)',
+                            //fields: 'title,id,createdAt,startTime,endTime,owner,count,tags,boundingCircle,owner(displayName,id,picture)',
                             //part: 'title,id,createTime,startTime,endTime,owner.id,owner.displayName,count',
-                            'expand': ['owner', 'count']
+                            'expand': ['user']
                         },
                         event: {
-                            fields: 'type,id,startTime,endTime,datasetId,boundingCircle'
+                            //fields: 'type,id,startTime,endTime,datasetId,boundingCircle'
                         },
                         user: {}
 
@@ -87,7 +87,7 @@
 
                     var sortBy = {
                         dataset: function (dataset) {
-                            return -dataset.createTime;
+                            return -dataset.createdAt;
                         },
                         event: function (event) {
                             return -event.startTime;
@@ -122,15 +122,13 @@
                         var minimumLongitude = Number.MAX_VALUE;
                         var maximumLongitude = -Number.MAX_VALUE;
 
-
-                        console.dir(list);
                         $scope.map.markers = _.chain(list).filter(function (item) {
                             return _.has(item, 'boundingCircle')
                                 && _.isObject(item.boundingCircle)
                                 && _.has(item.boundingCircle, 'latitude')
                                 && _.has(item.boundingCircle, 'longitude');
                         }).reduce(function (memo, item) {
-                            var key = item.id.replace(/-/g, '');
+                            var key = item.id;
                             var message = "";
                             if (_.has(item, 'title')) {
                                 message = item.title;
@@ -192,6 +190,7 @@
                                 // in the page
                                 $scope.resourcePages.currentPage = 1;
                                 $scope.resourceList = _.sortBy(data, sortBy[$scope.resourceType]);
+                                $scope.resourceList.$meta = data.$meta; // Hack for now since _.sort strips the meta, and while we're still doing all this client side stuff.
                                 createMapMarkers(data);
                             });
                     });
@@ -370,8 +369,8 @@
                         $scope.tagList = [];
                     }
 
-                    if (_.has($scope.query, 'ownerId')) {
-                        api.user.query({idList: $scope.query.ownerId}, function (results) {
+                    if (_.has($scope.query, 'userId')) {
+                        api.user.query({idList: $scope.query.userId}, function (results) {
                             $scope.userList = results;
                         });
                     }
@@ -391,11 +390,11 @@
                         var result = {};
 
                         if ($scope.userList.length > 0) {
-                            result.ownerId = _.pluck($scope.userList, 'id').join(',');
+                            result.userId = _.pluck($scope.userList, 'id').join(',');
                         }
 
                         if ($scope.tagList.length > 0) {
-                            result.tags = $scope.tagList;
+                            result['tags[]'] = $scope.tagList;
                         }
 
                         if ($scope.searchTitle.length > 0) {
@@ -449,17 +448,11 @@
 
                     $scope.selected = $scope.selectedUser;
 
-                    console.log('placeholder: ' + $scope.placeholder);
-
-
                     if (_.isUndefined($scope.selectedUser)) {
                         $scope.selectedUser = null;
                     }
 
-                    console.dir($scope);
-
                     $scope.$watch('selected', function (newValue, oldValue) {
-                        console.log('Selected changed!');
                         if (_.isObject($scope.selected)) {  // Make sure that we've got an addition, not a clearing of the input
                             $scope.selectedUser = $scope.selected;
 
@@ -733,7 +726,7 @@
                     }
 
                     function createLeafletPath(markers, paths, bounds, resource) {
-                        var minimalId = 'hello' + resource.id.replace(/-/gi, '');
+                        var minimalId = 'hello' + resource.id;
 
 
                         var leafletPoints = [];

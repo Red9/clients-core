@@ -47,7 +47,7 @@ define(['vendor/jquery', 'vendor/underscore', 'utilities/commentList'], function
                                 return aggregatedEvent.type;
                             }));
                 });
-            }, ['owner']);
+            }, ['user']);
         }
 
         function calculateEventIndex(datasetId, eventId, callback) {
@@ -75,7 +75,7 @@ define(['vendor/jquery', 'vendor/underscore', 'utilities/commentList'], function
         }
 
         function setResource(type, id) {
-            var expand = type === 'dataset' ? ['owner'] : undefined;
+            var expand = type === 'dataset' ? ['user'] : undefined;
             sandbox.get(type, {id: id}, function (resourceList) {
                 var resource = resourceList.length === 0 ? {} : resourceList[0];
                 sandbox.requestTemplate('resourcedetails.' + type, function (template) {

@@ -1,8 +1,8 @@
 
 <div class="jumbotron">
         <div class="media">
-            <a class="media-left" href="/user/{{dataset.owner.id}}">
-                <img ng-src="{{dataset.owner.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
+            <a class="media-left" href="/user/{{dataset.user.id}}">
+                <img ng-src="{{dataset.user.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
             </a>
 
             <div class="media-body">
@@ -11,7 +11,7 @@
                 </h1>
                 <h4>
                     <small>from</small>
-                    <a ng-href="/user/{{dataset.owner.id}}">{{dataset.owner.displayName}}</a>
+                    <a ng-href="/user/{{dataset.user.id}}">{{dataset.user.displayName}}</a>
                     <small>view</small>
                     <a href="/dataset/{{dataset.id}}" target="_self">Detailed Graphs</a></h4>
             </div>
@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <th>Uploaded</th>
-                    <td>{{dataset.createTime | date:'short'}}</td>
+                    <td>{{dataset.createdAt | date:'short'}}</td>
                 </tr>
                 <tr>
                     <th>GPS On Time</th>
@@ -43,7 +43,7 @@
             </table>
         </div>
         <div class="col-sm-6">
-            <events-summary events="dataset.event"></events-summary>
+            <events-summary events="dataset.events"></events-summary>
         </div>
     </div>
 </div>
@@ -51,7 +51,7 @@
 <div class="well">
     <div class="row graph more-margin">
         <div class="col-sm-12">
-            <event-timeline events="dataset.event"></event-timeline>
+            <event-timeline events="dataset.events"></event-timeline>
         </div>
     </div>
 
@@ -62,7 +62,7 @@
 </div>
 
 <div class="well">
-    <div ng-repeat="(type,events) in dataset.event | groupBy:'type'" class="row">
+    <div ng-repeat="(type,events) in dataset.events | groupBy:'type'" class="row">
         <div class="col-sm-12">
             <h3>{{type}}</h3>    
         </div>
@@ -86,7 +86,7 @@
 
                 <tab heading="Aggregate Statistics">
                     <tabset>
-                        <tab ng-repeat="(type, statistics) in dataset.aggregateStatistics"
+                        <tab ng-repeat="(type, statistics) in dataset.events.$meta.aggregateStatistics.groupedBy"
                              heading="{{type}} ({{statistics.count}})">
                             <temporal-statistics statistics="statistics.temporal" resource-type="event"
                                                  id-list="statistics.idList"></temporal-statistics>

@@ -6,7 +6,7 @@ define(['vendor/jquery', 'utilities/commentList'], function($) {
         }
 
         function setResource(type, id) {
-            tile.place.html($('<div></div>').commentList(id, type));
+            tile.place.html($('<div></div>').commentList(id));
         }
 
         function destructor() {

@@ -168,7 +168,6 @@
 
             // Check authentication
             $rootScope.$on('$routeChangeStart', function (event, nextLoc, currentLoc) {
-                console.dir($rootScope.current.user);
                 if (nextLoc.accessLevel !== 'public') {
                     if ($rootScope.current.user === null) {
                         // Attempting to access a protected page.
