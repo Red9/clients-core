@@ -137,19 +137,10 @@
                 $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
 
-                $scope.numSessions = 'calculating...';
-                $scope.timeSurfed = 'calculating...';
-                $scope.numWaves = 'calculating...';
-                $scope.dives = 'calculating...';
-                $scope.distance = 'calculating...';
-                $scope.maxSpeed = 'calculating...';
-                $scope.wavesPerHour = 'calculating...';
-                $scope.distancePerWave = 'calculating...';
-
                 var datasetQuery = {
                     'aggregateStatistics': true,
                     'aggregateStatisticsGroupBy': 'type',
-                    'dataset.userId': 2,
+                    'dataset.userId': user.id,
                     'expand[]': 'dataset'
                 };
 
