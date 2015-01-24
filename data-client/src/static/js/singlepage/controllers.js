@@ -143,6 +143,28 @@
         function ($scope, $routeParams, api) {
             $scope.datasetSearchQuery = {userId: $routeParams.id};
 
+            var datasetQuery = {
+                'aggregateStatistics': true,
+                'aggregateStatisticsGroupBy': 'type',
+                'dataset.userId': $routeParams.id,
+                'expand[]': 'dataset'
+            };
+
+            api.event.query(datasetQuery, function (datasetList) {
+                if (datasetList.$meta && datasetList.$meta.aggregateStatistics) {
+                    var stats = datasetList.$meta.aggregateStatistics;
+
+                    $scope.numSessions = "--";  // not sure how to get this
+                    $scope.timeSurfed = (stats.groupedBy.Session.temporal.duration.sum / (1000 * 60)).toFixed(1);
+                    $scope.numWaves = stats.groupedBy.Wave.count;
+                    $scope.dives = stats.groupedBy.Dive.count;
+                    $scope.distance = stats.groupedBy.Session.compound.distance.path.sum.toFixed(1);
+                    $scope.maxSpeed = stats.groupedBy.Session.compound.gps.speed.maximum.value;
+                    $scope.wavesPerHour = Math.floor(stats.groupedBy.Wave.count / ($scope.timeSurfed * 60));
+                    $scope.distancePerWave = ((stats.groupedBy.Wave.compound.distance.path.sum * 3.28084) / stats.groupedBy.Wave.count).toFixed(1);
+                }   
+            });
+
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
@@ -153,17 +175,18 @@
                     'sport': {
                         'surf': {
                             'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : 'regular',
-                            'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
-                            'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : undefined,
-                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined,
-                            'favoriteBoard': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteBoard : undefined
+                            'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : null,
+                            'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : null,
+                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : null,
+                            'favoriteBoard': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteBoard : null
                         }
                     },
                     'tagline': $scope.user.tagline,
                     'city': $scope.user.city,
                     'state': $scope.user.state
                 };
-                $scope.startDateDisplay = new Date($scope.userDetails.sport.surf.startDate);
+                $scope.oldUserDetails = angular.copy($scope.userDetails);
+                $scope.startDateDisplay = (new Date($scope.userDetails.sport.surf.startDate)).getFullYear();
 
                 var inches = Math.round($scope.userDetails.height * 39.3700787);
                 $scope.heightDisplay = Math.floor(inches / 12) + '\'' + (inches % 12) + '"';
@@ -173,15 +196,22 @@
 
             $scope.saveChanges = function () {
                 $scope.saving = true;
-                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.getTime();
+                 
 
                 var feetInches = $scope.heightDisplay.split('\'');
                 var feet = parseInt(feetInches[0], 10);
                 var inches = parseInt(feetInches[1], 10);
                 var meters = ((feet * 12 + inches) * 0.0254);
 
-                $scope.userDetails.height = meters;
-                $scope.userDetails.weight = parseInt($scope.weightDisplay, 10) / 2.2;
+                $scope.userDetails.sport.surf.favoriteShop = $scope.userDetails.sport.surf.favoriteShop ? $scope.userDetails.sport.surf.favoriteShop : undefined;
+                $scope.userDetails.sport.surf.localBreak = $scope.userDetails.sport.surf.localBreak ? $scope.userDetails.sport.surf.localBreak : undefined;       
+                $scope.userDetails.sport.surf.favoriteBoard = $scope.userDetails.sport.surf.favoriteBoard ? $scope.userDetails.sport.surf.favoriteBoard : undefined;            
+                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay ? (new Date('1/1/' + $scope.startDateDisplay)).getTime() : undefined;
+                $scope.userDetails.height = $scope.heightDisplay ? meters : undefined;
+                $scope.userDetails.weight = $scope.weightDisplay ? parseInt($scope.weightDisplay, 10) / 2.2 : undefined;                
+                $scope.userDetails.tagline = $scope.userDetails.tagline ? $scope.userDetails.tagline : undefined;
+                $scope.userDetails.city = $scope.userDetails.city ? $scope.userDetails.city : undefined;
+                $scope.userDetails.state = $scope.userDetails.state ? $scope.userDetails.state : undefined;
 
                 $scope.user.update($scope.userDetails)
                     .success(function () {

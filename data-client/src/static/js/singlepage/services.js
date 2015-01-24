@@ -19,12 +19,15 @@
 
             function transformResponse(data) {
                 var wrappedResult = angular.fromJson(data);
-                wrappedResult.data.$meta = wrappedResult.meta;
+
+                wrappedResult.data = wrappedResult.data || [];
+                wrappedResult.data.$meta = wrappedResult.meta;    
+                
                 return wrappedResult.data;
             }
 
             function responseInterceptor(response) {
-                response.resource.$meta = response.data.$meta;
+                response.resource.$meta = response.data.$meta;    
                 return response.resource;
             }
 
