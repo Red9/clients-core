@@ -133,31 +133,31 @@
         function ($scope, $routeParams, api) {
             $scope.datasetSearchQuery = {userId: $routeParams.id};
 
+            var datasetQuery = {
+                'aggregateStatistics': true,
+                'aggregateStatisticsGroupBy': 'type',
+                'dataset.userId': $routeParams.id,
+                'expand[]': 'dataset'
+            };
+
+            api.event.query(datasetQuery, function (datasetList) {
+                if (datasetList.$meta && datasetList.$meta.aggregateStatistics) {
+                    var stats = datasetList.$meta.aggregateStatistics;
+
+                    $scope.numSessions = "--";  // not sure how to get this
+                    $scope.timeSurfed = (stats.groupedBy.Session.temporal.duration.sum / (1000 * 60)).toFixed(1);
+                    $scope.numWaves = stats.groupedBy.Wave.count;
+                    $scope.dives = stats.groupedBy.Dive.count;
+                    $scope.distance = stats.groupedBy.Session.compound.distance.path.sum.toFixed(1);
+                    $scope.maxSpeed = stats.groupedBy.Session.compound.gps.speed.maximum.value;
+                    $scope.wavesPerHour = Math.floor(stats.groupedBy.Wave.count / ($scope.timeSurfed * 60));
+                    $scope.distancePerWave = ((stats.groupedBy.Wave.compound.distance.path.sum * 3.28084) / stats.groupedBy.Wave.count).toFixed(1);
+                }   
+            });
+
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
-
-                var datasetQuery = {
-                    'aggregateStatistics': true,
-                    'aggregateStatisticsGroupBy': 'type',
-                    'dataset.userId': user.id,
-                    'expand[]': 'dataset'
-                };
-
-                api.event.query(datasetQuery, function (datasetList) {
-                    if (datasetList.$meta && datasetList.$meta.aggregateStatistics) {
-                        var stats = datasetList.$meta.aggregateStatistics;
-
-                        $scope.numSessions = "--";  // not sure how to get this
-                        $scope.timeSurfed = (stats.groupedBy.Session.temporal.duration.sum / (1000 * 60)).toFixed(1) + minutes;
-                        $scope.numWaves = stats.groupedBy.Wave.count;
-                        $scope.dives = stats.groupedBy.Dive.count;
-                        $scope.distance = stats.groupedBy.Session.compound.distance.path.sum.toFixed(1);
-                        $scope.maxSpeed = stats.groupedBy.Session.compound.gps.speed.maximum.value;
-                        $scope.wavesPerHour = Math.floor(stats.groupedBy.Wave.count / ($scope.timeSurfed * 60));
-                        $scope.distancePerWave = ((stats.groupedBy.Wave.compound.distance.path.sum * 3.28084) / stats.groupedBy.Wave.count).toFixed(1);
-                    }   
-                });
 
                 $scope.userDetails = {
                     'height': $scope.user.height,
