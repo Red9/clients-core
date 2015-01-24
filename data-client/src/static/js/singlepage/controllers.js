@@ -42,10 +42,18 @@
                 ].join(','),
                 expand: ['user', 'comment', 'video']
             };
+
+            $scope.sportsList = api.sportsList;
+
+            $scope.saveSport = function (newValue) {
+                console.log('newValue: ' + newValue);
+                $scope.dataset.update({sport: newValue});
+            };
+
             api.dataset.get(queryOptions, function (dataset) {
                 dataset
                     .getEvents()
-                    .then(function() {
+                    .then(function () {
                         console.log('Here');
                         console.dir(dataset);
                         $scope.dataset = dataset;
@@ -56,6 +64,8 @@
                                 'gps:longitude'
                             ]
                         });
+
+                        $scope.datasetSport = $scope.dataset.sport;
 
                         _.each($scope.dataset.events, function (event) {
                             //api.event.getPanel(event);
@@ -136,11 +146,11 @@
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
-                
+
                 $scope.userDetails = {
                     'height': $scope.user.height,
                     'weight': $scope.user.weight,
-                    'sport': { 
+                    'sport': {
                         'surf': {
                             'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : 'regular',
                             'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
@@ -163,7 +173,7 @@
 
             $scope.saveChanges = function () {
                 $scope.saving = true;
-                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.getTime(); 
+                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.getTime();
 
                 var feetInches = $scope.heightDisplay.split('\'');
                 var feet = parseInt(feetInches[0], 10);

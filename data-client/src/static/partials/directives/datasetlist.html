@@ -39,6 +39,7 @@
                     <th>User</th>
                     <th>Session</th>
                     <th><span class="pull-right">Tags&nbsp;</span></th>
+                    <th>Sport</th>
                     </thead>
 
                     <tbody>
@@ -60,6 +61,9 @@
                         </td>
                         <td class="vertical-center">
                             <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
+                        </td>
+                        <td class="vertical-center">
+                            {{dataset.sport| limitTo:60}}
                         </td>
                     </tr>
                     <tr ng-if="dataset.expanded" ng-repeat-end="" class="expanded-info">

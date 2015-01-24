@@ -1,24 +1,32 @@
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
+        <select class="form-control" ng-model="sport" ng-options="item as item.name for item in sports">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="col-sm-3">
         <input type="search" class="form-control" placeholder="title" ng-model="searchTitle">
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <input type="text" class="form-control" placeholder="tags" keypress-enter="addTag()"
                ng-model="tagInput">
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <user-input list="userList" placeholder="user"></user-input>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         &nbsp;
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
+        &nbsp;
+    </div>
+    <div class="col-sm-3">
         <badge-list list="tagList" editable="true"></badge-list>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <badge-list list="userList" display-key="displayName" editable="true"></badge-list>
     </div>
 </div>
