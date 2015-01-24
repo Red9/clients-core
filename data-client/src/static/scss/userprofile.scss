@@ -12,12 +12,13 @@
 	height: 32px;
 	border: solid 1px rgba(255, 255, 255, 0.7);
 	line-height: 30px;
+	background-color: rgba(0,0,0,.1);
 }
 .field .name { 
 	font-size: 16px;
 	font-weight: bold;
 	display: inline-block;
-	width: 35%;
+	width: 40%;
 	text-align: right;
 	background-color: rgba(0, 0, 0, 0.43);
 	border-left: 0;
@@ -25,20 +26,30 @@
 	vertical-align: top;
 	
 
+	@media screen and (max-width: 400px) {
+		font-size: 12px;
+	}
+
 	// box-shadow: 1px 0 1px 0px rgba(255,255,255,1);
 }
 .field .value {
 	font-size: 16px;
 	font-weight: normal;
-	background-color: rgba(0,0,0,.1);
 	display: inline-block;
-	width: 64%;
+	width: 55%;
 	height: 100%;
 	padding-left: 10px;	
 	border:0;
+	background-color: transparent;
+	border-radius: 0;
+
+	@media screen and (max-width: 400px) {
+		font-size: 12px;
+	}
+
 	
 	&.city {
-		width: auto;
+		max-width: 45%;
 	}
 
 	&:focus {
@@ -56,6 +67,10 @@
 	border: 0;
 	font-size: 16px;
 	width: 10%;
+	padding-left: 0;
+}
+.field.equipment .name {
+	max-width: 200px;
 }
 .jumbotron h2, .well h2 {
 	margin-top: 0;
