@@ -12,8 +12,10 @@
                     return value * 3.280;
                 } else if (fromUnits === 'meters' && toUnits === 'miles') {
                     return value * 0.000621371;
-                }
-                else {
+                } else if (fromUnits === 'Hz' && toUnits === 'RPH') {
+                    // Convert from cycles per second to cycles per hour
+                    return value * 60 * 60;
+                } else {
                     return value;
                 }
             };
@@ -61,7 +63,7 @@
 
 
                 if (tight === false || hours > 0) {
-                    return hours + 'h ' + minutesString + 'm ' + secondsString + '.' + millisecondsString + 's';
+                    return hours + 'h ' + minutesString + 'm'; // Don't display seconds if it's more than an hour. "Oddly precise".
                 } else if (minutes > 0) {
                     return minutes + 'm ' + secondsString + '.' + millisecondsString + 's';
                 } else {

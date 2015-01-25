@@ -81,6 +81,12 @@
                 };
             });
 
+            $http.get(apiUrl + '/sport/').success(function (data) {
+                angular.extend(result.sports, data);
+                angular.extend(result.sportsList, _.pluck(data, 'name'));
+            });
+            result.sports = [];
+            result.sportsList = [];
 
             $http.get(apiUrl + '/eventtype/').success(function (data) {
                 angular.extend(result.event.types, data);
