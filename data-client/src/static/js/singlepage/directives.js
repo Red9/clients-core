@@ -1095,7 +1095,7 @@
         .directive('aggregateStatistics', function () {
             return {
                 restrict: 'E',
-                templateUrl: '/static/partials/directives/aggregateStatistics.html',
+                templateUrl: '/static/partials/directives/aggregatestatistics.html',
                 controller: function ($scope, _) {
 
                 }
