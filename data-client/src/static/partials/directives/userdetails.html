@@ -5,7 +5,7 @@
             class="fa fa-spinner fa-spin"></i> )</span></h5>
 
     <ul class="fields col-md-6">
-        <li class="field"><label><span class="name">Height</span>
+        <li class="field" ng-if="editable || heightDisplay"><label><span class="name">Height</span>
             <select ng-model="heightDisplay"
                     ng-change="saveChanges()"
                     class="height-dropdown value"
@@ -14,14 +14,14 @@
             </select>
         </label>
         </li>
-        <li class="field"><label><span class="name">Weight</span>
+        <li class="field" ng-if="editable || weightDisplay"><label><span class="name">Weight</span>
             <input
                     placeholder="Enter weight in pounds"
                     ng-model-options="{ updateOn: 'blur' }"
                     ng-change="saveChanges()" ng-disabled="!editable"
                     class="value"
                     ng-model="weightDisplay"/></label></li>
-        <li class="field"><label><span class="name">Stance</span>
+        <li class="field" ng-if="editable || userDetails.sport.surf.stance"><label><span class="name">Stance</span>
             <select ng-model="userDetails.sport.surf.stance"
                     ng-model-options="{ updateOn: 'blur' }"
                     ng-change="saveChanges()"
@@ -33,7 +33,7 @@
             </select>
         </label>
         </li>
-        <li class="field"><label><span class="name">Surfing Since</span><input
+        <li class="field" ng-if="editable || startDateDisplay"><label><span class="name">Surfing Since</span><input
                 type="text" placeholder="Enter year"
                 ng-model-options="{ updateOn: 'blur' }"
                 ng-change="saveChanges()"
@@ -41,25 +41,25 @@
                 ng-model="startDateDisplay"/></label></li>
     </ul>
     <ul class="fields col-md-6">
-        <li class="field"><label><span class="name">Local Break</span><input
+        <li class="field" ng-if="editable || userDetails.sport.surf.localBreak"><label><span class="name">Local Break</span><input
                 type="text" placeholder="Enter a location"
                 ng-model-options="{ updateOn: 'blur' }"
                 ng-change="saveChanges()"
                 ng-disabled="!editable" class="value"
                 ng-model="userDetails.sport.surf.localBreak"/></label></li>
-        <li class="field"><label><span class="name">Fav. Shop</span><input
+        <li class="field" ng-if="editable || userDetails.sport.surf.favoriteShop"><label><span class="name">Fav. Shop</span><input
                 type="text" placeholder="Enter name of shop"
                 ng-model-options="{ updateOn: 'blur' }"
                 ng-change="saveChanges()"
                 ng-disabled="!editable" class="value"
                 ng-model="userDetails.sport.surf.favoriteShop"/></label></li>
-        <li class="field"><label><span class="name">Tag Line</span><input
+        <li class="field" ng-if="editable || userDetails.tagline"><label><span class="name">Tag Line</span><input
                 type="text" placeholder="Enter a tagline"
                 ng-model-options="{ updateOn: 'blur' }"
                 ng-change="saveChanges()" ng-disabled="!editable"
                 class="value"
                 ng-model="userDetails.tagline"/></label></li>
-        <li class="field"><label><span class="name">City, State</span>
+        <li class="field" ng-if="editable || userDetails.city || userDetails.state"><label><span class="name">City, State</span>
             <input
                     type="text" placeholder="Enter a city"
                     ng-model-options="{ updateOn: 'blur' }"
@@ -125,7 +125,7 @@
 
     <h2 class="col-md-12">Equipment</h2>
     <ul class="fields col-md-12">
-        <li class="field equipment">
+        <li class="field equipment" ng-if="editable || userDetails.sport.surf.favoriteBoard">
             <label><span class="name">Fav. Board</span>
                 <input type="text"
                        placeholder="Enter model and dimensions"
