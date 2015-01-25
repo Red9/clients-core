@@ -42,10 +42,18 @@
                 ].join(','),
                 expand: ['user', 'comment', 'video']
             };
+
+            $scope.sportsList = api.sportsList;
+
+            $scope.saveSport = function (newValue) {
+                console.log('newValue: ' + newValue);
+                $scope.dataset.update({sport: newValue});
+            };
+
             api.dataset.get(queryOptions, function (dataset) {
                 dataset
                     .getEvents()
-                    .then(function() {
+                    .then(function () {
                         console.log('Here');
                         console.dir(dataset);
                         $scope.dataset = dataset;
@@ -56,6 +64,8 @@
                                 'gps:longitude'
                             ]
                         });
+
+                        $scope.datasetSport = $scope.dataset.sport;
 
                         _.each($scope.dataset.events, function (event) {
                             //api.event.getPanel(event);
@@ -133,16 +143,42 @@
         function ($scope, $routeParams, api) {
             $scope.datasetSearchQuery = {userId: $routeParams.id};
 
+            var eventQuery = {
+                aggregateStatistics: true,
+                aggregateStatisticsGroupBy: 'type',
+                'dataset.userId': $routeParams.id,
+                'expand[]': 'dataset',
+                metaformat: 'only'
+            };
+
+            $scope.aggregateStatistics = {};
+            api.event.query(eventQuery, function (eventList) {
+                if (eventList.$meta && eventList.$meta.aggregateStatistics) {
+                    $scope.aggregateStatistics.events = eventList.$meta.aggregateStatistics.groupedBy;
+                }
+            });
+
+            var datasetMetaQuery = {
+                userId: $routeParams.id,
+                aggregateStatistics: true,
+                metaformat: 'only'
+            };
+
+            api.dataset.query(datasetMetaQuery, function (datasetList) {
+                $scope.aggregateStatistics.datasets = datasetList.$meta.aggregateStatistics;
+            });
+
+
             api.user.get({id: $routeParams.id}, function (user) {
                 $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
-                
+
                 $scope.userDetails = {
                     'height': $scope.user.height,
                     'weight': $scope.user.weight,
-                    'sport': { 
+                    'sport': {
                         'surf': {
-                            'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : 'regular',
+                            'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : undefined,
                             'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
                             'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : undefined,
                             'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined,
@@ -153,25 +189,43 @@
                     'city': $scope.user.city,
                     'state': $scope.user.state
                 };
-                $scope.startDateDisplay = new Date($scope.userDetails.sport.surf.startDate);
+                $scope.oldUserDetails = angular.copy($scope.userDetails);
 
-                var inches = Math.round($scope.userDetails.height * 39.3700787);
-                $scope.heightDisplay = Math.floor(inches / 12) + '\'' + (inches % 12) + '"';
+                if ($scope.userDetails.sport.surf.startDate) {
+                    $scope.startDateDisplay = (new Date($scope.userDetails.sport.surf.startDate)).getFullYear();
+                } else {
+                    $scope.startDateDisplay = null;
+                }
 
-                $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.20462, 10) + ' lbs';
+                $scope.heightSelectList = [];
+                for (var i = 48; i <= 84; i++) { // Generate the height list
+                    $scope.heightSelectList.push({
+                        value: i * 0.0254, // inch to meter
+                        text: Math.floor(i / 12) + "' " + (i % 12) + '"'
+                    });
+                }
+
+                $scope.heightDisplay = Math.round($scope.user.height * 39.3701) * 0.0254; // Round meters to the nearest inch.
+
+                if ($scope.userDetails.weight) { // Handle the case for no weight
+                    $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.20462, 10); // convert from kg to display pounds
+                } else {
+                    $scope.weightDisplay = null;
+                }
             });
 
             $scope.saveChanges = function () {
                 $scope.saving = true;
-                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay.getTime(); 
 
-                var feetInches = $scope.heightDisplay.split('\'');
-                var feet = parseInt(feetInches[0], 10);
-                var inches = parseInt(feetInches[1], 10);
-                var meters = ((feet * 12 + inches) * 0.0254);
-
-                $scope.userDetails.height = meters;
-                $scope.userDetails.weight = parseInt($scope.weightDisplay, 10) / 2.2;
+                $scope.userDetails.sport.surf.favoriteShop = $scope.userDetails.sport.surf.favoriteShop ? $scope.userDetails.sport.surf.favoriteShop : undefined;
+                $scope.userDetails.sport.surf.localBreak = $scope.userDetails.sport.surf.localBreak ? $scope.userDetails.sport.surf.localBreak : undefined;
+                $scope.userDetails.sport.surf.favoriteBoard = $scope.userDetails.sport.surf.favoriteBoard ? $scope.userDetails.sport.surf.favoriteBoard : undefined;
+                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay ? (new Date('1/1/' + $scope.startDateDisplay)).getTime() : undefined;
+                $scope.userDetails.height = $scope.heightDisplay > 0 ? $scope.heightDisplay : undefined;
+                $scope.userDetails.weight = $scope.weightDisplay > 0 ? parseInt($scope.weightDisplay, 10) / 2.2 : undefined; // convert pounds to kg
+                $scope.userDetails.tagline = $scope.userDetails.tagline ? $scope.userDetails.tagline : undefined;
+                $scope.userDetails.city = $scope.userDetails.city ? $scope.userDetails.city : undefined;
+                $scope.userDetails.state = $scope.userDetails.state ? $scope.userDetails.state : undefined;
 
                 $scope.user.update($scope.userDetails)
                     .success(function () {

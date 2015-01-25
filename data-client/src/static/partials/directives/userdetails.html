@@ -1,120 +1,139 @@
 <section class="user-details row">
-	<h5 class="col-md-12" ng-if="editable">Click on a field to edit it <small ng-if="saving">(Saving<i class="fa fa-spinner fa-spin"></i>)</small></h5>
-	<ul class="fields col-md-6">
-		<li class="field"><label><span class="name">Height</span>
-			<select ng-model="heightDisplay" ng-change="saveChanges()" class="height-dropdown value" ng-disabled="!editable">
-				<option value="4'0&quot;">4'0&quot;</option>
-				<option value="4'1&quot;">4'1&quot;</option>
-				<option value="4'2&quot;">4'2&quot;</option>
-				<option value="4'3&quot;">4'3&quot;</option>
-				<option value="4'4&quot;">4'4&quot;</option>
-				<option value="4'5&quot;">4'5&quot;</option>
-				<option value="4'6&quot;">4'6&quot;</option>
-				<option value="4'7&quot;">4'7&quot;</option>
-				<option value="4'8&quot;">4'8&quot;</option>
-				<option value="4'9&quot;">4'9&quot;</option>
-				<option value="4'10&quot;">4'10&quot;</option>
-				<option value="4'11&quot;">4'11&quot;</option>
-				<option value="5'0&quot;">5'0&quot;</option>
-				<option value="5'1&quot;">5'1&quot;</option>
-				<option value="5'2&quot;">5'2&quot;</option>
-				<option value="5'3&quot;">5'3&quot;</option>
-				<option value="5'4&quot;">5'4&quot;</option>
-				<option value="5'5&quot;">5'5&quot;</option>
-				<option value="5'6&quot;">5'6&quot;</option>
-				<option value="5'7&quot;">5'7&quot;</option>
-				<option value="5'8&quot;">5'8&quot;</option>
-				<option value="5'9&quot;">5'9&quot;</option>
-				<option value="5'10&quot;">5'10&quot;</option>
-				<option value="5'11&quot;">5'11&quot;</option>
-				<option value="6'0&quot;">6'0&quot;</option>
-				<option value="6'1&quot;">6'1&quot;</option>
-				<option value="6'2&quot;">6'2&quot;</option>
-				<option value="6'3&quot;">6'3&quot;</option>
-				<option value="6'4&quot;">6'4&quot;</option>
-				<option value="6'5&quot;">6'5&quot;</option>
-				<option value="6'6&quot;">6'6&quot;</option>
-				<option value="6'7&quot;">6'7&quot;</option>
-				<option value="6'8&quot;">6'8&quot;</option>
-				<option value="6'9&quot;">6'9&quot;</option>
-				<option value="6'10&quot;">6'10&quot;</option>
-				<option value="6'11&quot;">6'11&quot;</option>
-				<option value="7'0&quot;">7'0</option>
-			</select>
-		</li>
+    <h2 class="col-md-12">Personal Details</h2>
+    <h5 class="col-md-12" ng-if="editable">Click on a field to edit it <span
+            ng-if="saving">(Saving <i
+            class="fa fa-spinner fa-spin"></i> )</span></h5>
 
+    <ul class="fields col-md-6">
+        <li class="field" ng-if="editable || heightDisplay"><label><span class="name">Height</span>
+            <select ng-model="heightDisplay"
+                    ng-change="saveChanges()"
+                    class="height-dropdown value"
+                    ng-disabled="!editable"
+                    ng-options="obj.value as obj.text for obj in heightSelectList">
+            </select>
+        </label>
+        </li>
+        <li class="field" ng-if="editable || weightDisplay"><label><span class="name">Weight</span>
+            <input
+                    placeholder="Enter weight in pounds"
+                    ng-model-options="{ updateOn: 'blur' }"
+                    ng-change="saveChanges()" ng-disabled="!editable"
+                    class="value"
+                    ng-model="weightDisplay"/></label></li>
+        <li class="field" ng-if="editable || userDetails.sport.surf.stance"><label><span class="name">Stance</span>
+            <select ng-model="userDetails.sport.surf.stance"
+                    ng-model-options="{ updateOn: 'blur' }"
+                    ng-change="saveChanges()"
+                    class="stance-dropdown value"
+                    ng-disabled="!editable">
+                <option value="regular">Regular</option>
+                <option value="goofy">Goofy</option>
+                <option value="switch">Switch</option>
+            </select>
+        </label>
+        </li>
+        <li class="field" ng-if="editable || startDateDisplay"><label><span class="name">Surfing Since</span><input
+                type="text" placeholder="Enter year"
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-change="saveChanges()"
+                ng-disabled="!editable" class="value"
+                ng-model="startDateDisplay"/></label></li>
+    </ul>
+    <ul class="fields col-md-6">
+        <li class="field" ng-if="editable || userDetails.sport.surf.localBreak"><label><span class="name">Local Break</span><input
+                type="text" placeholder="Enter a location"
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-change="saveChanges()"
+                ng-disabled="!editable" class="value"
+                ng-model="userDetails.sport.surf.localBreak"/></label></li>
+        <li class="field" ng-if="editable || userDetails.sport.surf.favoriteShop"><label><span class="name">Fav. Shop</span><input
+                type="text" placeholder="Enter name of shop"
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-change="saveChanges()"
+                ng-disabled="!editable" class="value"
+                ng-model="userDetails.sport.surf.favoriteShop"/></label></li>
+        <li class="field" ng-if="editable || userDetails.tagline"><label><span class="name">Tag Line</span><input
+                type="text" placeholder="Enter a tagline"
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-change="saveChanges()" ng-disabled="!editable"
+                class="value"
+                ng-model="userDetails.tagline"/></label></li>
+        <li class="field" ng-if="editable || userDetails.city || userDetails.state"><label><span class="name">City, State</span>
+            <input
+                    type="text" placeholder="Enter a city"
+                    ng-model-options="{ updateOn: 'blur' }"
+                    ng-change="saveChanges()" ng-disabled="!editable"
+                    class="value city" ng-model="userDetails.city"/>,
+            <select ng-model="userDetails.state"
+                    ng-change="saveChanges()"
+                    class="state-dropdown value" ng-disabled="!editable">
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+                <option value="AZ">AZ</option>
+                <option value="AR">AR</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="IA">IA</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="ME">ME</option>
+                <option value="MD">MD</option>
+                <option value="MA">MA</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MS">MS</option>
+                <option value="MO">MO</option>
+                <option value="MT">MT</option>
+                <option value="NE">NE</option>
+                <option value="NV">NV</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>
+                <option value="NY">NY</option>
+                <option value="NC">NC</option>
+                <option value="ND">ND</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VT">VT</option>
+                <option value="VA">VA</option>
+                <option value="WA">WA</option>
+                <option value="WV">WV</option>
+                <option value="WI">WI</option>
+                <option value="WY">WI</option>
+            </select>
+        </label>
+        </li>
+    </ul>
 
-
-		<li class="field"><label><span class="name">Weight</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="weightDisplay" /></label></li>
-		<li class="field"><label><span class="name">Stance</span>
-			<select ng-model="userDetails.sport.surf.stance" ng-change="saveChanges()" class="stance-dropdown value" ng-disabled="!editable">
-				<option value="regular">Regular</option>
-				<option value="goofy">Goofy</option>
-				<option value="switch">Switch</option>
-			</select>
-			</label>
-		</li>
-		<li class="field"><label><span class="name">Surfing Since</span><input type="date" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="startDateDisplay" /></label></li>
-	</ul>
-	<ul class="fields col-md-6">
-		<li class="field"><label><span class="name">Local Break</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.localBreak" /></label></li>
-		<li class="field"><label><span class="name">Favorite Shop</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.sport.surf.favoriteShop" /></label></li>
-		<li class="field"><label><span class="name">Tag Line</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value" ng-model="userDetails.tagline" /></label></li>
-		<li class="field"><label><span class="name">City, State</span><input type="text" ng-blur="saveChanges()" ng-disabled="!editable" class="value city" ng-model="userDetails.city" />, 
-			<select ng-model="userDetails.state" ng-change="saveChanges()" class="state-dropdown value" ng-disabled="!editable">
-				<option value="">State</option>
-				<option value="AL">AL</option>
-				<option value="AK">AK</option>
-				<option value="AZ">AZ</option>
-				<option value="AR">AR</option>
-				<option value="CA">CA</option>
-				<option value="CO">CO</option>
-				<option value="CT">CT</option>
-				<option value="DE">DE</option>
-				<option value="FL">FL</option>
-				<option value="GA">GA</option>
-				<option value="HI">HI</option>
-				<option value="ID">ID</option>
-				<option value="IL">IL</option>
-				<option value="IN">IN</option>
-				<option value="IA">IA</option>
-				<option value="KS">KS</option>
-				<option value="KY">KY</option>
-				<option value="LA">LA</option>
-				<option value="ME">ME</option>
-				<option value="MD">MD</option>
-				<option value="MA">MA</option>
-				<option value="MI">MI</option>
-				<option value="MN">MN</option>
-				<option value="MS">MS</option>
-				<option value="MO">MO</option>
-				<option value="MT">MT</option>
-				<option value="NE">NE</option>
-				<option value="NV">NV</option>
-				<option value="NH">NH</option>
-				<option value="NJ">NJ</option>
-				<option value="NM">NM</option>
-				<option value="NY">NY</option>
-				<option value="NC">NC</option>
-				<option value="ND">ND</option>
-				<option value="OH">OH</option>
-				<option value="OK">OK</option>
-				<option value="OR">OR</option>
-				<option value="PA">PA</option>
-				<option value="RI">RI</option>
-				<option value="SC">SC</option>
-				<option value="SD">SD</option>
-				<option value="TN">TN</option>
-				<option value="TX">TX</option>
-				<option value="UT">UT</option>
-				<option value="VT">VT</option>
-				<option value="VA">VA</option>
-				<option value="WA">WA</option>
-				<option value="WV">WV</option>
-				<option value="WI">WI</option>
-				<option value="WY">WI</option>
-			</select>
-		</label>
-		</li>
-	</ul>
+    <h2 class="col-md-12">Equipment</h2>
+    <ul class="fields col-md-12">
+        <li class="field equipment" ng-if="editable || userDetails.sport.surf.favoriteBoard">
+            <label><span class="name">Fav. Board</span>
+                <input type="text"
+                       placeholder="Enter model and dimensions"
+                       ng-model-options="{ updateOn: 'blur' }"
+                       ng-change="saveChanges()"
+                       ng-disabled="!editable"
+                       class="value"
+                       ng-model="userDetails.sport.surf.favoriteBoard"/></label>
+        </li>
+    </ul>
 </section>

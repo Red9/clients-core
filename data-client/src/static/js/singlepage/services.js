@@ -19,12 +19,15 @@
 
             function transformResponse(data) {
                 var wrappedResult = angular.fromJson(data);
-                wrappedResult.data.$meta = wrappedResult.meta;
+
+                wrappedResult.data = wrappedResult.data || [];
+                wrappedResult.data.$meta = wrappedResult.meta;    
+                
                 return wrappedResult.data;
             }
 
             function responseInterceptor(response) {
-                response.resource.$meta = response.data.$meta;
+                response.resource.$meta = response.data.$meta;    
                 return response.resource;
             }
 
@@ -78,6 +81,12 @@
                 };
             });
 
+            $http.get(apiUrl + '/sport/').success(function (data) {
+                angular.extend(result.sports, data);
+                angular.extend(result.sportsList, _.pluck(data, 'name'));
+            });
+            result.sports = [];
+            result.sportsList = [];
 
             $http.get(apiUrl + '/eventtype/').success(function (data) {
                 angular.extend(result.event.types, data);
