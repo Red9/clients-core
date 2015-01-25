@@ -140,7 +140,7 @@
 
         })
         .controller('userProfile',
-        function ($scope, $routeParams, api) {
+        function ($scope, $routeParams, api, _) {
             $scope.datasetSearchQuery = {userId: $routeParams.id};
 
             var eventQuery = {
@@ -173,66 +173,40 @@
                 $scope.editable = user.id === $scope.current.user.id;
                 $scope.user = user;
 
-                $scope.userDetails = {
-                    'height': $scope.user.height,
-                    'weight': $scope.user.weight,
-                    'sport': {
-                        'surf': {
-                            'stance': $scope.user.sport.surf ? $scope.user.sport.surf.stance : undefined,
-                            'localBreak': $scope.user.sport.surf ? $scope.user.sport.surf.localBreak : undefined,
-                            'favoriteShop': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteShop : undefined,
-                            'startDate': $scope.user.sport.surf ? $scope.user.sport.surf.startDate : undefined,
-                            'favoriteBoard': $scope.user.sport.surf ? $scope.user.sport.surf.favoriteBoard : undefined
-                        }
-                    },
-                    'tagline': $scope.user.tagline,
-                    'city': $scope.user.city,
-                    'state': $scope.user.state
-                };
-                $scope.oldUserDetails = angular.copy($scope.userDetails);
+                // Whitelist the keys that we can edit.
+                $scope.userDetails = _.pick(
+                    angular.copy($scope.user), // Probably not the best combo...
+                    ['height', 'weight', 'sport', 'tagline', 'city', 'state']
+                );
 
-                if ($scope.userDetails.sport.surf.startDate) {
-                    $scope.startDateDisplay = (new Date($scope.userDetails.sport.surf.startDate)).getFullYear();
-                } else {
-                    $scope.startDateDisplay = null;
-                }
-
+                // We need this list bit because we want to allow users to
+                // select height based on feet/inches, not just inches or
+                // just feet. It's a bit of an annoying special case.
                 $scope.heightSelectList = [];
-                for (var i = 48; i <= 84; i++) { // Generate the height list
+                // Generate the height list, minimum to maximum height in inches
+                for (var i = 48; i <= 84; i++) {
                     $scope.heightSelectList.push({
                         value: i * 0.0254, // inch to meter
-                        text: Math.floor(i / 12) + "' " + (i % 12) + '"'
+                        label: Math.floor(i / 12) + "' " + (i % 12) + '"'
                     });
                 }
 
-                $scope.heightDisplay = Math.round($scope.user.height * 39.3701) * 0.0254; // Round meters to the nearest inch.
+                // Round meters to the nearest inch.
+                // Use the same algorithm as above so that the select option is
+                // correctly populated.
+                $scope.userDetails.height = Math.round($scope.user.height * 39.3701) * 0.0254;
 
-                if ($scope.userDetails.weight) { // Handle the case for no weight
-                    $scope.weightDisplay = parseInt($scope.userDetails.weight * 2.20462, 10); // convert from kg to display pounds
-                } else {
-                    $scope.weightDisplay = null;
-                }
             });
 
             $scope.saveChanges = function () {
                 $scope.saving = true;
 
-                $scope.userDetails.sport.surf.favoriteShop = $scope.userDetails.sport.surf.favoriteShop ? $scope.userDetails.sport.surf.favoriteShop : undefined;
-                $scope.userDetails.sport.surf.localBreak = $scope.userDetails.sport.surf.localBreak ? $scope.userDetails.sport.surf.localBreak : undefined;
-                $scope.userDetails.sport.surf.favoriteBoard = $scope.userDetails.sport.surf.favoriteBoard ? $scope.userDetails.sport.surf.favoriteBoard : undefined;
-                $scope.userDetails.sport.surf.startDate = $scope.startDateDisplay ? (new Date('1/1/' + $scope.startDateDisplay)).getTime() : undefined;
-                $scope.userDetails.height = $scope.heightDisplay > 0 ? $scope.heightDisplay : undefined;
-                $scope.userDetails.weight = $scope.weightDisplay > 0 ? parseInt($scope.weightDisplay, 10) / 2.2 : undefined; // convert pounds to kg
-                $scope.userDetails.tagline = $scope.userDetails.tagline ? $scope.userDetails.tagline : undefined;
-                $scope.userDetails.city = $scope.userDetails.city ? $scope.userDetails.city : undefined;
-                $scope.userDetails.state = $scope.userDetails.state ? $scope.userDetails.state : undefined;
-
                 $scope.user.update($scope.userDetails)
                     .success(function () {
                         // nothing to do here :)
                     })
-                    .error(function () {
-                        console.log('error saving'); // TODO: this. better.
+                    .error(function (data) {
+                        $scope.updateError = data;
                     })
                     .finally(function () {
                         $scope.saving = false;
