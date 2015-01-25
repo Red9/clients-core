@@ -87,19 +87,6 @@
                     <summary-statistics statistics="dataset.summaryStatistics"></summary-statistics>
                 </tab>
 
-                <tab heading="Aggregate Statistics">
-                    <tabset>
-                        <tab ng-repeat="(type, statistics) in dataset.events.$meta.aggregateStatistics.groupedBy"
-                             heading="{{type}} ({{statistics.count}})">
-                            <temporal-statistics statistics="statistics.temporal" resource-type="event"
-                                                 id-list="statistics.idList"></temporal-statistics>
-                            <compound-statistics statistics="statistics.compound" resource-type="event"
-                                                 id-list="statistics.idList"></compound-statistics>
-                        </tab>
-                    </tabset>
-                </tab>
-
-
                 <tab heading="Detailed Location">
                     <div class="row">
                         <div class="col-sm-4">
