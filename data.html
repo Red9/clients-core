@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Data Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="application-name" content="Total State">
+
+    <link href="/old/css/jquery-ui-1.10.3.css" rel="stylesheet">
+    <link href="/old/css/bootstrap.old.css" rel="stylesheet">
+    <link href="/old/css/bootstrap-theme.old.css" rel="stylesheet">
+    <link href="/old/css/style.css" rel="stylesheet">
+    <link href="/old/css/bootstrap-markdown.css" rel="stylesheet">
+    <link href="/old/css/rickshaw.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="glyphicon glyphicon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="pull-left"><img src="/images/red9-logo-sm.png" width="50px" height="50px"></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/dataset/">Sessions</a></li>
+                <li><a href="/leaderboard/">Leaderboards</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>More <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-header">Actions</li>
+                        <li><a href="/upload/rnc">Upload</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Search</li>
+                        <li><a href="/event/">Events</a></li>
+                        <li><a href="/user/">Users</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Settings</li>
+                        <li><a href="/admin">Admin</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <!-- The Google Maps script tag should really be with the googlemaps.html
+    lens, but it turns out that it's subject to same origin policy. So, it's
+    here.
+
+    Update: or something. I left this script in the googlemap.html file, thinking
+    it wouldn't do anything. Turns out, it does. It won't work with just the
+    script tag in googlemaps.html ("ReferenceError: google is not defined"), but
+    when I have both it and the script tag below I get inconsistent map loads.
+    Sometimes it loads, sometimes it loads a blank space. Grrr... -->
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYsEDTVazN_ic9SsHVvhcSCLwlLEHd7Q&amp;sensor=true&amp;libraries=geometry">
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="/config.js"></script>
+    <script src="/old/js/vendor/require.js"></script>
+    <script src="/old/js/requireconfig.js"></script>
+    <script src="/old/js/spa.js"></script>
+    <script type="text/javascript">
+        window.analytics = window.analytics || [], window.analytics.methods = ["identify", "group", "track", "page", "pageview", "alias", "ready", "on", "once", "off", "trackLink", "trackForm", "trackClick", "trackSubmit"], window.analytics.factory = function (t) {
+            return function () {
+                var a = Array.prototype.slice.call(arguments);
+                return a.unshift(t), window.analytics.push(a), window.analytics
+            }
+        };
+        for (var i = 0; i < window.analytics.methods.length; i++) {
+            var key = window.analytics.methods[i];
+            window.analytics[key] = window.analytics.factory(key)
+        }
+        window.analytics.load = function (t) {
+            if (!document.getElementById("analytics-js")) {
+                var a = document.createElement("script");
+                a.type = "text/javascript", a.id = "analytics-js", a.async = !0, a.src = ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js";
+                var n = document.getElementsByTagName("script")[0];
+                n.parentNode.insertBefore(a, n)
+            }
+        }, window.analytics.SNIPPET_VERSION = "2.0.9",
+                window.analytics.load('FnTPjUuqyF');
+    </script>
+
+    <!--<div id="page_parameters" data-apiurl="http://localhost:3000" data-actionurl="http://localhost:3000"-->
+    <!--data-currentuser="fadedcab-0528-e834-b47d-c80e3696846c">-->
+    <!--</div>-->
+    <div id="modal_div"><!-- Dynamically loaded in.--></div>
+
+    <div id="sandboxContentDiv">
+    </div>
+
+    <br/><br/><br/><br/>
+
+</div>
+<br/>
+<br/>
+
+<div id="fixedBottomBarDiv"></div>
+</body>
+</html>
