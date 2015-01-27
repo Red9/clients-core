@@ -28,6 +28,7 @@
         "nconf": "latest",
         "hapi": "latest",
         "good": "latest",
-        "good-console": "latest"
+        "good-console": "latest",
+        "grunt-shell-spawn": "latest"
     }
 }

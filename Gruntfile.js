@@ -51,7 +51,27 @@ module.exports = function (grunt) {
         jshint: {
             main: {
                 options: {
-                    jshintrc: '.jshintrc'
+                    "laxbreak": true,
+                    "globals": {
+                        "d3": true,
+                        "alert": true,
+                        "red9config": true,
+                        "jQuery": true,
+                        "angular": true,
+                        "console": true,
+                        "$": true,
+                        "_": true,
+                        "moment": true,
+                        "describe": true,
+                        "beforeEach": true,
+                        "module": true,
+                        "inject": true,
+                        "it": true,
+                        "expect": true,
+                        "xdescribe": true,
+                        "xit": true,
+                        "spyOn": true
+                    }
                 },
                 src: createFolderGlobs('*.js').concat('!old/**/*').concat('!server.js')
             }
@@ -248,6 +268,14 @@ module.exports = function (grunt) {
                     ext: '.css'
                 }]
             }
+        },
+        shell: {
+            serve: {
+                command: "nodejs server.js",
+                options: {
+                    async: true
+                }
+            }
         }
     });
 
@@ -269,10 +297,9 @@ module.exports = function (grunt) {
         'clean:after'
     ]);
 
-    grunt.registerTask('serve', ['dom_munger:read', 'jshint', 'sass', /*'connect',*/ 'watch']);
-    grunt.registerTask('test', ['dom_munger:read', 'karma:all_tests']);
+    grunt.registerTask('test', ['jshint', 'sass'/*, 'karma:all_tests'*/]);
 
-    grunt.registerTask('testrun', ['copy']);
+    grunt.registerTask('serve', ['jshint', 'sass', 'shell:serve', 'watch']);
 
     grunt.event.on('watch', function (action, filepath) {
         //https://github.com/gruntjs/grunt-contrib-watch/issues/156

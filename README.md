@@ -9,13 +9,13 @@ git clone git@bitbucket.org:rednine/clients-core.git
 cd clients-core
 npm install
 bower install
-export NODE_ENV=remote
-nodejs server.js         # In your first terminal
-grunt watch              # In a second terminal
+export NODE_ENV=remote   # Or NODE_ENV=development for a local server
+grunt serve
 ```
 
-The `watch` task will automatically watch the affected directories, and
-on a save refresh any open pages that you have. This helps speed up development.
+The `serve` creates a simple HTML server for development use. It will also
+automatically watch the affected directories, and on a source save refresh any
+open pages that you have. This helps speed up development.
 
 Note that you must have bower and grunt installed. If you don't, then
 
@@ -23,19 +23,27 @@ Note that you must have bower and grunt installed. If you don't, then
 npm install -g bower grunt-cli
 ```
 
-To add a dependency:
+To add a dependency
 
 ```sh
 bower install --save <package name>    # Get and save the code
 grunt wiredep                          # Add the appropriate script and link tags
 ```
 
-To build for release (concat, minify, etc.):
+To build for release (concat, minify, etc.)
+
 ```sh
 grunt build
 ```
 
+To check the code for style and run tests
+
+```sh
+grunt test
+```
 
 # Project Structure
 
-Coming soon.
+Coming soon. Follow:
+
+[Google Angular Style Guide](https://docs.google.com/document/d/1XXMvReO8-Awi1EZXAXS4PzDzdNvV6pGcuaF4Q9821Es/pub)
