@@ -1,6 +1,7 @@
 nbproject/private/
-release/
+dist/
 node_modules/
+bower_components/
 .idea/
 .sass-cache/
 *.map
