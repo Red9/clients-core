@@ -10,7 +10,7 @@ var pkg = require('./package.json');
 //This enables users to create any directory structure they desire.
 var createFolderGlobs = function (fileTypePatterns) {
     fileTypePatterns = Array.isArray(fileTypePatterns) ? fileTypePatterns : [fileTypePatterns];
-    var ignore = ['node_modules', 'bower_components', 'dist', 'temp'];
+    var ignore = ['node_modules', 'bower_components', 'dist'];
     var fs = require('fs');
     return fs.readdirSync(process.cwd())
         .map(function (file) {
@@ -108,7 +108,8 @@ module.exports = function (grunt) {
                             'my-client/**/*.css.map',
                             'images/**',
                             'my-client/**/*.html',
-                            'old/**/*' // For the historic data page. Hopefully soon we can get rid of this.
+                            'old/**/*', // For the historic data page. Hopefully soon we can get rid of this.
+                            'data.html' // Also for the old page.
                         ],
                         dest: 'dist/'
                     },
@@ -158,6 +159,16 @@ module.exports = function (grunt) {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
                 mangle: {
                     except: ["$super"] // Don't modify the "$super" text, needed to make Rickshaw pass optimization.
+                },
+                compress: {
+                    sequences: true,
+                    dead_code: true,
+                    conditionals: true,
+                    booleans: true,
+                    unused: true,
+                    if_return: true,
+                    join_vars: true,
+                    drop_console: true
                 }
             }
         },
@@ -221,6 +232,11 @@ module.exports = function (grunt) {
                     // you may pass:
 
                     // https://github.com/taptapship/wiredep#configuration
+                    exclude: [
+                        '/jquery/', // Required by bootstrap JS, which we're not using.
+                        '/SHA-1/',  // Angulartics: https://github.com/luisfarzati/angulartics/issues/209
+                        '/waypoints/' // Same.
+                    ],
                     overrides: {
                         angulartics: {
                             main: [ // We don't want all "main"s that angulartics defines...
@@ -262,9 +278,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'my-client/scss',
-                    src: ['*.scss'],
-                    dest: 'my-client/css/',
+                    cwd: 'my-client/',
+                    src: ['**/*.scss'],
+                    dest: 'my-client/',
                     ext: '.css'
                 }]
             }
@@ -299,7 +315,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['jshint', 'sass'/*, 'karma:all_tests'*/]);
 
-    grunt.registerTask('serve', ['jshint', 'sass', 'shell:serve', 'watch']);
+    // TODO: SRLM: The server isn't killed on exit...
+    grunt.registerTask('serve', ['jshint', 'sass', 'shell:serve', 'watch', 'shell:serve:kill', 'jshint']);
 
     grunt.event.on('watch', function (action, filepath) {
         //https://github.com/gruntjs/grunt-contrib-watch/issues/156
@@ -326,6 +343,8 @@ module.exports = function (grunt) {
                 grunt.config('karma.options.files', files);
                 tasksToRun.push('karma:during_watch');
             }
+        } else if (filepath.lastIndexOf('.scss') !== -1 && filepath.lastIndexOf('.scss') === filepath.length - 5) {
+            tasksToRun.push('sass');
         }
 
         //if index.html changed, we need to reread the <script> tags so our next run of karma

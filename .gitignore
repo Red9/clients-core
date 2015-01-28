@@ -1,7 +1,7 @@
-nbproject/private/
 dist/
 node_modules/
 bower_components/
 .idea/
 .sass-cache/
-*.map
+*.css
+*.css.map

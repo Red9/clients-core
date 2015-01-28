@@ -201,28 +201,20 @@
 
 <!-- build:js js/vendor.js -->
 <!-- bower:js -->
-<script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
 <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
 <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/spin.js/spin.js"></script>
-<script src="bower_components/angular-spinner/angular-spinner.js"></script>
-<script src="bower_components/waypoints/waypoints.js"></script>
-<script src="bower_components/SHA-1/sha1.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angulartics/src/angulartics.js"></script>
 <script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
-<script src="bower_components/async/lib/async.js"></script>
+<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
-<script src="bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
-<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -230,13 +222,46 @@
 
 <!-- build:js js/app1.js -->
 <script src="app.js"></script>
-<script src="my-client/services.js"></script>
-<script src="my-client/controllers.js"></script>
-<script src="my-client/filters.js"></script>
-<script src="my-client/directives.js"></script>
+<script src="my-client/userprofile/userprofile.js"></script>
+<script src="my-client/uploadrnc/uploadrnc.js"></script>
+<script src="my-client/leaderboard/leaderboard.js"></script>
+<script src="my-client/sitestatistics/sitestatistics.js"></script>
+<script src="my-client/unauthenticated/unauthenticated.js"></script>
+<script src="my-client/home/home.js"></script>
+<script src="my-client/edituserprofile/edituserprofile.js"></script>
+<script src="my-client/admin/admin.js"></script>
+<script src="my-client/dataanalysis/dataanalysis.js"></script>
+<script src="my-client/search/search.js"></script>
+<script src="components/api/api.js"></script>
+<script src="components/resourcelist/resourcelist.js"></script>
+<script src="components/confirmdialog/confirmdialog.js"></script>
+<script src="components/search/event/eventsearch.js"></script>
+<script src="components/search/dataset/datasetsearch.js"></script>
+<script src="components/keypressenter/keypressenter.js"></script>
+<script src="components/validfile/validfile.js"></script>
+<script src="components/userinput/userinput.js"></script>
+<script src="components/badgelist/badgelist.js"></script>
+<script src="components/taghelper/taghelper.js"></script>
+<script src="components/eventtimeline/eventtimeline.js"></script>
+<script src="components/listgroupsimple/listgroupsimple.js"></script>
+<script src="components/map/map.js"></script>
+<script src="components/summarystatistics/summarystatistics.js"></script>
+<script src="components/userdetails/userdetails.js"></script>
+<script src="components/userinputimperial/userinputimperial.js"></script>
+<script src="components/eventssummary/eventssummary.js"></script>
+<script src="components/aggregatestatistics/aggregatestatistics.js"></script>
+<script src="components/fcpxmldownload/fcpxmldownload.js"></script>
+<script src="components/head/head.js"></script>
+<script src="components/authenticate/authenticate.js"></script>
+<script src="components/filters/display/duration.js"></script>
+<script src="components/filters/display/sumduration.js"></script>
+<script src="components/filters/display/units.js"></script>
+
+
+
+
+
 <!-- endbuild -->
-
-
 
 
 <script type="text/javascript">
@@ -258,7 +283,7 @@
             n.parentNode.insertBefore(a, n)
         }
     }, window.analytics.SNIPPET_VERSION = "2.0.9",
-        window.analytics.load('FnTPjUuqyF');
+            window.analytics.load('FnTPjUuqyF');
 
 </script>
 
@@ -273,13 +298,13 @@
 
                 return $q(function (resolve, reject) {
                     $http.get(red9config.apiUrl + '/auth/current')
-                        .success(function (data, status) {
-                            //analytics.identify(data.user.id, angular.extend({name: data.user.displayName}, data.user));
-                            resolve({user: data.user});
-                        })
-                        .error(function (data, status) {
-                            resolve({user: null});
-                        });
+                            .success(function (data, status) {
+                                //analytics.identify(data.user.id, angular.extend({name: data.user.displayName}, data.user));
+                                resolve({user: data.user});
+                            })
+                            .error(function (data, status) {
+                                resolve({user: null});
+                            });
                 });
 
             }
@@ -321,7 +346,7 @@
                 <li><a href="/dataset/">Sessions</a></li>
                 <li dropdown>
                     <a href="#" dropdown-toggle>Leaderboards <span
-                        class="caret"></span></a>
+                            class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/leaderboard/">All</a></li>
                         <li><a href="/leaderboard/leaderboard-team">Mira Costa
@@ -329,7 +354,7 @@
                         <li><a href="/leaderboard/leaderboard-pe">Mira Costa
                             PE</a></li>
                         <li><a
-                            href="/leaderboard/leaderboard-general">Public</a>
+                                href="/leaderboard/leaderboard-general">Public</a>
                         </li>
                     </ul>
                 </li>
@@ -358,20 +383,20 @@
             <ul class="nav navbar-nav navbar-right">
                 <li dropdown ng-if="current.user">
                     <a href="#" dropdown-toggle>{{current.user.displayName}}<b
-                        class="caret"></b></a>
+                            class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a ng-href="/user/{{current.user.id}}">View
                             Profile</a></li>
                         <li><a ng-href="/user/{{current.user.id}}/admin">Settings</a>
                         </li>
                         <li><a href="" ng-click="authenticate.logout()"><span
-                            class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
+                                class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
                         </li>
                     </ul>
                 </li>
                 <li ng-if="!current.user">
                     <a ng-click="authenticate.login()">Sign In&nbsp;<span
-                        class="glyphicon glyphicon-log-in"></span></a>
+                            class="glyphicon glyphicon-log-in"></span></a>
                 </li>
             </ul>
         </div>
