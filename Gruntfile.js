@@ -127,10 +127,13 @@ module.exports = function (grunt) {
                     },
                     {
                         src: [
+                            'components/**/*.css',
+                            'components/**/*.css.map',
+                            'components/**/*.html',
                             'my-client/**/*.css',
                             'my-client/**/*.css.map',
-                            'images/**',
                             'my-client/**/*.html',
+                            'images/**',
                             'old/**/*', // For the historic data page. Hopefully soon we can get rid of this.
                             'data.html' // Also for the old page.
                         ],
