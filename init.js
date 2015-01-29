@@ -27,7 +27,9 @@ deferredBootstrapper.bootstrap({
     element: document,
     module: 'redApp',
     resolve: {
-        current: function ($q, $http) {
+        // For this section of code we have to do the Angular injection array
+        // stuff: ng-annotate doesn't find it, and uglify will mess up the names.
+        current: ['$q', '$http', function ($q, $http) {
             $http.defaults.withCredentials = true;
 
             return $q(function (resolve, reject) {
@@ -40,7 +42,6 @@ deferredBootstrapper.bootstrap({
                         resolve({user: null});
                     });
             });
-
-        }
+        }]
     }
 });
