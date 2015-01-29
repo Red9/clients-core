@@ -1,0 +1,98 @@
+
+.ngFade.ng-enter {
+  transition: 0.1s linear all;
+  opacity: 0;
+}
+
+.ngFade.ng-enter-active {
+  opacity: 1;
+}
+
+.form-control-inline {
+  min-width: 0;
+  width: auto;
+  display: inline;
+}
+
+.bullet-graph {
+  background-color: #c4e3f3;
+  width: 40%; /* Adjust with JavaScript */
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* Taken from http://stackoverflow.com/a/25517025/2557842 */
+.row-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+/* Taken from http://stackoverflow.com/a/13771448/2557842 */
+.table tbody > tr > td.vertical-center {
+  vertical-align: middle;
+}
+
+/* Taken from http://stackoverflow.com/a/2359459/2557842 */
+span.nobreak {
+  white-space: nowrap;
+}
+
+/* Taken from http://stackoverflow.com/questions/21294917/creating-a-splash-screen-using-ng-cloak */
+[ng-cloak].splash {
+  display: block !important;
+}
+
+.splash {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  display: none;
+}
+
+/*
+       Event Timeline
+       */
+.event-timeline-axis path,
+.event-timeline-axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+  opacity: 0.2;
+}
+
+.event-timeline-axis text {
+  font-family: sans-serif;
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.event-timeline-markers {
+  fill: #377eb8;
+  opacity: 0.5;
+}
+
+.event-timeline-markers-source-auto {
+  fill: #b87137;
+}
+
+.event-timeline-markers-highlight {
+  fill: #FF0000;
+}
+
+.event-timeline-markers-select {
+  stroke: #000000;
+  stroke-width: 3;
+}
+
+.event-timeline-types {
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  opacity: 0.5;
+  white-space: nowrap;
+  margin-left: 3px;
+  bottom: 1px;
+}
+
+.event-timeline-types-highlight {
+  opacity: 1;
+}
