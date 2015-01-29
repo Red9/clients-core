@@ -8,6 +8,7 @@ angular
     .config(function ($routeProvider) {
         $routeProvider.when('/upload/rnc', {
             templateUrl: '/my-client/uploadrnc/uploadrnc.html',
+            css: '/my-client/uploadrnc/uploadrnc.css',
             controller: 'uploadRNCController',
             accessLevel: 'basic',
             title: 'R9: Upload'

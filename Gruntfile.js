@@ -36,16 +36,29 @@ module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+        pkg: pkg,
         watch: {
             main: {
                 options: {
                     livereload: true,
                     livereloadOnError: false,
-                    spawn: false
+                    spawn: false // Faster, but more prone to watch failure
                 },
-                files: [createFolderGlobs(['*.js', '*.scss', '*.html']), '!_SpecRunner.html', '!.grunt'],
+                files: [createFolderGlobs(['*.js', '*.scss', '*.html']), '!_SpecRunner.html'],
                 tasks: [] //all the tasks are run dynamically during the watch event handler
+            }
+        },
+        shell: {
+            serve: {
+                command: "nodejs server.js"
+            }
+        },
+        concurrent: {
+            serve: {
+                tasks: ['shell:serve', 'watch'],
+                options: {
+                    logConcurrentOutput: true
+                }
             }
         },
         jshint: {
@@ -76,6 +89,17 @@ module.exports = function (grunt) {
                 src: createFolderGlobs('*.js').concat('!old/**/*').concat('!server.js')
             }
         },
+        sass: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'my-client/',
+                    src: ['**/*.scss'],
+                    dest: 'my-client/',
+                    ext: '.css'
+                }]
+            }
+        },
         clean: {
             before: {
                 src: ['dist', '.tmp']
@@ -84,17 +108,16 @@ module.exports = function (grunt) {
                 src: ['.tmp']
             }
         },
-
-        //ngtemplates: {
-        //    main: {
-        //        options: {
-        //            module: pkg.name,
-        //            htmlmin: '<%= htmlmin.main.options %>'
-        //        },
-        //        src: [createFolderGlobs('*.html'), '!index.html', '!_SpecRunner.html', '!old/**/*'],
-        //        dest: 'temp/templates.js'
-        //    }
-        //},
+        useminPrepare: {
+            html: 'dist/index.html',
+            options: {
+                dest: 'dist',
+                root: './'
+            }
+        },
+        usemin: {
+            html: 'dist/index.html'
+        },
         copy: {
             index: {
                 files: [
@@ -263,46 +286,17 @@ module.exports = function (grunt) {
                     }
                 }
             }
-        },
-        useminPrepare: {
-            html: 'dist/index.html',
-            options: {
-                dest: 'dist',
-                root: './'
-            }
-        },
-        usemin: {
-            html: 'dist/index.html'
-        },
-        sass: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'my-client/',
-                    src: ['**/*.scss'],
-                    dest: 'my-client/',
-                    ext: '.css'
-                }]
-            }
-        },
-        shell: {
-            serve: {
-                command: "nodejs server.js",
-                options: {
-                    async: true
-                }
-            }
         }
     });
 
-
+    grunt.registerTask('test', ['jshint', 'sass'/*, 'karma:all_tests'*/]);
+    grunt.registerTask('serve', ['concurrent:serve']);
     grunt.registerTask('build', [
         'jshint',
         'sass',
         'clean:before',
         'copy',
         'dom_munger:update',
-        'sass',
         'useminPrepare',
         'concat:generated',
         'ngAnnotate',
@@ -312,11 +306,6 @@ module.exports = function (grunt) {
         'htmlmin',
         'clean:after'
     ]);
-
-    grunt.registerTask('test', ['jshint', 'sass'/*, 'karma:all_tests'*/]);
-
-    // TODO: SRLM: The server isn't killed on exit...
-    grunt.registerTask('serve', ['jshint', 'sass', 'shell:serve', 'watch', 'shell:serve:kill', 'jshint']);
 
     grunt.event.on('watch', function (action, filepath) {
         //https://github.com/gruntjs/grunt-contrib-watch/issues/156
