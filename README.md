@@ -78,7 +78,10 @@ Sizes taken from the original repository \*.min size.
 | leaflet                    |   125 |
 | leaflet-markercluster      |    28 |
 | lodash                     |    47 |
-| **Total**                  |**637**|
+| crossfilter                |    10 |
+| dc                         |    75 |
+| angular-dc                 |     3 |
+| **Total**                  |**725**|
 
 
 

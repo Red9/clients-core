@@ -68,12 +68,19 @@ server.route({
     }
 });
 
+// This is a maxBuffer error hack.
+// Should fix with https://www.npmjs.com/package/grunt-bg-shell
+var consoleArgs = {log: '*', response: '*'};
+if (nconf.get('NODE_ENV') === 'development') {
+    consoleArgs = null;
+}
+
 server.register({
     register: Good,
     options: {
         reporters: [{
             reporter: require('good-console'),
-            args: [{log: '*', response: '*'}]
+            args: [consoleArgs]
         }]
     }
 }, function (err) {
