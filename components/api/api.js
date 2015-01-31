@@ -14,7 +14,7 @@ angular
  *   - delete
  *
  */
-    .factory('api', function ($resource, $http, $interval, _) {
+    .factory('api', function ($resource, $http, $interval, $q, _) {
         $http.defaults.withCredentials = true;
         var apiUrl = red9config.apiUrl;
 
@@ -208,6 +208,28 @@ angular
                 .error(function (data, status) {
                     console.log('Error: ' + data + ', ' + status);
                 });
+        };
+
+        result.getCompoundStatistics = function (query, groupBy) {
+            var deferred = $q.defer();
+
+            var params = _.clone(query);
+            params.groupBy = groupBy.join(',');
+            $http({
+                url: apiUrl + '/compound/',
+                method: 'GET',
+                params: params
+            }).then(function (data) {
+                var result = data.data.data;
+                result.$meta = data.data.meta;
+
+                console.dir(result);
+
+                deferred.resolve(result);
+
+            }).catch(deferred.reject);
+
+            return deferred.promise;
         };
 
         return result;
