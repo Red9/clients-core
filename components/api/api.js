@@ -149,7 +149,11 @@ angular
             });
         };
 
-        result.dataset.prototype.getFcpxmlUrl = function (options) {
+        result.dataset.prototype.getFcpxmlUrl = function (options_) {
+            // DW-332: we need to make a clone of the options so that our
+            // options.files changes doesn't work it's way back to whoever
+            // gave this to us.
+            var options = _.clone(options_);
 
             // This function seems to get called at an inappropriate time...
             // HACK to make sure it doesn't error out.
