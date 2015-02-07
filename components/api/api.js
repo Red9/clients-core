@@ -20,10 +20,8 @@ angular
 
         function transformResponse(data) {
             var wrappedResult = angular.fromJson(data);
-
             wrappedResult.data = wrappedResult.data || [];
             wrappedResult.data.$meta = wrappedResult.meta;
-
             return wrappedResult.data;
         }
 
@@ -32,28 +30,21 @@ angular
             return response.resource;
         }
 
-        var endpoint = {
-            single: {
-                method: 'GET',
-                isArray: false,
-                transformResponse: transformResponse,
-                interceptor: {response: responseInterceptor}
-            },
-            list: {
-                method: 'GET',
-                isArray: true,
-                transformResponse: transformResponse,
-                interceptor: {response: responseInterceptor}
-            }
+        var metadataResponse = {
+            transformResponse: transformResponse,
+            interceptor: {response: responseInterceptor}
         };
 
         var metadataFormat = {
-            get: endpoint.single,
-            save: endpoint.single,
-            update: endpoint.single,
-            query: endpoint.list,
-            remove: endpoint.single,
-            delete: endpoint.single
+            get: _.merge({}, metadataResponse, {method: 'GET'}),
+            save: _.merge({}, metadataResponse, {method: 'POST'}),
+            update: _.merge({}, metadataResponse, {method: 'PUT'}),
+            query: _.merge({}, metadataResponse, {
+                method: 'GET',
+                isArray: true
+            }),
+            remove: _.merge({}, metadataResponse, {method: 'DELETE'}),
+            delete: _.merge({}, metadataResponse, {method: 'DELETE'})
         };
 
         var result = {
@@ -149,7 +140,11 @@ angular
             });
         };
 
-        result.dataset.prototype.getFcpxmlUrl = function (options) {
+        result.dataset.prototype.getFcpxmlUrl = function (options_) {
+            // DW-332: we need to make a clone of the options so that our
+            // options.files changes doesn't work it's way back to whoever
+            // gave this to us.
+            var options = _.clone(options_);
 
             // This function seems to get called at an inappropriate time...
             // HACK to make sure it doesn't error out.
