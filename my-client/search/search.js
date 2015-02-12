@@ -1,12 +1,7 @@
 angular
     .module('redApp.search', [
-        'ngRoute',
+        'duScroll',
         'lodash',
-        'redComponents.search.dataset',
-        'redComponents.search.event',
-        'redComponents.resourceList',
-        'redComponents.resourceList',
-        'redComponents.userInput',
         'redComponents.queryValidator',
         'redComponents.queryBuilder.dataset',
         'redComponents.pageApi',
@@ -50,9 +45,9 @@ angular
             },
             data: {
                 css: '/my-client/search/search_dataset.css'
-            }
-            //accessLevel: 'basic',
-            //title: 'R9: Dataset Search'
+            },
+            accessLevel: 'basic',
+            title: 'R9: Dataset Search'
         });
     })
     .controller('search.dataset', function ($scope, $location, _, api, resourceList, ResponsiveDetection) {

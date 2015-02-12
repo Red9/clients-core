@@ -1,7 +1,8 @@
 angular
     .module('redComponents.queryBuilder.dataset', [
         'redComponents.api',
-        'lodash'
+        'lodash',
+        'ngTagsInput'
     ])
     .directive('queryBuilderDataset', function () {
         return {

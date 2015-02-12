@@ -1,28 +1,29 @@
 <div class="jumbotron">
-	<div class="media">
-	    <a class="media-left" href="/user/{{dataset.owner.id}}">
-	        <img ng-src="{{user.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
-	    </a>
+    <div class="media">
+        <a class="media-left" href="/user/{{dataset.owner.id}}">
+            <img ng-src="{{user.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
+        </a>
 
-	    <div class="media-body">
-	    	<h1 class="media-heading"> {{user.displayName}}</h1>
-	    	<h4>
-	    	    {{user.tagline}}
-	    	</h4>
-	    	
-	    </div>
-	</div>
-	<br />
-	<user-details />
+        <div class="media-body">
+            <h1 class="media-heading"> {{user.displayName}}</h1>
+            <h4>
+                {{user.tagline}}
+            </h4>
+
+        </div>
+    </div>
+    <br/>
+    <user-details/>
 </div>
 
 <div class="well">
-	<h2>Stats</h2>
-	<aggregate-statistics />
+    <h2>Stats</h2>
+    <aggregate-statistics/>
 </div>
 
 
-<div class="well map-container">
-	<h2>Sessions</h2>
-	<resource-list resource-filters="datasetSearchQuery" resource-type="dataset"></resource-list>
+<div class="well">
+    <a ng-href="/dataset/?userId={{user.id}}">
+        <h2>My Sessions <span class="glyphicon  glyphicon-circle-arrow-right"></span></h2>
+    </a>
 </div>

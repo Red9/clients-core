@@ -4,24 +4,27 @@ angular
         'redComponents.api',
         'lodash'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/leaderboard/:tag?', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('leaderboard', {
+            url: '/leaderboard/{tag}',
             templateUrl: '/my-client/leaderboard/leaderboard.html',
-            css: '/my-client/leaderboard/leaderboard.css',
             controller: 'leaderboard',
+            data: {
+                css: '/my-client/leaderboard/leaderboard.css'
+            },
             accessLevel: 'public',
             title: 'R9: Leaderboard'
         });
     })
     .controller('leaderboard',
-    function ($scope, $routeParams, api, _) {
+    function ($scope, $stateParams, api, _) {
 
         $scope.format = 'MMM dd, yyyy';
         $scope.userList = null;
         $scope.dateOptions = {
             showWeeks: false
         };
-        $scope.team = $routeParams.tag;  // This is temporary.  We should assign a team to the surfer.
+        $scope.team = $stateParams.tag;  // This is temporary.  We should assign a team to the surfer.
         $scope.predicate = "topSpeed";
         $scope.reverse = true;
 
@@ -51,12 +54,12 @@ angular
             $scope.startTime = $scope.startDate.date ? $scope.startDate.date.getTime() : (new Date((new Date()).getTime() - 7 * 7 * 24 * 60 * 60 * 1000)).getTime();
             $scope.endTime = $scope.endDate.date ? $scope.endDate.date.getTime() : (new Date()).getTime();
             $scope.leaderboardData = null;
-            var datasetQuery = {
+            var datasetQuery = _.pick({
                 'expand[]': ['user', 'event'],
                 'startTime.gt': $scope.startTime,
                 'endTime.lt': $scope.endTime,
                 'tags[]': $scope.team
-            };
+            }, _.identity);
             api.dataset.query(datasetQuery, function (datasetList) {
                 // Filter to just the event type that we're interested in
                 var searchString = "wave";

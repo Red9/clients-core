@@ -5,8 +5,9 @@ angular
         'redComponents.filters.display.duration',
         'lodash'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/aggregate/sitestatistics', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('sitestatistics', {
+            url: '/aggregate/sitestatistics',
             templateUrl: '/my-client/sitestatistics/sitestatistics.html',
             controller: 'siteStatisticsController',
             accessLevel: 'trusted',

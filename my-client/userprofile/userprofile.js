@@ -7,23 +7,26 @@ angular
         'redComponents.resourceList',
         'redComponents.userDetails'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/user/:id', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('userProfile', {
+            url: '/user/:id',
             templateUrl: '/my-client/userprofile/userprofile.html',
-            css: '/my-client/userprofile/userprofile.css',
             controller: 'UserProfileController',
+            data: {
+                css: '/my-client/userprofile/userprofile.css'
+            },
             accessLevel: 'basic',
             title: 'R9: User Profile'
         });
     })
     .controller('UserProfileController',
-    function ($scope, $routeParams, api, _) {
-        $scope.datasetSearchQuery = {userId: $routeParams.id};
+    function ($scope, $stateParams, api, _) {
+        $scope.datasetSearchQuery = {userId: $stateParams.id};
 
         var eventQuery = {
             aggregateStatistics: true,
             aggregateStatisticsGroupBy: 'type',
-            'dataset.userId': $routeParams.id,
+            'dataset.userId': $stateParams.id,
             'expand[]': 'dataset',
             metaformat: 'only'
         };
@@ -36,7 +39,7 @@ angular
         });
 
         var datasetMetaQuery = {
-            userId: $routeParams.id,
+            userId: $stateParams.id,
             aggregateStatistics: true,
             metaformat: 'only'
         };
@@ -46,7 +49,7 @@ angular
         });
 
 
-        api.user.get({id: $routeParams.id}, function (user) {
+        api.user.get({id: $stateParams.id}, function (user) {
             $scope.editable = user.id === $scope.current.user.id;
             $scope.user = user;
 
