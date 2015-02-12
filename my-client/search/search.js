@@ -9,7 +9,9 @@ angular
         'redComponents.userInput',
         'redComponents.queryValidator',
         'redComponents.queryBuilder.dataset',
-        'redComponents.pageApi'
+        'redComponents.pageApi',
+        'redComponents.tile.dataset',
+        'redComponents.responsiveDetection'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('search_dataset', {
@@ -34,12 +36,14 @@ angular
                     var search =
                         _.defaults(queryValidator(schema, $location.search()), {
                             offset: 0,
-                            limit: 25,
+                            limit: 24,
                             sort: 'createdAt',
                             sortDirection: 'desc'
                         });
 
                     $location.search(search); // Save to URL
+
+                    search.expand = 'user';
 
                     return api.dataset.query(search);
                 }
@@ -51,36 +55,28 @@ angular
             //title: 'R9: Dataset Search'
         });
     })
-    .controller('search.dataset', function ($scope, $location, _, api, resourceList) {
+    .controller('search.dataset', function ($scope, $location, _, api, resourceList, ResponsiveDetection) {
+
+        var chunkSizes = {
+            xs: 2,
+            sm: 2,
+            md: 2,
+            lg: 3
+        };
+
+        function chunk(arr, size) {
+            // Taken from http://stackoverflow.com/a/21653981/2557842
+            var newArr = [];
+            for (var i = 0; i < arr.length; i += size) {
+                newArr.push(arr.slice(i, i + size));
+            }
+            return newArr;
+        }
+
+        $scope.$watchCollection('resourceList', function (newValue) {
+            $scope.chunkedList = chunk(newValue, chunkSizes[ResponsiveDetection.getBreakpoint()]);
+        });
         $scope.resourceList = resourceList;
-
-
-        $scope.selected = {
-            delete: function () {
-                console.log('Delete: ');
-                console.dir($scope.selectedResources);
-            },
-            events: function () {
-
-            }
-        };
-
-        $scope.selectedResources = [];
-
-        $scope.selectResource = function ($event, resource) {
-            console.log('selectResource()');
-            if ($event.target.checked) {
-                console.log('Adding resource');
-                $scope.selectedResources.push(resource);
-            } else {
-                console.log('Removing resource');
-                _.remove($scope.selectedResources, function (r) {
-                    return r.id === resource.id;
-                });
-            }
-            $event.stopPropagation();
-        };
-
 
         $scope.paging = {
             sort: $location.search().sort,
@@ -122,7 +118,9 @@ angular
         });
 
         function runSearch() {
-            api.dataset.query($location.search(),
+            var t = $location.search();
+            t.expand = 'user';
+            api.dataset.query(t,
                 function (resourceList) {
                     $scope.resourceList = resourceList;
                 });

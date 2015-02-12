@@ -74,7 +74,7 @@ angular
         });
 
         $http.get(apiUrl + '/sport/').success(function (data) {
-            $timeout(function() {
+            $timeout(function () {
                 angular.extend(result.sports, data);
                 angular.extend(result.sportsList, _.pluck(data, 'name'));
             }, 1000);
@@ -108,7 +108,7 @@ angular
 
 
             var queryString = {
-                size: 'lg'
+                size: _.has(options, 'size') ? options.size : 'lg'
             };
 
             _.each(options, function (value, key) {

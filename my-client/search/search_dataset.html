@@ -3,136 +3,59 @@
     <query-builder-dataset query="query"></query-builder-dataset>
 </div>
 
-<div class="well" id="resultTable">
-    <div ng-if="resourceList.length === 0">
-        <br/><br/>
+<div class="well" ng-if="resourceList.length === 0">
+    <p class="text-center">
+        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;No results found.
+    </p>
+</div>
 
-        <p class="text-center">
-            <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;No results found.
-        </p>
-    </div>
-    <div ng-if="resourceList === null" class="spinner-wrapper">
-        <i class="red9logo large pulse"></i>
-    </div>
-    <!--<div ng-if="resourceList.length > 0" class="map graph more-margin">-->
-    <!--<leaflet class="embed-responsive embed-responsive-16by9" markers="map.markers" layers="map.layers"-->
-    <!--bounds="map.bounds" center="map.center"></leaflet>-->
-    <!--<br/>-->
-    <!--</div>-->
-    <div ng-if="resourceList.length > 0">
+<div class="well" ng-if="resourceList === null" class="spinner-wrapper">
+    <i class="red9logo large pulse"></i>
+</div>
+
+<div ng-if="resourceList.length > 0" id="resultArea">
+    <div class="well">
         <div class="row">
-            <div class="col-xs-5">
-                <span class="badge">{{selectedResources.length}}</span>&nbsp;Selected
-            </div>
-            <div class="col-xs-7 text-right">
+            <div class="col-md-6">
                 <div ng-include="'/components/pagedisplay/pagedisplay.html'"></div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-5">
-                <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group btn-group-md">
-                        <a class="btn btn-default" ng-click="selected.delete()"
-                           title="delete selected">
-                            <span class="glyphicon glyphicon-trash"></span></a>
-                        <a class="btn btn-default" ng-click="selected.events()"
-                           title="display events for selected">
-                            <span class="glyphicon glyphicon-bookmark"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-7">
+            <div class="col-md-6">
                 <div class="pull-right">
-                    <select class="form-control form-control-inline" ng-model="paging.sort" title="sort results by">
+                    <select class="form-control form-control-inline input-sm" ng-model="paging.sort"
+                            title="sort results by">
                         <option value="title">Title</option>
                         <option value="createdAt">Upload</option>
                         <option value="updatedAt">Changed</option>
                         <option value="startTime">Recorded</option>
                         <option value="duration">Duration</option>
                     </select>
-                    <select class="form-control form-control-inline" ng-model="paging.sortDirection"
+                    <select class="form-control form-control-inline input-sm" ng-model="paging.sortDirection"
                             title="result sort order">
                         <option value="asc">Ascending</option>
                         <option value="desc">Descending</option>
                     </select>
-                    <select ng-model="paging.limit" class="form-control form-control-inline"
+                    <select ng-model="paging.limit" class="form-control form-control-inline input-sm"
                             title="results per page">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                        <option value="96">96</option>
                     </select>
                 </div>
             </div>
         </div>
+    </div>
 
-        <br/>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                        <th>
-                        </th>
-                        <th>User</th>
-                        <th>Session</th>
-                        <th><span class="pull-right">Tags&nbsp;</span></th>
-                        <th>Sport</th>
-                        </thead>
-
-                        <tbody>
-                        <tr ng-repeat-start="dataset in resourceList" class="ngFade"
-                            ng-click="dataset.expanded = !dataset.expanded">
-                            <td class="vertical-center">
-                                <input type="checkbox" ng-click="selectResource($event, dataset)">
-                            </td>
-                            <td class="vertical-center">
-                                <a ng-href="/user/{{dataset.user.id}}">
-                                    <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px"
-                                         class="profile-pic"/>
-                                    <span class="displayName">{{dataset.user.displayName}}</span>
-                                </a>
-                            </td>
-                            <td class="vertical-center">
-                                <a ng-href="/analysis/{{dataset.id}}">
-                                    {{dataset.id}}
-                                    <!--{{dataset.title| limitTo:60}}-->
-                                    <span ng-if="dataset.title.length > 60">...</span>
-                                </a>
-                            </td>
-                            <td class="vertical-center">
-                                <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
-                            </td>
-                            <td class="vertical-center">
-                                {{dataset.sport| limitTo:60}}
-                            </td>
-                        </tr>
-                        <tr ng-if="dataset.expanded" ng-repeat-end="" class="expanded-info">
-                            <td colspan="100">
-                                <ul class="list-unstyled">
-                                    <li><span class="text-muted">Recorded</span> {{dataset.startTime| date}}</li>
-                                    <li><span class="text-muted">Uploaded</span> {{dataset.createdAt| date}}</li>
-                                    <li>
-                                        <span class="text-muted">Duration</span>
-                                        {{dataset.endTime - dataset.startTime| duration}}
-                                    </li>
-                                    <li><a ng-href="/dataset/{{dataset.id}}" target="_self">Graphs <span
-                                            class="glyphicon glyphicon-circle-arrow-right"></span></a></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
+    <div class="row" ng-repeat="chunk in chunkedList">
+        <div class="col-md-6 col-lg-4" ng-repeat="resource in chunk">
+            <tile-dataset dataset="resource"></tile-dataset>
         </div>
-        <br/>
+    </div>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <page-api paging="paging" scroll-to-id="resultTable" length="resourceList.$meta.total"></page-api>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="well">
+                <page-api paging="paging" scroll-to-id="resultArea" length="resourceList.$meta.total"></page-api>
             </div>
         </div>
     </div>
