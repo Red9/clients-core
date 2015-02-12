@@ -14,7 +14,7 @@ angular
  *   - delete
  *
  */
-    .factory('api', function ($resource, $http, $interval, $q, _) {
+    .factory('api', function ($resource, $http, $interval, $q, _, $timeout) {
         $http.defaults.withCredentials = true;
         var apiUrl = red9config.apiUrl;
 
@@ -74,9 +74,12 @@ angular
         });
 
         $http.get(apiUrl + '/sport/').success(function (data) {
-            angular.extend(result.sports, data);
-            angular.extend(result.sportsList, _.pluck(data, 'name'));
+            $timeout(function() {
+                angular.extend(result.sports, data);
+                angular.extend(result.sportsList, _.pluck(data, 'name'));
+            }, 1000);
         });
+
         result.sports = [];
         result.sportsList = [];
 

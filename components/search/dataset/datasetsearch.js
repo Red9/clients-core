@@ -51,12 +51,12 @@ angular
                         // to lodash.
                         var index = _.pluck(api.sports, 'name')
                             .indexOf($scope.query.sport);
-                        console.log('Index: ' + index);
-                        console.dir(api.sports);
-                        console.dir(_.pluck(api.sports, 'name'));
+                        //console.log('Index: ' + index);
+                        //console.dir(api.sports);
+                        //console.dir(_.pluck(api.sports, 'name'));
                         if (index > -1) {
                             $scope.sport = api.sports[index];
-                            console.log('$scope.sport: ' + $scope.sport);
+                            //console.log('$scope.sport: ' + $scope.sport);
                         }
                     }
                 }
@@ -86,14 +86,14 @@ angular
                         result['tags[]'] = $scope.tagList;
                     }
 
-                    console.log('$scope.searchTitle: ' + $scope.searchTitle);
+                    //console.log('$scope.searchTitle: ' + $scope.searchTitle);
 
                     if ($scope.searchTitle &&
                         $scope.searchTitle.length > 0) {
                         result.title = $scope.searchTitle;
                     }
 
-                    console.log('$scope.sport: ' + $scope.sport);
+                    //console.log('$scope.sport: ' + $scope.sport);
 
                     if ($scope.sport) {
                         result.sport = $scope.sport.name;

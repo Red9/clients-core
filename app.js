@@ -10,6 +10,11 @@
     angular
         .module('redApp', [
             'ui.bootstrap',
+            'ui.router',
+            'uiRouterStyles',
+            'ngTagsInput',
+            'duScroll',
+
             'angulartics',
             'angulartics.segment.io',
 
@@ -29,48 +34,52 @@
 
             'redComponents.head' // Is this the correct use of this directive?
         ])
+        .value('duScrollOffset', 50) // Compensate for the navbar
         .controller('pageController', function ($scope, authenticate) {
             $scope.logout = authenticate.logout;
         })
-        .config(function ($routeProvider, $locationProvider) {
+        .config(function ($routeProvider, $locationProvider, $urlRouterProvider) {
 
             // Pages
-            $routeProvider.when('/page/404', {
-                templateUrl: '/my-client/pages/404.html',
-                accessLevel: 'public',
-                title: 'R9: 404'
-            });
-            $routeProvider.when('/page/about', {
-                templateUrl: '/my-client/pages/about.html',
-                accessLevel: 'public',
-                title: 'R9: About'
-            });
-            $routeProvider.when('/page/jobs', {
-                templateUrl: '/my-client/pages/jobs.html',
-                accessLevel: 'public',
-                title: 'R9: Jobs'
-            });
-            $routeProvider.when('/page/monitor', {
-                templateUrl: '/my-client/pages/monitor.html',
-                accessLevel: 'admin',
-                title: 'R9: Admin'
-            });
-            $routeProvider.when('/page/team', {
-                templateUrl: '/my-client/pages/team.html',
-                accessLevel: 'public',
-                title: 'R9: Team'
-            });
-            $routeProvider.when('/page/uploadrnc', {
-                templateUrl: '/my-client/pages/uploadrnc.html',
-                accessLevel: 'public',
-                title: 'R9: Upload RNC'
-            });
-
-            $routeProvider.otherwise({
-                redirectTo: '/page/404'
-            });
+            //$routeProvider.when('/page/404', {
+            //    templateUrl: '/my-client/pages/404.html',
+            //    accessLevel: 'public',
+            //    title: 'R9: 404'
+            //});
+            //$routeProvider.when('/page/about', {
+            //    templateUrl: '/my-client/pages/about.html',
+            //    accessLevel: 'public',
+            //    title: 'R9: About'
+            //});
+            //$routeProvider.when('/page/jobs', {
+            //    templateUrl: '/my-client/pages/jobs.html',
+            //    accessLevel: 'public',
+            //    title: 'R9: Jobs'
+            //});
+            //$routeProvider.when('/page/monitor', {
+            //    templateUrl: '/my-client/pages/monitor.html',
+            //    accessLevel: 'admin',
+            //    title: 'R9: Admin'
+            //});
+            //$routeProvider.when('/page/team', {
+            //    templateUrl: '/my-client/pages/team.html',
+            //    accessLevel: 'public',
+            //    title: 'R9: Team'
+            //});
+            //$routeProvider.when('/page/uploadrnc', {
+            //    templateUrl: '/my-client/pages/uploadrnc.html',
+            //    accessLevel: 'public',
+            //    title: 'R9: Upload RNC'
+            //});
+            //
+            //$routeProvider.otherwise({
+            //    redirectTo: '/page/404'
+            //});
 
             $locationProvider.html5Mode(true);
+
+            // For any unmatched url, redirect to /state1
+            //$urlRouterProvider.otherwise("/state1");
         })
         .config(function ($resourceProvider) {
             // Don't strip trailing slashes from calculated URLs

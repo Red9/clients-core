@@ -1,0 +1,12 @@
+<p class="text-muted">
+    <span ng-if="resourceList.$meta.total === 0">0 results</span>
+
+    <span ng-if="resourceList.$meta.total !== 0">
+        {{paging.offset+1}} to
+        <span ng-if="paging.offset + paging.limit > resourceList.$meta.total">{{resourceList.$meta.total}}</span>
+        <span ng-if="paging.offset + paging.limit <= resourceList.$meta.total">{{paging.offset + paging.limit}}</span>
+        of {{resourceList.$meta.total}}
+    </span>
+
+    ({{resourceList.$meta.responseTime}}&nbsp;milliseconds)
+</p>
