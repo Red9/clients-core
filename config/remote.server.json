@@ -1,5 +1,5 @@
 {
     "port": 9532,
     "cacheMaxAge": 0,
-    "src": "./"
+    "src": "./dist/"
 }

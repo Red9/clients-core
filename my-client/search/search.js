@@ -46,6 +46,7 @@ angular
 
         function createResourceList(name, model) {
             return function ($location, _, api, queryValidator) {
+                'ngInject';
                 // Validate URL:
                 var schema = _.defaults(model.schema, pagingSchema);
                 var search = _.defaults(queryValidator(schema, $location.search()), model.defaults);
