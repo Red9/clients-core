@@ -94,6 +94,13 @@
                 }
             });
 
+            $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+                console.log('state change error: ');
+                console.dir(error);
+                console.dir(event);
+                console.dir(toState);
+            });
+
             // Set page title
             $rootScope.$on('$stateChangeSuccess', function (event, toState) {
                 $rootScope.pageTitle = toState.title;
