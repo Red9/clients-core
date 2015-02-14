@@ -1,5 +1,7 @@
 angular
-    .module('redComponents.pageApi', [])
+    .module('redComponents.pageApi', [
+        'duScroll'
+    ])
     .directive('pageApi', function () {
         return {
             restrict: 'E',

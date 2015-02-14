@@ -1,6 +1,5 @@
 angular
     .module('redApp.search', [
-        'duScroll',
         'lodash',
         'redComponents.queryValidator',
         'redComponents.queryBuilder.dataset',
@@ -9,39 +8,64 @@ angular
         'redComponents.responsiveDetection'
     ])
     .config(function ($stateProvider) {
+
+        // Validate URL:
+        var pagingSchema = {
+            offset: 'int',
+            limit: 'int',
+            sort: 'passthrough',
+            sortDirection: 'passthrough'
+        };
+
+        var resource = {
+            dataset: {
+                schema: {
+                    sport: 'passthrough',
+                    title: 'passthrough',
+                    'tags[]': 'passthrough',
+                    userId: 'idList'
+                },
+                defaults: {
+                    offset: 0,
+                    limit: 24,
+                    sort: 'startTime',
+                    sortDirection: 'desc'
+                },
+                expand: 'user'
+            },
+            user: {
+                schema: {},
+                defaults: {
+                    offset: 0,
+                    limit: 24,
+                    sort: 'displayName',
+                    sortDirection: 'asc'
+                }
+            }
+        };
+
+        function createResourceList(name, model) {
+            return function ($location, _, api, queryValidator) {
+                // Validate URL:
+                var schema = _.defaults(model.schema, pagingSchema);
+                var search = _.defaults(queryValidator(schema, $location.search()), model.defaults);
+
+                $location.search(search); // Save to URL
+
+                if (_.has(model, 'expand')) {
+                    search.expand = model.expand;
+                }
+
+                return api[name].query(search).$promise;
+            };
+        }
+
         $stateProvider.state('search_dataset', {
             url: '/dataset/',
             templateUrl: '/my-client/search/search_dataset.html',
             controller: 'search.dataset',
             resolve: {
-                resourceList: function ($location, _, api, queryValidator) {
-
-                    // Validate URL:
-                    var schema = {
-                        offset: 'int',
-                        limit: 'int',
-                        sort: 'passthrough',
-                        sortDirection: 'passthrough',
-                        sport: 'passthrough',
-                        title: 'passthrough',
-                        'tags[]': 'passthrough',
-                        userId: 'idList'
-                    };
-
-                    var search =
-                        _.defaults(queryValidator(schema, $location.search()), {
-                            offset: 0,
-                            limit: 24,
-                            sort: 'createdAt',
-                            sortDirection: 'desc'
-                        });
-
-                    $location.search(search); // Save to URL
-
-                    search.expand = 'user';
-
-                    return api.dataset.query(search);
-                }
+                resourceList: createResourceList('dataset', resource.dataset)
             },
             data: {
                 css: '/my-client/search/search_dataset.css'
@@ -49,6 +73,20 @@ angular
             accessLevel: 'basic',
             title: 'R9: Dataset Search'
         });
+
+        $stateProvider.state('search_user', {
+            url: '/user/',
+            templateUrl: '/my-client/search/search_user.html',
+            controller: 'search.user',
+            resolve: {
+                resourceList: createResourceList('user', resource.user)
+            },
+            accessLevel: 'admin',
+            title: 'R9: User Search'
+        });
+    })
+    .controller('search.user', function ($scope, resourceList) {
+        $scope.resourceList = resourceList;
     })
     .controller('search.dataset', function ($scope, $location, _, api, resourceList, ResponsiveDetection) {
 

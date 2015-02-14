@@ -16,11 +16,15 @@
 <div ng-if="resourceList.length > 0" id="resultArea">
     <div class="well">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div ng-include="'/components/pagedisplay/pagedisplay.html'"></div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="pull-right">
+                    <div class="btn-group" ng-init="displayOption = 'cards'">
+                        <label class="btn btn-default" ng-model="displayOption" btn-radio="'cards'">Cards</label>
+                        <label class="btn btn-default" ng-model="displayOption" btn-radio="'table'">List</label>
+                    </div>
                     <select class="form-control form-control-inline input-sm" ng-model="paging.sort"
                             title="sort results by">
                         <option value="title">Title</option>
@@ -46,8 +50,20 @@
         </div>
     </div>
 
-    <div class="row" ng-repeat="chunk in chunkedList">
-        <div class="col-md-6 col-lg-4" ng-repeat="resource in chunk">
+
+    <div ui-view>
+    </div>
+
+    <div class="row" ng-if="displayOption === 'table'">
+        <div class="col-xs-12">
+            <div class="well">
+                <div ng-include="'/components/resourcetables/dataset/dataset.html'"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="displayOption === 'cards'" ng-repeat="chunk in chunkedList">
+        <div class="col-sm-6 col-lg-4" ng-repeat="resource in chunk">
             <tile-dataset dataset="resource"></tile-dataset>
         </div>
     </div>

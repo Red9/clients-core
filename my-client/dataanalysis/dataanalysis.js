@@ -16,7 +16,7 @@ angular
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('analysis', {
-            url: '/analysis/{id}',
+            url: '/analysis/{id:int}',
             templateUrl: '/my-client/dataanalysis/dataanalysis.html',
             controller: 'DataAnalysisController',
             data: {

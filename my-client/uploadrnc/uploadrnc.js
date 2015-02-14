@@ -44,7 +44,7 @@ angular
                 $scope.uploadPercent = parseInt(100.0 * evt.loaded / evt.total);
             }).success(function (data, status) {
                 $scope.uploadPercent = 100;
-                $scope.uploadDataset = data;
+                $scope.uploadDataset = data.data;
             }).error(function (data) {
                 $scope.uploadError = data;
             });

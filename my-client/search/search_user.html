@@ -1,3 +1,68 @@
 <h1>Users</h1>
 
-<resource-list resource-filters="query" resource-type="user"></resource-list>
+<div ng-if="resourceList.length === 0">
+    <br/><br/>No results found.
+</div>
+<div ng-if="resourceList === null">
+    <span us-spinner></span>
+</div>
+<div ng-if="resourceList.length > 0">
+    <div class="row vertical-align">
+        <div class="col-xs-9">
+            <!--<div class="btn-toolbar" role="toolbar">-->
+            <!--<div class="btn-group">-->
+            <!--<button class="btn btn-md btn-default" ng-click="deleteSelected(resourceList)"><span-->
+            <!--class="glyphicon glyphicon-trash"></span></button>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="col-xs-3 text-right">
+            <p class="text-muted">{{resourceList.length}} results</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <th>
+                    </th>
+                    <th>Display Name</th>
+                    <th>Email</th>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="user in resourceList" class="ngFade">
+                        <td><input type="checkbox" ng-model="user.selected"></td>
+                        <td>
+                            <a ng-href="/user/{{user.id}}">{{user.displayName}}</a>
+                            <a ng-href="/user/{{user.id}}/admin" ng-if="$root.current.user.scope.indexOf('admin') !== -1">    (settings)</a>
+
+                        </td>
+                        <td>{{user.email}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="row row-vertical-center">
+        <div class="col-xs-9">
+            <pagination total-items="resourceList.length" ng-model="resourcePages.currentPage"
+                        items-per-page="resourcePages.itemsPerPage" max-size="resourcePages.maxSize"
+                        boundary-links="true"></pagination>
+        </div>
+        <div class="col-xs-3">
+            <select ng-model="resourcePages.itemsPerPage" class="form-control form-control-inline pull-right">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+

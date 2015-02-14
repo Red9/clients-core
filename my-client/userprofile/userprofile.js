@@ -9,7 +9,7 @@ angular
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('userProfile', {
-            url: '/user/:id',
+            url: '/user/{id:int}',
             templateUrl: '/my-client/userprofile/userprofile.html',
             controller: 'UserProfileController',
             data: {

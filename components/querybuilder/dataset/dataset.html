@@ -1,40 +1,48 @@
 <div class="row">
-    <div class="col-sm-3">
-        <!-- ng-options track by required: https://github.com/angular/angular.js/issues/9714 -->
-        <p><select class="form-control" ng-model="query.sport"
-                   ng-options="item for item in sportsList track by item">
-            <option value="">(any sport)</option>
-        </select></p>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-xs-6">
+                <!-- ng-options track by required: https://github.com/angular/angular.js/issues/9714 -->
+                <p><select class="form-control" ng-model="query.sport"
+                           ng-options="item for item in sportsList track by item">
+                    <option value="">(any sport)</option>
+                </select></p>
+            </div>
+            <div class="col-xs-6">
+                <p><input type="search" class="form-control"
+                          placeholder="title"
+                          ng-model="query.title"
+                          ng-model-options="{debounce: 100}"
+                          popover="case insensitive partial matches"
+                          popover-trigger="focus"
+                          popover-placement="bottom"/></p>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-3">
-        <p><input type="search" class="form-control"
-                  placeholder="title"
-                  ng-model="query.title"
-                  ng-model-options="{debounce: 100}"
-                  popover="case insensitive partial matches"
-                  popover-trigger="focus"
-                  popover-placement="bottom"/></p>
-    </div>
-    <div class="col-sm-3">
-        <p>
-            <tags-input ng-model="queryDisplay.tags"
-                        replace-spaces-with-dashes="false"
-                        enable-editing-last-tag="true"
-                        placeholder="tag(s)"
-                        style="color:black;"></tags-input>
-        </p>
-    </div>
-    <div class="col-sm-3">
-        <p>
-            <tags-input ng-model="queryDisplay.users"
-                        display-property="displayName"
-                        placeholder="user(s)"
-                        replace-spaces-with-dashes="false"
-                        add-from-autocomplete-only="true"
-                        style="color:black;">
-                <auto-complete source="searchUsers($query)"
-                               min-length="2"></auto-complete>
-            </tags-input>
-        </p>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <p>
+                    <tags-input ng-model="queryDisplay.tags"
+                                replace-spaces-with-dashes="false"
+                                enable-editing-last-tag="true"
+                                placeholder="tag(s)"
+                                style="color:black;"></tags-input>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <p>
+                    <tags-input ng-model="queryDisplay.users"
+                                display-property="displayName"
+                                placeholder="user(s)"
+                                replace-spaces-with-dashes="false"
+                                add-from-autocomplete-only="true"
+                                style="color:black;">
+                        <auto-complete source="searchUsers($query)"
+                                       min-length="2"></auto-complete>
+                    </tags-input>
+                </p>
+            </div>
+        </div>
     </div>
 </div>
