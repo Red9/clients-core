@@ -3,10 +3,13 @@ angular
         'ngRoute',
         'lodash'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('home', {
+            url: '/',
             templateUrl: '/my-client/home/home.html',
-            css: '/my-client/home/home.css',
+            data: {
+                css: '/my-client/home/home.css'
+            },
             controller: 'homeController',
             accessLevel: 'basic',
             title: 'Red9: Measure Up to You'

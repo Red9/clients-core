@@ -1,0 +1,20 @@
+<div class="btn-group btn-group-md">
+    <a class="btn btn-default" ng-href="#{{scrollToId}}"
+       du-smooth-scroll
+       ng-click="page.first()"
+       ng-disabled="paging.offset === 0">First</a>
+    <a class="btn btn-default" ng-href="#{{scrollToId}}"
+       du-smooth-scroll
+       ng-click="page.previous()"
+       ng-disabled="paging.offset === 0">Previous</a>
+</div>
+<div class="btn-group btn-group-md">
+    <a class="btn btn-default" ng-href="#{{scrollToId}}"
+       du-smooth-scroll
+       ng-click="page.next()"
+       ng-disabled="paging.offset + paging.limit > length">Next</a>
+    <a class="btn btn-default" ng-href="#{{scrollToId}}"
+       du-smooth-scroll
+       ng-click="page.last()"
+       ng-disabled="paging.offset + paging.limit > length">Last</a>
+</div>

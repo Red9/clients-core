@@ -1,0 +1,39 @@
+<div class="well">
+    <h4><a ng-href="/analysis/{{dataset.id}}" title="view detailed information">
+        {{dataset.title| limitTo:60}}
+        <span ng-if="dataset.title.length > 60">...</span>
+    </a></h4>
+    <a ng-href="/user/{{dataset.user.id}}" title="view user profile">
+        <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px"
+             class="profile-pic"/>
+        <span class="displayName">{{dataset.user.displayName}}</span>
+    </a>
+
+    <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
+
+
+    <div class="row">
+        <div class="col-xs-6"><span class="text-muted">Recorded</span> {{dataset.startTime| date}}</div>
+        <div class="col-xs-6"><span class="text-muted">Duration</span>
+            {{dataset.duration | duration:true}}
+        </div>
+    </div>
+
+
+    <!--<li><a ng-href="/dataset/{{dataset.id}}" target="_self">Detailed Graphs <span-->
+    <!--class="glyphicon glyphicon-circle-arrow-right"></span></a></li>-->
+
+
+    <div ng-if="!map"
+         class="embed-responsive embed-responsive-16by9">
+        <img class="img-responsive" title="no map available"
+             src="/images/mapplaceholder.png">
+    </div>
+
+    <leaflet ng-if="map"
+             class="embed-responsive embed-responsive-16by9"
+             defaults="map.defaults"
+             layers="map.layers"
+             center="map.center"
+             markers="map.markers"></leaflet>
+</div>

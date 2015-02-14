@@ -6,11 +6,11 @@
         <i class="red9logo large pulse"></i>
     </div>
 </div>
-<div ng-if="resourceList.length > 0" class="map graph more-margin">
-    <leaflet class="embed-responsive embed-responsive-16by9" markers="map.markers" layers="map.layers"
-             bounds="map.bounds" center="map.center"></leaflet>
-    <br/>
-</div>
+<!--<div ng-if="resourceList.length > 0" class="map graph more-margin">-->
+<!--<leaflet class="embed-responsive embed-responsive-16by9" markers="map.markers" layers="map.layers"-->
+<!--bounds="map.bounds" center="map.center"></leaflet>-->
+<!--<br/>-->
+<!--</div>-->
 <div>
     <div class="row vertical-align">
         <div class="col-xs-9">
@@ -25,10 +25,25 @@
             </div>
         </div>
         <div class="col-xs-3 text-right">
-            <p class="text-muted">{{resourceList.$meta.total}} results ({{resourceList.$meta.responseTime}} milliseconds)</p>
+            <p class="text-muted">{{resourceList.$meta.total}} results ({{resourceList.$meta.responseTime}}
+                milliseconds)</p>
         </div>
     </div>
-    <br />
+    <div class="row">
+        <div class="col-xs-4">
+            <select class="form-control" ng-model="paging.sort">
+                <option value="title">Title</option>
+                <option value="createdAt">Created At</option>
+            </select>
+        </div>
+    </div>
+    <br/>
+
+
+    <p>Paging: {{paging}}</p>
+
+    <p>Display paging: {{displayPaging}}</p>
+
     <div class="row">
         <div class="col-xs-12">
             <div class="table-responsive">
@@ -43,14 +58,15 @@
                     </thead>
 
                     <tbody>
-                    <tr ng-repeat-start="dataset in resourcePage" class="ngFade"
+                    <tr ng-repeat-start="dataset in resourceList" class="ngFade"
                         ng-click="dataset.expanded = !dataset.expanded">
                         <td class="vertical-center">
                             <input type="checkbox" ng-model="dataset.selected" ng-click="$event.stopPropagation();">
                         </td>
                         <td class="vertical-center">
                             <a ng-href="/user/{{dataset.user.id}}">
-                                <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px" class="profile-pic"/>
+                                <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px"
+                                     class="profile-pic"/>
                                 <span class="displayName">{{dataset.user.displayName}}</span>
                             </a>
                         </td>
@@ -86,15 +102,16 @@
 
         </div>
     </div>
-    <br />
+    <br/>
+
     <div class="row">
         <div class="col-xs-9">
-            <pagination total-items="resourceList.length" ng-model="resourcePages.currentPage"
-                        items-per-page="resourcePages.itemsPerPage" max-size="resourcePages.maxSize"
+            <pagination total-items="resourceList.$meta.total" ng-model="displayPaging.currentPage"
+                        items-per-page="paging.limit" max-size="5" ng-change="displayPaging.pageChanged()"
                         boundary-links="true"></pagination>
         </div>
         <div class="col-xs-3">
-            <select ng-model="resourcePages.itemsPerPage" class="form-control form-control-inline pull-right">
+            <select ng-model="paging.limit" class="form-control form-control-inline pull-right">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>

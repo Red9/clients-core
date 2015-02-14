@@ -3,12 +3,15 @@ angular
         'ngRoute',
         'lodash'
     ])
-    .config(function ($routeProvider) {
+    .config(function ($stateProvider) {
         // TODO: Users shouldn't be able to access this page when they are signed in.
-        $routeProvider.when('/page/unauthenticated', {
+        $stateProvider.state('unauthenticated', {
+            //url: '/page/unauthenticated',
             templateUrl: '/my-client/unauthenticated/unauthenticated.html',
-            css: '/my-client/unauthenticated/unauthenticated.css',
             controller: 'unauthenticatedController',
+            data: {
+                css: '/my-client/unauthenticated/unauthenticated.css'
+            },
             accessLevel: 'public',
             title: 'R9: Not Authenticated'
         });

@@ -4,7 +4,7 @@ body {
 	background-image: url("/images/Indo_TelosIslands_RailGrab%20smaller.jpeg");
 	background-repeat: no-repeat;
 	background-attachment:fixed;
-	background-size: 100% 100%;
+    background-size: cover;
 	background-color: $bodycolor;
 
 	min-height: 100%;
@@ -42,7 +42,7 @@ hr {
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); // from material design fab
 }
 
-.container .jumbotron {
+.container-fluid .jumbotron {
 	-webkit-font-smoothing: antialiased;
 	background-color: rgba(0, 42, 64, .98);
 	color: whitesmoke;

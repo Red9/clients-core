@@ -14,19 +14,23 @@ angular
         'angular.filter',
         'lodash'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/analysis/:id', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('analysis', {
+            url: '/analysis/{id:int}',
             templateUrl: '/my-client/dataanalysis/dataanalysis.html',
             controller: 'DataAnalysisController',
-            css: '/my-client/dataanalysis/dataanalysis.css',
+            data: {
+                css: '/my-client/dataanalysis/dataanalysis.css'
+            },
             accessLevel: 'public',
             title: 'R9: Data Analysis'
         });
     })
     .controller('DataAnalysisController',
-    function ($scope, $routeParams, _, api) {
+    function ($scope, $stateParams, _, api) {
+        // TODO: take care of the case that {id} isn't here
         var queryOptions = {
-            id: $routeParams.id,
+            id: $stateParams.id,
             fields: [
                 'id',
                 'userId',
