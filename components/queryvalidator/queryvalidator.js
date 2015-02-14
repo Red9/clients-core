@@ -22,5 +22,5 @@ angular
                 }
                 return result;
             }).pick(_.identity).value();
-        }
+        };
     });
