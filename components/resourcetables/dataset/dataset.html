@@ -1,0 +1,47 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+        <th>User</th>
+        <th>Session</th>
+        <th><span class="pull-right">Tags&nbsp;</span></th>
+        <th>Sport</th>
+        </thead>
+
+        <tbody>
+        <tr ng-repeat-start="dataset in resourceList" class="ngFade"
+            ng-click="dataset.expanded = !dataset.expanded">
+            <td class="vertical-center">
+                <a ng-href="/user/{{dataset.user.id}}">
+                    <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px" class="profile-pic"/>
+                    <span class="displayName">{{dataset.user.displayName}}</span>
+                </a>
+            </td>
+            <td class="vertical-center">
+                <a ng-href="/analysis/{{dataset.id}}">
+                    {{dataset.title| limitTo:60}}<span ng-if="dataset.title.length > 60">...</span>
+                </a>
+            </td>
+            <td class="vertical-center">
+                <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
+            </td>
+            <td class="vertical-center">
+                {{dataset.sport| limitTo:60}}
+            </td>
+        </tr>
+        <tr ng-if="dataset.expanded" ng-repeat-end="" class="expanded-info">
+            <td colspan="100">
+                <ul class="list-unstyled">
+                    <li><span class="text-muted">Recorded</span> {{dataset.startTime| date}}</li>
+                    <li><span class="text-muted">Uploaded</span> {{dataset.createdAt| date}}</li>
+                    <li>
+                        <span class="text-muted">Duration</span>
+                        {{dataset.endTime - dataset.startTime| duration}}
+                    </li>
+                    <li><a ng-href="/dataset/{{dataset.id}}" target="_self">Graphs <span
+                            class="glyphicon glyphicon-circle-arrow-right"></span></a></li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

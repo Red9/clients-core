@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="bower_components/dcjs/dc.css" />
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.css" />
     <!-- endbower -->
     <link rel="stylesheet" href="my-client/app.css"/>
     <!-- endbuild -->
@@ -45,6 +47,10 @@
 <script src="bower_components/crossfilter/crossfilter.js"></script>
 <script src="bower_components/dcjs/dc.js"></script>
 <script src="bower_components/angular-dc/dist/angular-dc.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-ui-router-styles/ui-router-styles.js"></script>
+<script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+<script src="bower_components/angular-scroll/angular-scroll.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -66,7 +72,6 @@
 <script src="components/resourcelist/resourcelist.js"></script>
 <script src="components/confirmdialog/confirmdialog.js"></script>
 <script src="components/search/event/eventsearch.js"></script>
-<script src="components/search/dataset/datasetsearch.js"></script>
 <script src="components/keypressenter/keypressenter.js"></script>
 <script src="components/validfile/validfile.js"></script>
 <script src="components/userinput/userinput.js"></script>
@@ -86,6 +91,11 @@
 <script src="components/filters/display/duration.js"></script>
 <script src="components/filters/display/sumduration.js"></script>
 <script src="components/filters/display/units.js"></script>
+<script src="components/queryvalidator/queryvalidator.js"></script>
+<script src="components/querybuilder/dataset/dataset.js"></script>
+<script src="components/pageapi/pageapi.js"></script>
+<script src="components/tile/dataset/dataset.js"></script>
+<script src="components/responsivedetection/responsivedetection.js"></script>
 
 <script src="my-client/experiment/experiment.js"></script>
 
@@ -183,7 +193,7 @@
 <br/><br/><br/>
 <!-- Some space so that the navbar doesn't cover up the page... -->
 
-<div class="container" ng-cloak>
+<div class="container-fluid" ng-cloak>
     <!--[if lt IE 9]>
     <div class="alert alert-warning alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -196,7 +206,7 @@
         <p>This site works best with modern Chrome.</p>
     </div>
     <![endif]-->
-    <div ng-view></div>
+    <div ui-view></div>
 </div>
 
 </body>

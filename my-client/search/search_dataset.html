@@ -1,8 +1,78 @@
 <div class="jumbotron">
-	<h1>Sessions</h1>
-	<dataset-search query="query"></dataset-search>	
+    <h1>Sessions</h1>
+    <query-builder-dataset query="query"></query-builder-dataset>
 </div>
 
-<div class="well">
-	<resource-list resource-filters="query" resource-type="dataset"></resource-list>
+<div class="well" ng-if="resourceList.length === 0">
+    <p class="text-center">
+        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;No results found.
+    </p>
+</div>
+
+<div class="well" ng-if="resourceList === null" class="spinner-wrapper">
+    <i class="red9logo large pulse"></i>
+</div>
+
+<div ng-if="resourceList.length > 0" id="resultArea">
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-6">
+                <div ng-include="'/components/pagedisplay/pagedisplay.html'"></div>
+            </div>
+            <div class="col-sm-6">
+                <div class="pull-right">
+                    <div class="btn-group" ng-init="displayOption = 'cards'">
+                        <label class="btn btn-default" ng-model="displayOption" btn-radio="'cards'">Cards</label>
+                        <label class="btn btn-default" ng-model="displayOption" btn-radio="'table'">List</label>
+                    </div>
+                    <select class="form-control form-control-inline input-sm" ng-model="paging.sort"
+                            title="sort results by">
+                        <option value="title">Title</option>
+                        <option value="createdAt">Upload</option>
+                        <option value="updatedAt">Changed</option>
+                        <option value="startTime">Recorded</option>
+                        <option value="duration">Duration</option>
+                    </select>
+                    <select class="form-control form-control-inline input-sm" ng-model="paging.sortDirection"
+                            title="result sort order">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <select ng-model="paging.limit" class="form-control form-control-inline input-sm"
+                            title="results per page">
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                        <option value="96">96</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div ui-view>
+    </div>
+
+    <div class="row" ng-if="displayOption === 'table'">
+        <div class="col-xs-12">
+            <div class="well">
+                <div ng-include="'/components/resourcetables/dataset/dataset.html'"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="displayOption === 'cards'" ng-repeat="chunk in chunkedList">
+        <div class="col-sm-6 col-lg-4" ng-repeat="resource in chunk">
+            <tile-dataset dataset="resource"></tile-dataset>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="well">
+                <page-api paging="paging" scroll-to-id="resultArea" length="resourceList.$meta.total"></page-api>
+            </div>
+        </div>
+    </div>
 </div>

@@ -5,8 +5,9 @@ angular
         'angularDc',
         'lodash'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/experiment/', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('experiment', {
+            url: '/experiment/',
             templateUrl: '/my-client/experiment/experiment.html',
             controller: 'ExperimentController',
             accessLevel: 'basic',

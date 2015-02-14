@@ -3,8 +3,9 @@ angular
         'ngRoute',
         'redComponents.api'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/admin/', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('admin', {
+            url: '/admin/',
             templateUrl: '/my-client/admin/admin.html',
             controller: 'admin',
             accessLevel: 'basic',

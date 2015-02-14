@@ -5,11 +5,14 @@ angular
         'redComponents.api',
         'redComponents.validFile'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/upload/rnc', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('uploadRnc', {
+            url: '/upload/rnc',
             templateUrl: '/my-client/uploadrnc/uploadrnc.html',
-            css: '/my-client/uploadrnc/uploadrnc.css',
             controller: 'uploadRNCController',
+            data: {
+                css: '/my-client/uploadrnc/uploadrnc.css'
+            },
             accessLevel: 'basic',
             title: 'R9: Upload'
         });
@@ -41,7 +44,7 @@ angular
                 $scope.uploadPercent = parseInt(100.0 * evt.loaded / evt.total);
             }).success(function (data, status) {
                 $scope.uploadPercent = 100;
-                $scope.uploadDataset = data;
+                $scope.uploadDataset = data.data;
             }).error(function (data) {
                 $scope.uploadError = data;
             });

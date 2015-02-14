@@ -4,20 +4,23 @@ angular
         'redComponents.api',
         'redComponents.listGroupSimple'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider.when('/user/:id/admin', {
+    .config(function ($stateProvider) {
+        $stateProvider.state('editUserProfile', {
+            url: '/user/{id}/admin',
             templateUrl: '/my-client/edituserprofile/edituserprofile.html',
-            css: '/my-client/edituserprofile/edituserprofile.css',
             controller: 'EditUserProfileController',
+            data: {
+                css: '/my-client/edituserprofile/edituserprofile.css'
+            },
             accessLevel: 'admin',
             title: 'R9: Edit User Profile'
         });
     })
     .controller('EditUserProfileController',
-    function ($scope, $routeParams, api) {
+    function ($scope, $stateParams, api) {
         $scope.editableUser = {};
 
-        api.user.get({id: $routeParams.id}, function (user) {
+        api.user.get({id: $stateParams.id}, function (user) {
             $scope.editableUser.displayName = user.displayName;
             $scope.editableUser.preferredLayout = user.preferredLayout;
             $scope.editableUser.scope = user.scope;

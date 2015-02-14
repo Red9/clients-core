@@ -285,6 +285,13 @@ module.exports = function (grunt) {
                                 'dist/MarkerCluster.Default.css',
                                 'dist/leaflet.markercluster.js' // The -src version doesn't seem to get through to wiredep
                             ]
+                        },
+                        'ng-tags-input': {
+                            main: [
+                                'ng-tags-input.css', // Must be first!
+                                'ng-tags-input.bootstrap.css', // Need to add the bootstrap bit...
+                                'ng-tags-input.js'
+                            ]
                         }
                     }
                 }
