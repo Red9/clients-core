@@ -28,6 +28,8 @@
             'redApp.dataAnalysis',
             'redApp.search',
 
+            'redApp.svg',
+
             'redComponents.authenticate',
 
             'redComponents.head' // Is this the correct use of this directive?

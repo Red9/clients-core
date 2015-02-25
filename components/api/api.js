@@ -100,7 +100,7 @@ angular
 
         /** Will get a panel, and add it to the dataset under the "panel" key.
          *
-         * @param options
+         * @param {Object} [options]
          * @returns {$http promise}
          */
         result.dataset.prototype.getPanel = function (options) {
@@ -120,7 +120,7 @@ angular
                 }
             });
 
-            if (!_.has(queryString, 'fields')) {
+            if (_.has(queryString, 'fields')) {
                 queryString.fields = queryString.fields.join(',');
             }
 

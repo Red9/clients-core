@@ -1,0 +1,85 @@
+.footerb {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: blue;
+}
+
+.visualization.chart.timeseries {
+  line.hoverline {
+    stroke-width: 2px;
+    stroke: red;
+  }
+
+  rect.plotarea {
+    fill-opacity: 0;
+  }
+
+  .series {
+    fill: none;
+    pointer-events: visibleStroke;
+  }
+
+  .plotgroup {
+    stroke-width: 1px;
+  }
+
+  .plotgroup:hover {
+    stroke-width: 1.5px;
+  }
+
+  line.axis {
+    stroke-width: 1px;
+    stroke: #949494;
+    shape-rendering: crispEdges;
+  }
+
+  text.axis {
+    font-size: 8pt;
+    fill: #949494;
+  }
+
+  .valuebox text {
+    font-size: 10pt;
+    fill: #949494;
+  }
+
+  .axis.label {
+    font-size: 10pt;
+    fill: #949494;
+  }
+
+  .key {
+    font-size: 12pt;
+    stroke-width: 0px;
+    cursor: pointer;
+  }
+}
+
+$measurements: (
+        accelerationX : #FFA500,
+        accelerationY : #6B8E23,
+        accelerationZ: #0000CD,
+        rotationRateX: #C71585,
+        rotationRateY: #32CD32,
+        rotationRateZ: #4169E1,
+        magneticFieldX: #FF4500,
+        magneticFieldY: #3CB371,
+        magneticFieldZ: #191970,
+        gpsAltitude: #FF6347,
+        gpsSpeed: #8B4513,
+        gpsSatellites: #4B0082,
+        gpsHdop: #228B22,
+        pressurePressure: #2E8B57,
+        pressureTemperature: #F4A460
+);
+
+@each $key, $value in $measurements {
+  .measurement.#{$key} {
+    stroke: $value;
+    fill: $value
+  }
+}
