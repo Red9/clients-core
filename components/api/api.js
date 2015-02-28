@@ -111,6 +111,10 @@ angular
                 size: _.has(options, 'size') ? options.size : 'lg'
             };
 
+            queryString.startTime = options.startTime;
+            queryString.endTime = options.endTime;
+
+
             _.each(options, function (value, key) {
                 if (key === 'axes') {
                     if (!_.has(queryString, 'fields')) {

@@ -5,7 +5,6 @@ angular
         'lodash'
     ])
     .config(function ($stateProvider) {
-        console.log('Setting up state.');
         $stateProvider.state('svg', {
             url: '/svg/',
             templateUrl: '/my-client/svg/svg.html',

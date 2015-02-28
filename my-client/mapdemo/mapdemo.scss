@@ -1,0 +1,73 @@
+
+.visualization.chart.rawmap {
+
+  $tickColor: #f1f1f1;
+
+  .pegman {
+    path, circle {
+      stroke: black;
+      stroke-width: 2px;
+      fill: orange;
+    }
+  }
+
+  .markers {
+    font-family: Glyphicons Halflings;
+    font-size:14;
+    .start {
+      stroke: green;
+    }
+    .end {
+      stroke: red;
+    }
+  }
+
+  .pegman:not(.dragging):hover {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
+
+  .pegman.dragging {
+    cursor: default;
+  }
+
+  .heatline {
+    stroke-width: 2px;
+  }
+
+  .scaleTickLabel {
+    font-size: 10pt;
+    fill: $tickColor;
+  }
+
+  .gridLine {
+    stroke-width: 1px;
+    stroke: #9CD0FF;
+  }
+
+  .scaleTick {
+    stroke-width: 3px;
+    stroke: $tickColor;
+  }
+
+  .background {
+    fill: #93C6E6;
+    stroke-width: 0px;
+  }
+
+  .path {
+    fill: none;
+    pointer-events: visibleStroke;
+  }
+
+  .path.valid {
+    stroke: #559141;
+    stroke-width: 3px;
+  }
+
+  .path.invalid {
+    stroke: #9c9c9c;
+    stroke-width: 2px;
+  }
+
+}
