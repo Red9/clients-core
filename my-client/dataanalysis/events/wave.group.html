@@ -1,4 +1,4 @@
 <div ng-repeat="event in events | orderBy:'startTime'">
-    {{type}} {{$index + 1}}: <span
+    <a ng-href="/event/{{event.id}}">{{type}} {{$index + 1}}</a>: <span
         ng-include="'/my-client/dataanalysis/events/' + type.replace(' ', '_').toLowerCase() + '.single.html'"></span>
 </div>
