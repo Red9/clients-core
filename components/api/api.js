@@ -88,14 +88,14 @@ angular
         });
         result.event.types = [];
 
-        result.event.getPanel = function (event) {
-            $http({
-                url: apiUrl + '/event/' + event.id + '/json?size=sm',
-                method: 'GET'
-            }).success(function (data) {
-                event.panel = data;
-            });
-        };
+        //result.event.getPanel = function (event) {
+        //    $http({
+        //        url: apiUrl + '/event/' + event.id + '/json?size=sm',
+        //        method: 'GET'
+        //    }).success(function (data) {
+        //        event.panel = data;
+        //    });
+        //};
 
 
         /** Will get a panel, and add it to the dataset under the "panel" key.
@@ -103,26 +103,25 @@ angular
          * @param {Object} [options]
          * @returns {$http promise}
          */
-        result.dataset.prototype.getPanel = function (options) {
-            var self = this;
-
-
+        function getPanelRaw(self, type, options) {
             var queryString = {
                 size: _.has(options, 'size') ? options.size : 'lg'
             };
 
-            queryString.startTime = options.startTime;
-            queryString.endTime = options.endTime;
+            if(!_.isUndefined(options)) {
+                queryString.startTime = options.startTime;
+                queryString.endTime = options.endTime;
 
 
-            _.each(options, function (value, key) {
-                if (key === 'axes') {
-                    if (!_.has(queryString, 'fields')) {
-                        queryString.fields = [];
+                _.each(options, function (value, key) {
+                    if (key === 'axes') {
+                        if (!_.has(queryString, 'fields')) {
+                            queryString.fields = [];
+                        }
+                        queryString.fields.push('panel(' + value.join(',') + ')');
                     }
-                    queryString.fields.push('panel(' + value.join(',') + ')');
-                }
-            });
+                });
+            }
 
             if (_.has(queryString, 'fields')) {
                 queryString.fields = queryString.fields.join(',');
@@ -130,11 +129,19 @@ angular
 
             return $http({
                 method: 'GET',
-                url: apiUrl + '/dataset/' + self.id + '/json',
+                url: apiUrl + '/' + type + '/' + self.id + '/json',
                 params: queryString
             }).success(function (data) {
                 self.panel = data;
             });
+        }
+
+        result.dataset.prototype.getPanel = function (options) {
+            return getPanelRaw(this, 'dataset', options);
+        };
+
+        result.event.prototype.getPanel = function (options) {
+            return getPanelRaw(this, 'event', options);
         };
 
         result.dataset.prototype.getFcpxmlOptions = function () {

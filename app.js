@@ -27,6 +27,7 @@
             'redApp.admin',
             'redApp.dataAnalysis',
             'redApp.search',
+            'redApp.event',
 
             'redApp.svg',
             'redApp.mapDemo',
