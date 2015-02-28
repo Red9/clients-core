@@ -29,6 +29,7 @@
             'redApp.search',
 
             'redApp.svg',
+            'redApp.mapDemo',
 
             'redComponents.authenticate',
 
