@@ -11,17 +11,34 @@ angular
             },
             templateUrl: '/components/visualizations/charts/timeseries/timeseries.html',
             controller: function ($scope, $element, $window) {
-                var xScale;
+                var initialized = false;
+                var graph;
+                graph = {
+                    hoverline: {
+                        x: 100,
+                        visible: false
+                    }
+                };
+                $scope.graph = graph;
+
+                var valueBoxLineHeight = 18;
+                var valueBoxColumnWidth = 100;
+
+                var tickSize = 5;
+                var fontSize = 15;
+
 
                 $scope.$watch('hover.time', function (hoverTime) {
-                    if (hoverTime) {
-                        graph.hoverline.x = xScale(hoverTime);
-                        calculateValueBox();
+                    // The test for xScale defined is a hack, but I don't really
+                    // want to dive into why it's needed right now.
+                    if (hoverTime && graph.xScale) {
+                        graph.hoverline.x = graph.xScale(hoverTime);
+                        graph.calculateValueBox();
                     }
                 });
 
                 $scope.hovermove = function ($event) {
-                    var hoverTime = xScale.invert($event.offsetX);
+                    var hoverTime = graph.xScale.invert($event.offsetX);
                     angular.extend($scope.hover, {
                         time: hoverTime,
                         index: d3.bisectLeft($scope.time, hoverTime)
@@ -34,41 +51,23 @@ angular
                     });
                 };
 
-                var ySeries = angular.copy($scope.ySeries);
-                $scope.ySeries = ySeries;
-                var seriesInView = Object.keys(ySeries);
-
-                var tickSize = 5;
-                var fontSize = 15;
-
                 $scope.toggleSeries = function ($event, key) {
-                    var index = _.indexOf(seriesInView, key);
+                    var index = _.indexOf(graph.seriesInView, key);
                     if (index !== -1) {
-                        seriesInView.splice(index, 1);
+                        graph.seriesInView.splice(index, 1);
                     } else {
-                        seriesInView.push(key);
+                        graph.seriesInView.push(key);
                     }
 
                     drawGraph(graph.width);
                 };
 
-                var graph = {
-                    hoverline: {
-                        x: 100,
-                        visible: false
-                    }
-                };
-                $scope.graph = graph;
-
-                var valueBoxLineHeight = 18;
-                var valueBoxColumnWidth = 100;
-
-                function calculateValueBox() {
+                graph.calculateValueBox = function () {
                     var index = 0;
                     graph.valueBox = {
                         x: graph.axes.y.width + 10,
                         y: 20,
-                        labels: _.chain(ySeries).pick(seriesInView).map(
+                        labels: _.chain(graph.ySeries).pick(graph.seriesInView).map(
                             function (series, key) {
                                 return {
                                     y: index++ * valueBoxLineHeight,
@@ -87,14 +86,27 @@ angular
                             })
                             .value()
                     };
-                }
+                };
 
-
+                /**
+                 *
+                 * @param {Number} [width] Defaults to graph.width
+                 */
                 function drawGraph(width) {
-                    graph.width = width;
+
+                    graph.ySeries = $scope.ySeries;
+                    if (!initialized) {
+                        initialized = true;
+                        graph.seriesInView = Object.keys(graph.ySeries);
+                    }
+
+                    //console.log('drawGraph ' + graph.seriesInView.join(','));
+
+
+                    graph.width = width ? width : graph.width;
 
                     graph.plot = {
-                        height: 350
+                        height: 250
                     };
                     graph.axes = {
                         x: {
@@ -112,10 +124,10 @@ angular
                     graph.height = graph.plot.height + graph.axes.x.height + graph.key.height + 10;
 
                     var xTickCount = 6;
-                    xScale = d3.time.scale()
+                    graph.xScale = d3.time.scale()
                         .range([graph.width - graph.plot.width, graph.width])
                         .domain(d3.extent($scope.time));
-                    var xTickFormat = xScale.tickFormat(xTickCount);
+                    var xTickFormat = graph.xScale.tickFormat(xTickCount);
 
                     var yTickCount = 6;
                     var yScale = d3.scale.linear()
@@ -124,8 +136,8 @@ angular
                         .domain(d3.extent(
                             // Get the minimum and maximum value across all the
                             // series that we have.
-                            _.chain(ySeries)
-                                .pick(seriesInView)
+                            _.chain(graph.ySeries)
+                                .pick(graph.seriesInView)
                                 .map(function (array) {
                                     return d3.extent(array);
                                 })
@@ -134,15 +146,15 @@ angular
                         ));
 
                     // Generate X Axis
-                    graph.axes.x.ticks = _.map(xScale.ticks(xTickCount), function (domainValue) {
+                    graph.axes.x.ticks = _.map(graph.xScale.ticks(xTickCount), function (domainValue) {
                         return {
                             line: {
-                                x: xScale(domainValue),
+                                x: graph.xScale(domainValue),
                                 y1: graph.plot.height,
                                 y2: graph.plot.height + tickSize
                             },
                             label: {
-                                x: xScale(domainValue),
+                                x: graph.xScale(domainValue),
                                 y: graph.plot.height + tickSize + fontSize,
                                 text: xTickFormat(domainValue)
                             }
@@ -173,7 +185,7 @@ angular
                     function createLine(x, y) {
                         return d3.svg.line()
                             .x(function (d) {
-                                return xScale(d[0]);
+                                return graph.xScale(d[0]);
                             })
                             .y(function (d) {
                                 return yScale(d[1]);
@@ -182,10 +194,10 @@ angular
                     }
 
 
-                    var keyStep = graph.plot.width / (Object.keys(ySeries).length + 1);
+                    var keyStep = graph.plot.width / (Object.keys(graph.ySeries).length + 1);
                     var keyX = graph.axes.y.width;
 
-                    $scope.plots = _.mapValues(ySeries, function (series, key) {
+                    $scope.plots = _.mapValues(graph.ySeries, function (series, key) {
                         keyX += keyStep;
                         var result = {
                             key: {
@@ -194,7 +206,7 @@ angular
                             }
                         };
 
-                        if (_.indexOf(seriesInView, key) !== -1) {
+                        if (_.indexOf(graph.seriesInView, key) !== -1) {
                             result.line = {
                                 svgLine: $scope.svgLine = createLine($scope.time, series)
                             };
@@ -202,10 +214,15 @@ angular
                         return result;
                     });
 
-                    calculateValueBox();
-
-
+                    graph.calculateValueBox();
                 }
+
+                // Respond to zooms
+                $scope.$watch('time', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        drawGraph();
+                    }
+                });
 
                 // This IIFE business is to overcome the Bootstrap deal where it
                 // calculates the final offsetWidth after some time. I can't

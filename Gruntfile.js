@@ -348,9 +348,10 @@ module.exports = function (grunt) {
 
         //if index.html changed, we need to reread the <script> tags so our next run of karma
         //will have the correct environment
-        if (filepath === 'index.html') {
-            tasksToRun.push('dom_munger:read');
-        }
+        // SRLM: take this out for now, since it was stopping execution (no dom_munger)
+        //if (filepath === 'index.html') {
+        //    tasksToRun.push('dom_munger:read');
+        //}
 
         grunt.config('watch.main.tasks', tasksToRun);
 

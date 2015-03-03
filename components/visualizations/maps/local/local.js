@@ -13,11 +13,11 @@ angular
             },
             templateUrl: '/components/visualizations/maps/local/local.html',
             controller: function ($scope, _, geo) {
-                var percentageOfWindow = 0.9;
+                var percentageOfWindow = 0.85;
 
                 $scope.map = {
-                    height: 600,
-                    width: 1000
+                    height: 400,
+                    width: 700
                 };
 
                 if (_.isUndefined($scope.displayHeatline)) {

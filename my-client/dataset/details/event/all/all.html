@@ -1,0 +1,18 @@
+<h1>All {{viewModel.eventType}}s</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Order</th>
+        <th>Duration</th>
+        <th>Distance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="event in events track by event.id">
+        <td>{{$index + 1}}</td>
+        <td>{{event.duration | duration:true}}</td>
+        <td>{{event.summaryStatistics.distance.path | number:1}}m</td>
+    </tr>
+    </tbody>
+</table>

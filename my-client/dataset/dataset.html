@@ -1,0 +1,40 @@
+<div class="jumbotron">
+    <div class="media">
+        <a class="media-left" href="/user/{{dataset.user.id}}">
+            <img ng-src="{{dataset.user.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
+        </a>
+
+        <div class="media-body">
+            <h1 class="media-heading">{{dataset.title}}
+                <span class="nobreak duration">{{dataset.duration | duration:true}}</span>
+            </h1>
+            <h4>
+                <small>from</small>
+                <a ng-href="/user/{{dataset.user.id}}">{{dataset.user.displayName}}</a>
+                <small>sport</small>
+                {{dataset.sport}}
+            </h4>
+        </div>
+    </div>
+    <tag-helper resource="dataset" tag-key="tags"></tag-helper>
+</div>
+
+<div class="well">
+    <p>State: {{$state.current.name}}</p>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs">
+                <li ui-sref=".summary" ui-sref-active="active"><a>Summary</a></li>
+                <li ui-sref=".details" ui-sref-active="active"><a>Details</a></li>
+                <li ui-sref=".graphs" ui-sref-active="active"><a>Graphs</a></li>
+                <li ui-sref=".admin" ui-sref-active="active"
+                    ng-if="$root.current.user.scope.indexOf('admin') !== -1"><a>Admin</a></li>
+            </ul>
+        </div>
+        <br/>
+    </div>
+
+    <ui-view autoscroll='false'></ui-view>
+</div>
+
+

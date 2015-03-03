@@ -1,4 +1,4 @@
-
+@import "../scss/red9theme";
 
 .visualization.chart.rawmap {
 
@@ -14,7 +14,7 @@
 
   .markers {
     font-family: Glyphicons Halflings;
-    font-size:14;
+    font-size: 14;
     .start {
       stroke: green;
     }
@@ -77,6 +77,7 @@
   line.hoverline {
     stroke-width: 2px;
     stroke: red;
+    stroke-opacity: 0.5;
   }
 
   rect.plotarea {
@@ -148,8 +149,6 @@ $measurements: (
     fill: $value
   }
 }
-
-
 
 .ngFade.ng-enter {
   transition: 0.1s linear all;
@@ -253,3 +252,29 @@ div[dc-angular-chart] {
   width: 100%;
 }
 
+.graph-toolbar {
+  padding-top: 8px;
+  border-width: 0px;
+  background-color: #222222;
+}
+
+.graph-area {
+  background-color: white;
+  // Apply a min-height since, when the area loads, it's full of elements with 0 height.
+  min-height: 2000px;
+}
+
+
+#loading-bar .bar {
+  background: $logocolor;
+  // This isn't the best: it's hard coded based on the Bootstrap nav height.
+  top: 48px;
+  height: 4px;
+}
+
+#loading-bar .peg {
+  -moz-box-shadow: $logocolor 1px 0 6px 1px;
+  -ms-box-shadow: $logocolor 1px 0 6px 1px;
+  -webkit-box-shadow: $logocolor 1px 0 6px 1px;
+  box-shadow: $logocolor 1px 0 6px 1px;
+}
