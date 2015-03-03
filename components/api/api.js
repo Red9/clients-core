@@ -98,17 +98,24 @@ angular
         //};
 
 
-        /** Will get a panel, and add it to the dataset under the "panel" key.
+        /** Will get a panel, and add it to self under the "panel" key.
          *
+         * @param {String} type event or dataset
+         * @param {String|Number} id
          * @param {Object} [options]
+         * @param {Number} [options.startTime]
+         * @param {Number} [options.endTime]
+         * @param {String} [options.size]
+         * @param {Array:String} [options.axes]
+         * // Any other keys are passed directly to the API
          * @returns {$http promise}
          */
-        function getPanelRaw(self, type, options) {
+        function getPanelRaw(type, id, options) {
             var queryString = {
                 size: _.has(options, 'size') ? options.size : 'lg'
             };
 
-            if(!_.isUndefined(options)) {
+            if (!_.isUndefined(options)) {
                 queryString.startTime = options.startTime;
                 queryString.endTime = options.endTime;
 
@@ -127,21 +134,30 @@ angular
                 queryString.fields = queryString.fields.join(',');
             }
 
+
             return $http({
                 method: 'GET',
-                url: apiUrl + '/' + type + '/' + self.id + '/json',
+                url: apiUrl + '/' + type + '/' + id + '/json',
                 params: queryString
-            }).success(function (data) {
-                self.panel = data;
             });
         }
 
+        result.getPanel = getPanelRaw;
+
         result.dataset.prototype.getPanel = function (options) {
-            return getPanelRaw(this, 'dataset', options);
+            var self = this;
+            return getPanelRaw('dataset', self.id, options)
+                .success(function (data) {
+                    self.panel = data;
+                });
         };
 
         result.event.prototype.getPanel = function (options) {
-            return getPanelRaw(this, 'event', options);
+            var self = this;
+            return getPanelRaw('event', self.id, options)
+                .success(function (data) {
+                    self.panel = data;
+                });
         };
 
         result.dataset.prototype.getFcpxmlOptions = function () {

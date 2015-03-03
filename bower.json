@@ -15,6 +15,7 @@
     "angular-resource": "*",
     "angular-route": "*",
     "angular-bootstrap": "*",
+    "angular-loading-bar": "*",
     "angulartics": "*",
     "ng-file-upload": "*",
     "bootstrap": "*",

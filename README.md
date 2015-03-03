@@ -71,6 +71,7 @@ Sizes taken from the original repository \*.min size.
 | angular-resource           |     3 |
 | angular-route              |     4 |
 | angular-bootstrap (tpls)   |    65 |
+| angular-loading-bar        |     3 |
 | angulartics                |     4 |
 | angulartics-segmentio      |     1 |
 | ng-file-upload             |     8 |
@@ -81,7 +82,7 @@ Sizes taken from the original repository \*.min size.
 | crossfilter                |    10 |
 | dc                         |    75 |
 | angular-dc                 |     3 |
-| **Total**                  |**725**|
+| **Total**                  |**728**|
 
 
 

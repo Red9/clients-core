@@ -13,6 +13,8 @@
             'ui.router',
             'uiRouterStyles',
 
+            'angular-loading-bar',
+
             'angulartics',
             'angulartics.segment.io',
 
@@ -25,7 +27,15 @@
             'redApp.home',
             'redApp.editUserProfile',
             'redApp.admin',
-            'redApp.dataAnalysis',
+            'redApp.dataset',
+            'redApp.dataset.summary',
+            'redApp.dataset.details',
+            'redApp.dataset.details.session',
+            'redApp.dataset.details.event',
+            'redApp.dataset.details.event.all',
+            'redApp.dataset.details.event.single',
+            'redApp.dataset.graphs',
+            'redApp.dataset.admin',
             'redApp.search',
             'redApp.event',
 
@@ -69,6 +79,9 @@
             // Don't strip trailing slashes from calculated URLs
             $resourceProvider.defaults.stripTrailingSlashes = false;
         })
+        .config(function (cfpLoadingBarProvider) {
+            cfpLoadingBarProvider.includeSpinner = false;
+        })
         .run(function ($rootScope, $location, $window, current, authenticate, $state) {
             // The idea of using cookies for initial user authentication came from this page:
             // http://www.frederiknakstad.com/2013/01/21/authentication-in-single-page-applications-with-angular-js/
@@ -108,6 +121,15 @@
             // Set page title
             $rootScope.$on('$stateChangeSuccess', function (event, toState) {
                 $rootScope.pageTitle = toState.title;
+            });
+
+
+            $rootScope.$on('$stateChangeStart', function (evt, to, params) {
+                console.log('$stateChangeStart');
+                if (to.redirectTo) {
+                    evt.preventDefault();
+                    $state.go(to.redirectTo, params);
+                }
             });
         });
 })();

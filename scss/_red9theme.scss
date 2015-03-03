@@ -1,4 +1,5 @@
 @import "mixins/keyframes";
+@import "variables";
 
 body {
 	background-image: url("/images/Indo_TelosIslands_RailGrab%20smaller.jpeg");
@@ -203,7 +204,7 @@ body .btn-default {
 			display: block;
 			height: 30px;
 			width: 100px;
-			color: rgba(238, 20, 91, 0.9);
+			color: $logocolor;
 			position: absolute;
 			bottom: -26px;
 			left: -16px;

@@ -1,0 +1,31 @@
+<div class="well">
+    <div class="row"><h1 class="col-sm-12">Admin Tools</h1></div>
+
+    <div class="row">
+        <h2>Select Dataset Sport Type</h2>
+
+        <form class="form-inline">
+            <select ng-model="datasetSport" ng-change="saveSport(datasetSport)" class="form-control"
+                    ng-options="item for item in sportsList track by item"></select>
+        </form>
+    </div>
+
+
+    <div class="row">
+        <h2>Automatic Event Detection</h2>
+
+        <p>Start event finding. Note that this takes between 30 and 500 seconds. Do not press twice. To see the
+            created
+            events you'll need to refresh the page. <br/><br/>
+            <button class="btn btn-danger" ng-click="eventFind(dataset)" ng-disabled="eventFindDisabled">Event
+                Find
+            </button>
+        </p>
+
+    </div>
+
+    <div class="row">
+        <h2>Generate FCPXML</h2>
+        <fcpxml-download dataset="dataset"></fcpxml-download>
+    </div>
+</div>
