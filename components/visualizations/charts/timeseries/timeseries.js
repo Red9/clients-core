@@ -59,7 +59,7 @@ angular
                         graph.seriesInView.push(key);
                     }
 
-                    drawGraph(graph.width);
+                    drawGraph();
                 };
 
                 graph.calculateValueBox = function () {
@@ -92,7 +92,9 @@ angular
                  *
                  * @param {Number} [width] Defaults to graph.width
                  */
-                function drawGraph(width) {
+                function drawGraph(width, height) {
+
+                    console.log('drawing graph with height: ' + height);
 
                     graph.ySeries = $scope.ySeries;
                     if (!initialized) {
@@ -100,14 +102,9 @@ angular
                         graph.seriesInView = Object.keys(graph.ySeries);
                     }
 
-                    //console.log('drawGraph ' + graph.seriesInView.join(','));
-
-
                     graph.width = width ? width : graph.width;
+                    graph.height = height ? height : graph.height;
 
-                    graph.plot = {
-                        height: 250
-                    };
                     graph.axes = {
                         x: {
                             height: 20
@@ -120,8 +117,9 @@ angular
                         height: 20
                     };
 
+                    graph.plot = {};
                     graph.plot.width = graph.width - graph.axes.y.width;
-                    graph.height = graph.plot.height + graph.axes.x.height + graph.key.height + 10;
+                    graph.plot.height = graph.height - (graph.axes.x.height + graph.key.height + 10);
 
                     var xTickCount = 6;
                     graph.xScale = d3.time.scale()
@@ -218,6 +216,8 @@ angular
                 }
 
                 // Respond to zooms
+                // Note: we really shouldn't have this in here, since a zoom is
+                // a state change, and hence will reload this controller.
                 $scope.$watch('time', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
                         drawGraph();
@@ -227,7 +227,7 @@ angular
                 // This IIFE business is to overcome the Bootstrap deal where it
                 // calculates the final offsetWidth after some time. I can't
                 // always keep this around since it's a performance hog. I could
-                // just call with a -15, but then what if that constant changes?
+                // just call with a -15px, but then what if that constant changes?
                 // So, there's this little pearl* of a solution.
                 // * hack
                 (function () {
@@ -238,12 +238,30 @@ angular
                             listener(); // deregister
                         }
                         return $element[0].children[0].offsetWidth;
-                    }, drawGraph);
+                    }, function (newWidth) {
+                        console.log(newWidth);
+                        drawGraph($element[0].children[0].offsetWidth, $element[0].children[0].offsetHeight);
+                    });
                 })();
+
+                (function () {
+                    var count = 0;
+                    var countMax = 100;
+                    var listener = $scope.$watch(function () { // watch container width
+                        if (++count > countMax) {
+                            listener(); // deregister
+                        }
+                        return $element[0].children[0].offsetHeight;
+                    }, function (newHeight) {
+                        console.log('new height: ' + newHeight);
+                        //drawGraph($element[0].children[0].offsetWidth, $element[0].children[0].offsetHeight);
+                    });
+                })();
+
 
                 // Resize graphs on window resize
                 angular.element($window).bind('resize', function () {
-                    drawGraph($element[0].children[0].offsetWidth);
+                    drawGraph($element[0].children[0].offsetWidth, $element[0].children[0].offsetHeight);
                 });
             }
         };

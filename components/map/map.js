@@ -16,7 +16,10 @@ angular
                     paths: {},
                     center: {},
                     bounds: {},
-                    defaults: {},
+                    defaults: {
+                        scrollWheelZoom: false,
+                        dragging: false
+                    },
                     layers: {
                         baselayers: {
                             ThunderforestLandscape: {
