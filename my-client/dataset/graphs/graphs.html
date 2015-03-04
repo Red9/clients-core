@@ -1,7 +1,3 @@
-<div class="well">
-    <p>State params: {{$stateParams}}</p>
-</div>
-
 <div class="graph-area col-xs-12">
     <div class="row">
         <br/>
@@ -21,14 +17,14 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-sm-6">
             <timeseries
                     y-label="m/s"
                     time="viewModel.panel.panel.time"
                     y-series="{gpsSpeed:viewModel.panel.panel['gps:speed']}"
                     hover="hover"></timeseries>
         </div>
-        <div class="col-xs-6">
+        <div class="col-sm-6">
             <timeseries
                     y-label="count"
                     time="viewModel.panel.panel.time"
@@ -38,14 +34,14 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-sm-6">
             <timeseries
                     y-label="m"
                     time="viewModel.panel.panel.time"
                     y-series="{gpsHdop:viewModel.panel.panel['gps:hdop']}"
                     hover="hover"></timeseries>
         </div>
-        <div class="col-xs-6">
+        <div class="col-sm-6">
             <timeseries
                     y-label="m"
                     time="viewModel.panel.panel.time"
@@ -72,7 +68,7 @@
 
 <nav class="navbar navbar-default navbar-fixed-bottom graph-toolbar" role="navigation">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-xs-4">
             <button id="navbar-fixed-bottom-create-event-button" type="button" class="btn btn-default btn-md"
                     title="create event"><span class="glyphicon glyphicon-bookmark"></span></button>
             <button id="navbar-fixed-bottom-comments-button" type="button" class="btn btn-default btn-md"
@@ -80,10 +76,10 @@
                     class="badge"></span>
             </button>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 hidden-xs">
             <h4 class="text-center">{{viewModel.hoverTime}}</h4>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-xs-8">
             <div class="pull-right">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-md" title="pan left"

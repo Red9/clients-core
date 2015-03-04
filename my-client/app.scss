@@ -74,6 +74,10 @@
 }
 
 .visualization.chart.timeseries {
+
+  height: 300px;
+  max-height: 300px;
+
   line.hoverline {
     stroke-width: 2px;
     stroke: red;
