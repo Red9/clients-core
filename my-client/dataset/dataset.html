@@ -1,16 +1,16 @@
 <div class="jumbotron">
-    <div class="media">
-        <a class="media-left" href="/user/{{dataset.user.id}}">
+    <div class="media dataset-header">
+        <a class="media-left" ui-sref="userProfile({id: dataset.userId})">
             <img ng-src="{{dataset.user.picture}}?sz=85" class="profile-pic" height="85px" width="85px">
         </a>
 
         <div class="media-body">
-            <h1 class="media-heading">{{dataset.title}}
-                <span class="nobreak duration">{{dataset.duration | duration:true}}</span>
+            <h1 class="media-heading"><a ui-sref="dataset" class="dataset-title">{{dataset.title}}</a>
+                <span class="nobreak duration">{{dataset.startTime | date:'longDate'}}</span>
             </h1>
             <h4>
                 <small>from</small>
-                <a ng-href="/user/{{dataset.user.id}}">{{dataset.user.displayName}}</a>
+                <a class="user-profile" ui-sref="userProfile({id: dataset.userId})">{{dataset.user.displayName}}</a>
                 <small>sport</small>
                 {{dataset.sport}}
             </h4>
@@ -19,21 +19,19 @@
     <tag-helper resource="dataset" tag-key="tags"></tag-helper>
 </div>
 
-<div class="well">
-    <p>State: {{$state.current.name}}</p>
-    <div class="row">
-        <div class="col-xs-12">
-            <ul class="nav nav-tabs">
-                <li ui-sref=".summary" ui-sref-active="active"><a>Summary</a></li>
-                <li ui-sref=".details" ui-sref-active="active"><a>Details</a></li>
-                <li ui-sref=".graphs" ui-sref-active="active"><a>Graphs</a></li>
-                <li ui-sref=".admin" ui-sref-active="active"
-                    ng-if="$root.current.user.scope.indexOf('admin') !== -1"><a>Admin</a></li>
-            </ul>
-        </div>
-        <br/>
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="nav nav-tabs nav-tabs-filled">
+            <li ui-sref=".summary" ui-sref-active="active"><a>Summary</a></li>
+            <li ui-sref=".details" ui-sref-active="active"><a>Details</a></li>
+            <li ui-sref=".graphs" ui-sref-active="active"><a>Graphs</a></li>
+            <li ui-sref=".media" ui-sref-active="active"><a>Media</a></li>
+            <li ui-sref=".admin" ui-sref-active="active"
+                ng-if="$root.current.user.scope.indexOf('admin') !== -1"><a>Admin</a></li>
+        </ul>
     </div>
-
+</div>
+<div class="well" style="margin-top: 0">
     <ui-view autoscroll='false'></ui-view>
 </div>
 

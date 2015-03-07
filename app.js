@@ -32,8 +32,6 @@
             'redApp.dataset.details',
             'redApp.dataset.details.session',
             'redApp.dataset.details.event',
-            'redApp.dataset.details.event.all',
-            'redApp.dataset.details.event.single',
             'redApp.dataset.graphs',
             'redApp.dataset.admin',
             'redApp.search',
@@ -124,9 +122,14 @@
             });
 
 
-            $rootScope.$on('$stateChangeStart', function (evt, to, params) {
-                console.log('$stateChangeStart');
-                if (to.redirectTo) {
+            // Set up a redirect for "abstract" states.
+            // Listen to $stateChangeSuccess instead of $stateChangeStart because
+            //
+            $rootScope.$on('$stateChangeStart', function (evt, to, params, from) {
+                console.log('$stateChangeStart: ' + to.name);
+                console.dir(evt);
+
+                if (to.redirectTo && to.name !== from.name) {
                     evt.preventDefault();
                     $state.go(to.redirectTo, params);
                 }
