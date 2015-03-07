@@ -89,7 +89,7 @@ angular
                     return topSpeed || 0;
                 }
 
-                $scope.leaderboardData = _.chain(datasetList).groupBy('userId').map(function (userDatasets, userId) {
+                $scope.leaderboardData = _.chain(datasetList).groupBy('userId').map(function (userDatasets) {
                     var totalEventDistance = 0;
                     var eventCount = 0;
                     var totalDuration = 0;

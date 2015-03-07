@@ -10,7 +10,10 @@ angular
             controller: 'DatasetDetailsController',
             accessLevel: 'basic',
             title: 'R9: Details',
-            redirectTo: 'dataset.details.session'
+            redirectTo: 'dataset.details.session',
+            data: {
+                css: '/my-client/dataset/details/details.css'
+            }
         });
     })
     .controller('DatasetDetailsController', function ($scope, dataset, _, $state) {

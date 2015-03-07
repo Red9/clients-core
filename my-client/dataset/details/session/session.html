@@ -1,79 +1,116 @@
-<div class="well">
-    <div class="row">
-        <div class="col-sm-12">
-            <h3>Statistics</h3>
+<div class="row">
+    <div class="col-sm-6">
+        <h3>Session</h3>
+        <table class="table horizontal">
+            <tr>
+                <th>Duration</th>
+                <td>{{dataset.duration | duration:true}}</td>
+            </tr>
+            <tr>
+                <th>Distance</th>
+                <td>
+                    {{dataset.summaryStatistics.distance.path | number:0}} meters
+                </td>
+            </tr>
+            <tr>
+                <th>Recorded</th>
+                <td>{{dataset.startTime | date:'fullDate'}}</td>
+            </tr>
+        </table>
 
-            <div class="alert alert-info" role="alert"><i class="fa fa-flask"> </i> All values in this section are in SI
-                units
-            </div>
+        <h3>Recording Properties</h3>
+        <table class="table horizontal">
+            <tr>
+                <th>Uploaded</th>
+                <td>{{dataset.createdAt | date:'longDate'}}</td>
+            </tr>
+            <tr>
+                <th>GPS On Time</th>
+                <td>{{dataset.gpsLock.validTime | duration:true}} on ({{dataset.gpsLock.validPercent}}%)</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <h3>Events</h3>
+        <events-summary events="dataset.events"></events-summary>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Statistics</h3>
+
+        <div class="alert alert-info" role="alert"><i class="fa fa-flask"> </i> All values in this section are in SI
+            units
         </div>
-        <div class="col-sm-12">
-            <tabset>
-                <tab heading="Summary Statistics">
-                    <summary-statistics statistics="dataset.summaryStatistics"></summary-statistics>
-                </tab>
+    </div>
+    <div class="col-sm-12">
+        <tabset>
+            <tab heading="Summary Statistics">
+                <summary-statistics statistics="dataset.summaryStatistics"></summary-statistics>
+            </tab>
 
-                <tab heading="Detailed Location">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <h4>GPS Lock</h4>
-                            <table class="table table-condensed">
-                                <tbody>
-                                <tr>
-                                    <td>Valid Time</td>
-                                    <td>{{dataset.gpsLock.validTime | duration:true}} ({{dataset.gpsLock.percentOn}}%)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Invalid Time</td>
-                                    <td>{{dataset.gpsLock.invalidTime | duration:true}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-sm-4">
-                            <h4>Bounding Circle</h4>
-                            <table class="table table-condensed">
-                                <tbody>
-                                <tr>
-                                    <td>Latitude</td>
-                                    <td>{{dataset.boundingCircle.latitude | number:5}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Longitude</td>
-                                    <td>{{dataset.boundingCircle.longitude | number:5}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-sm-4">
-                            <h4>Bounding Box</h4>
-                            <table class="table table-condensed">
-                                <tbody>
-                                <tr>
-                                    <td>North</td>
-                                    <td>{{dataset.boundingBox.north | number:5}}</td>
-                                </tr>
-                                <tr>
-                                    <td>South</td>
-                                    <td>{{dataset.boundingBox.south | number:5}}</td>
-                                </tr>
-                                <tr>
-                                    <td>East</td>
-                                    <td>{{dataset.boundingBox.east | number:5}}</td>
-                                </tr>
-                                <tr>
-                                    <td>West</td>
-                                    <td>{{dataset.boundingBox.west | number:5}}</td>
-                                </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
+            <tab heading="Detailed Location">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h4>GPS Lock</h4>
+                        <table class="table table-condensed">
+                            <tbody>
+                            <tr>
+                                <td>Valid Time</td>
+                                <td>{{dataset.gpsLock.validTime | duration:true}} ({{dataset.gpsLock.percentOn}}%)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Invalid Time</td>
+                                <td>{{dataset.gpsLock.invalidTime | duration:true}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </tab>
-            </tabset>
-        </div>
+                    <div class="col-sm-4">
+                        <h4>Bounding Circle</h4>
+                        <table class="table table-condensed">
+                            <tbody>
+                            <tr>
+                                <td>Latitude</td>
+                                <td>{{dataset.boundingCircle.latitude | number:5}}</td>
+                            </tr>
+                            <tr>
+                                <td>Longitude</td>
+                                <td>{{dataset.boundingCircle.longitude | number:5}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Bounding Box</h4>
+                        <table class="table table-condensed">
+                            <tbody>
+                            <tr>
+                                <td>North</td>
+                                <td>{{dataset.boundingBox.north | number:5}}</td>
+                            </tr>
+                            <tr>
+                                <td>South</td>
+                                <td>{{dataset.boundingBox.south | number:5}}</td>
+                            </tr>
+                            <tr>
+                                <td>East</td>
+                                <td>{{dataset.boundingBox.east | number:5}}</td>
+                            </tr>
+                            <tr>
+                                <td>West</td>
+                                <td>{{dataset.boundingBox.west | number:5}}</td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
     </div>
 </div>

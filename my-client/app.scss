@@ -1,5 +1,40 @@
 @import "../scss/red9theme";
 
+.inline-bar {
+
+  //background-color: yellow;
+  width: 100%;
+  display: table;
+
+  .units {
+    display: table-cell;
+    width: 60px;
+
+    max-width: 60px;
+
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+
+    text-align: right;
+    padding-right: 5px;
+
+    //background-color: blue;
+    vertical-align: middle;
+  }
+  .bar-area {
+    display: table-cell;
+    //background-color: blueviolet;
+    vertical-align: middle;
+  }
+  .bar {
+    width: 60%;
+    background-color: $logocolor;
+    height: 12px;
+    border-radius: 1px;
+  }
+}
+
 .visualization.chart.rawmap {
 
   $tickColor: #f1f1f1;
@@ -14,7 +49,7 @@
 
   .markers {
     font-family: Glyphicons Halflings;
-    font-size: 14;
+    font-size: 14pt;
     .start {
       stroke: green;
     }
@@ -262,12 +297,20 @@ div[dc-angular-chart] {
   background-color: #222222;
 }
 
+
+.well .graph-area {
+  // Get every last pixel from the well if it's inside of one
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .graph-area {
   background-color: white;
   // Apply a min-height since, when the area loads, it's full of elements with 0 height.
   min-height: 2000px;
 }
-
 
 #loading-bar .bar {
   background: $logocolor;

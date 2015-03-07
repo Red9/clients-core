@@ -1,0 +1,43 @@
+@import "../../../scss/variables";
+
+.statsrow {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  margin-top: 25px;
+  padding-bottom: 20px;
+
+  cursor: pointer;
+
+  .statspanel {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 12px;
+
+
+    // golden ratio...
+    width: 250px;
+    height: 154px;
+
+    padding: 25px 0;
+    background-color: $logocolor;
+
+    text-align: center;
+    //vertical-align: middle;
+    //display: inline-block;
+    //border: 3px solid black;
+    border-radius: 8px;
+
+    small {
+      // Override the gray from Bootstrap
+      color: white;
+    }
+  }
+}
+
+// Get rid of the default gradient.
+.carousel-control.right {
+  background-image: none;
+}
+.carousel-control.left {
+  background-image: none;
+}
