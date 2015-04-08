@@ -1,0 +1,125 @@
+
+.sessionshare {
+
+  $fragment-width: 900px;
+  $fragment-height: 600px;
+  $title-height: 50px;
+  $map-width: $fragment-width;
+  $data-width: 450px;
+  $user-picture-diameter: $title-height*2;
+  $user-picture-left: $fragment-width - $user-picture-diameter - 5px;
+
+  img.logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    height: $user-picture-diameter;
+    width: $user-picture-diameter;
+  }
+
+  img.user-picture {
+    position: absolute;
+    //right: $fragment-width;
+    top: 5px;
+    left: $user-picture-left;
+    height: $title-height*2;
+    width: $title-height*2;
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  .title {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: $fragment-width;
+    height: $title-height;
+    background-color: black;
+
+    z-index: 1;
+
+    h1 {
+      margin: 0;
+      line-height: $title-height;
+      text-align: center;
+      color: white;
+      font-size: $title-height;
+    }
+  }
+
+  .map {
+    position: absolute;
+    left: 0;
+    top: $title-height;
+    width: $map-width;
+    height: $fragment-height - $title-height;
+    background-color: blue;
+
+    map {
+      width: inherit;
+      height: inherit;
+
+      .angular-leaflet-map {
+        width: inherit;
+        height: inherit;
+
+        // Don't display the distracting little attribution in the corner
+        //  or the layers selector
+        .leaflet-control-container {
+          display: none;
+        }
+
+      }
+    }
+  }
+
+  .stat {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    margin: 0;
+
+    h2 {
+      margin: 0;
+      line-height: $title-height;
+      text-align: center;
+      color: white;
+    }
+
+    &.sub-title {
+      left: $title-height*2;
+      top: $title-height;
+      height: $title-height;
+      line-height: $title-height;
+      display: inline-block;
+      vertical-align: middle;
+      width: $fragment-width - $user-picture-diameter;
+    }
+
+    &.footer {
+      left: 0;
+      top: $fragment-height  - $title-height;
+      width: $fragment-width;
+      height: $title-height;
+    }
+
+    &.footer-label {
+      left: 0;
+      top: $fragment-height - $title-height*2;
+      width: auto;
+      height: $title-height;
+
+      bacground-color: rgba(0, 0, 0, 1);
+      border-radius: 15%;
+      vertical-align: middle;
+      line-height: $title-height;
+
+    }
+
+  }
+
+}
+
+
+
