@@ -143,6 +143,7 @@ module.exports = function (grunt) {
                             'my-client/**/*.css.map',
                             'my-client/**/*.html',
                             'images/**',
+                            'fragments/**', // Temporary solution. Each fragment should be optimized...
                             'old/**/*', // For the historic data page. Hopefully soon we can get rid of this.
                             'data.html' // Also for the old page.
                         ],
