@@ -90,12 +90,21 @@ module.exports = function (grunt) {
             }
         },
         sass: {
-            dist: {
+            myclient: {
                 files: [{
                     expand: true,
                     cwd: 'my-client/',
                     src: ['**/*.scss'],
                     dest: 'my-client/',
+                    ext: '.css'
+                }]
+            },
+            fragments: {
+                files: [{
+                    expand: true,
+                    cwd: 'fragments/',
+                    src: ['**/*.scss'],
+                    dest: 'fragments/',
                     ext: '.css'
                 }]
             }

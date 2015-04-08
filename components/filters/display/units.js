@@ -12,7 +12,7 @@ angular
                 // Convert from cycles per second to cycles per hour
                 return value * 60 * 60;
             } else {
-                return value;
+                throw new Error('Can not convert from ' + fromUnits + ' to ' + toUnits);
             }
         };
     });
