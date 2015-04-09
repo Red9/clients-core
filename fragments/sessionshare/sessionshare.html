@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="fragments/sessionshare/sessionshare.css"/>
 
+    <link rel="stylesheet" href="components/map/map.css"/>
 
     <!-- endbower -->
     <link rel="stylesheet" href="my-client/app.css"/>
@@ -50,6 +51,8 @@
 
     <img class="logo" src="/images/red9-logo.png">
 
+    <span class="sport">{{viewModel.sport}}</span>
+
     <div class="title">
         <h1>{{dataset.title}}</h1>
     </div>
@@ -57,25 +60,28 @@
     <img class="user-picture" ng-src="{{dataset.user.picture}}">
 
     <div class="map">
-        <!--<leaflet ng-if="map"-->
-        <!--defaults="map.defaults"-->
-        <!--layers="map.layers"-->
-        <!--center="map.center"-->
-        <!--markers="map.markers"></leaflet>-->
-        <map panel="dataset.panel.panel" highlights="highlights"></map>
+        <map panel="dataset.panel.panel"
+             highlights="highlights"
+             interactive="true"
+             controls="false"></map>
     </div>
-
-    <div class="stat sub-title row">
-        <div class="col-xs-6"><h2>{{viewModel.sessionDuration | duration:true}}</h2></div>
-        <div class="col-xs-6"><h2>{{viewModel.waveCount}} waves</h2></div>
-    </div>
-
-    <div class="stat footer footer-label"><h2>Best Waves</h2></div>
 
     <div class="stat footer row">
-        <div class="col-xs-4"><h2>{{viewModel.fastestWave | units:'knots':'mph' | number:1}} mph</h2></div>
-        <div class="col-xs-4"><h2>{{viewModel.farthestWave | units:'meters':'feet' | number:0}} ft</h2></div>
-        <div class="col-xs-4"><h2>{{viewModel.longestWave | duration:true}}</h2></div>
+        <div class="col-xs-4"><h2>{{viewModel.speed | units:'knots':'mph' | number:1}} mph</h2></div>
+        <div class="col-xs-4"><h2>{{viewModel.distance | units:'meters':viewModel.distanceUnits | number:1}}
+            {{viewModel.distanceUnits}}</h2></div>
+        <div class="col-xs-4"><h2>{{viewModel.time | duration:true}}</h2></div>
+    </div>
+    <div class="stat footer-label row">
+        <div class="col-xs-4"><h2>{{viewModel.speedLabel}}</h2></div>
+        <div class="col-xs-4"><h2>{{viewModel.distanceLabel}}</h2></div>
+        <div class="col-xs-4"><h2>{{viewModel.timeLabel}}</h2></div>
+    </div>
+
+    <div class="attribution row">
+        <div class="col-xs-4 attribute">{{viewModel.startTime | date:'fullDate'}}</div>
+        <div class="col-xs-4 attribute text-center">{{viewModel.userName}}</div>
+        <div class="col-xs-4 attribute url text-right"><a href="http://redninesensor.com">redninesensor.com</a></div>
     </div>
 
 

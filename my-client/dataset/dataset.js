@@ -63,7 +63,17 @@ angular
                                     'gps:longitude'
                                 ]
                             });
-                        }).then(function(){
+                        }).then(function () {
+                            // Get a high resolution version, but don't block user action for the new version.
+                            dataset.getPanel({
+                                size: 'xxxl',
+                                axes: [
+                                    'time',
+                                    'gps:latitude',
+                                    'gps:longitude'
+                                ]
+                            });
+
                             return dataset;
                         });
                 }

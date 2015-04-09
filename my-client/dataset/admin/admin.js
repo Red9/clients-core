@@ -27,4 +27,15 @@ angular
             $scope.eventFindDisabled = true;
             dataset.eventFind();
         };
+
+
+        $scope.openFragment = function (type) {
+            var url = '/fragments/sessionshare/sessionshare.html?datasetId=' + dataset.id;
+            if (type) {
+                url += '&type=' + type;
+            }
+
+            window.open(url, 'Session Share', 'width=950,height=700,menubar=yes,toolbar=yes');
+
+        };
     });

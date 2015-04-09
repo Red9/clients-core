@@ -16,95 +16,97 @@ angular
                  * }
                  *
                  */
-                highlights: '='
+                highlights: '=',
 
 
+                /** Compile time literals.
+                 * These are not watched! Must be built in.
+                 */
+
+                /** The string true or false
+                 */
+                controls: '@',
+
+                /** The string true or false
+                 */
+                interactive: '@'
             },
             templateUrl: '/components/map/map.html',
             controller: function ($scope, _) {
+
+
+                $scope.$watchCollection('options', function () {
+                    console.log('options');
+                    console.dir($scope.options);
+                    $scope.map.defaults = {
+                        scrollWheelZoom: $scope.options && _.has($scope.options, 'mouse') ?
+                            $scope.options.mouse : true,
+                        dragging: $scope.options && _.has($scope.options, 'mouse') ?
+                            $scope.options.mouse : true,
+                        zoomControl: $scope.options && _.has($scope.options, 'controls') ?
+                            $scope.options.controls : true
+                    };
+                    console.dir($scope.map.defaults);
+                });
+
+                var defaultLayerOptions = {
+                    maxZoom: 21,
+                    maxNativeZoom: 18
+                };
+
                 $scope.map = {
                     markers: {},
                     paths: {},
                     center: {},
                     bounds: {},
                     defaults: {
-                        scrollWheelZoom: true,
-                        dragging: true,
-                        zoomControl: false
+                        scrollWheelZoom: $scope.interactive === 'true',
+                        dragging: $scope.interactive === 'true',
+                        zoomControl: $scope.controls === 'true'
                     },
                     layers: {
-                        baselayers: {
-                            ThunderforestLandscape: {
-                                url: 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
-                                type: 'xyz',
-                                name: 'Thunderforest Landscape',
-                                layerParams: {},
-                                layerOptions: {
-                                    maxZoom: 21,
-                                    maxNativeZoom: 18
-                                }
-                            },
+                        baselayers: angular.extend({
                             ThunderforestOutdoors: {
                                 url: 'http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
                                 type: 'xyz',
                                 name: 'Thunderforest Outdoors',
                                 layerParams: {},
-                                layerOptions: {}
+                                layerOptions: defaultLayerOptions
+                            }
+                        }, $scope.controls === 'true' ? { // The layers control only shows if we have multiple layers.
+                            ThunderforestLandscape: {
+                                url: 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+                                type: 'xyz',
+                                name: 'Thunderforest Landscape',
+                                layerParams: {},
+                                layerOptions: defaultLayerOptions
                             },
-                            "osm": {
-                                "name": "OpenStreetMap",
-                                "url": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                "type": "xyz",
-                                "layerParams": {},
-                                "layerOptions": {}
+                            OpenTopoMap: {
+                                url: 'http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png',
+                                type: 'xyz',
+                                name: 'Open Topo Map Hydda',
+                                layerParams: {},
+                                layerOptions: defaultLayerOptions
+                            },
+                            OpenStreetMap: {
+                                name: "OpenStreetMap",
+                                url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                type: "xyz",
+                                layerParams: {},
+                                layerOptions: defaultLayerOptions
                             },
                             MapQuestOpenAerial: {
                                 url: 'http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
                                 name: 'MapQuestOpen Aerial',
                                 layerParams: {},
                                 type: 'xyz',
-                                layerOptions: {
-                                    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
-                                    'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-                                }
+                                layerOptions: defaultLayerOptions
+                                // attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
+                                // 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
                             }
-                        }
+                        } : {})
                     }
                 };
-
-                var weight = {
-                    valid: 3,
-                    invalid: 2
-                };
-                var color = {
-                    valid: '#559141',
-                    invalid: '#C2C2C2',
-                    highlight: '#FF0000'
-                };
-
-                var styles = {
-                    valid: {
-                        default: {
-                            color: '#559141',
-                            weight: 3,
-                            opacity: 0.5
-                        },
-                        Wave: {
-                            color: '#EE145B',
-                            weight: 4,
-                            opacity: 1.0
-                        }
-                    },
-                    invalid: {
-                        default: {
-                            color: '#C2C2C2', //'#0000CC',//
-                            weight: 3,
-                            opacity: 0.25
-                        }
-
-                    }
-                };
-
 
                 var startIcon = {
                     iconUrl: 'http://maps.google.com/mapfiles/kml/paddle/go.png',
@@ -243,8 +245,8 @@ angular
                     _.each(edges, function (edge) {
                         if (workingPath === null) {
                             workingPath = {
-                                color: color.valid,
-                                weight: weight.valid,
+                                valid: edge.valid,
+                                highlight: edge.highlight,
                                 points: [
                                     edge.p0,
                                     edge.p1
@@ -280,27 +282,17 @@ angular
                     return paths;
                 }
 
-
                 /**
                  *
                  * @param {Object} path
-                 * @param {Boolean} path.valid
-                 * @param {String} path.highlight - highlight class this path belongs to
-                 * @param {Array|Object} path.points
+                 * @param {Boolean} highlightsAvailable
+                 * @returns {{className: string, latlngs: Array}}
                  */
-                function convertToLeafletPath(path) {
-                    var style = styles[path.valid ? 'valid' : 'invalid'].default;
-
-                    // Apply a highlight style to the path if the path requests it
-                    // and the style is available.
-                    if (path.highlight !== null && styles[path.valid ? 'valid' : 'invalid'][path.highlight]) {
-                        style = styles[path.valid ? 'valid' : 'invalid'][path.highlight];
-                    }
-
+                function convertToLeafletPath(path, highlightsAvailable) {
                     return {
-                        color: style.color,
-                        weight: style.weight,
-                        opacity: style.opacity,
+                        className: (path.valid ? 'valid' : 'invalid') + ' ' +
+                        (path.highlight !== null ? path.highlight : 'default') +
+                        (highlightsAvailable ? '' : ' unhighlight'),
                         latlngs: path.points
                     };
                 }
@@ -321,10 +313,8 @@ angular
 
                     var paths = edgesToPaths(edges);
 
-                    console.dir(paths);
-
                     _.each(paths, function (path, index) {
-                        leafletPaths[minimalId + '____' + index] = convertToLeafletPath(path);
+                        leafletPaths[minimalId + '____' + index] = convertToLeafletPath(path, _.isUndefined(highlights));
                     });
 
                     _.each(edges, function (edge) {
@@ -346,93 +336,13 @@ angular
                         lng: _.last(edges).p1.lng,
                         icon: stopIcon
                     };
-
-                    return;
-
-
-                    //var leafletPoints = [];
-                    //var lastValidPoint;
-                    //
-                    //
-                    //// TODO: Correctly handle (reduce) overlapping highlights.
-                    //var sortedHighlights = _.sortBy(highlights, function (highlight) {
-                    //    return highlight.startTime;
-                    //});
-                    //
-                    //for (var i = 0; i < panel['gps:longitude'].length; i++) {
-                    //    var latitude = panel['gps:latitude'][i];
-                    //    var longitude = panel['gps:longitude'][i];
-                    //
-                    //
-                    //    //console.log('longitude: ' + resource.panel.panel['gps:longitude'][i]);
-                    //
-                    //    if (isValid(latitude, longitude)) {
-                    //        bounds.add(latitude, longitude);
-                    //
-                    //        var currentPoint = {
-                    //            lat: latitude,
-                    //            lng: longitude
-                    //        };
-                    //
-                    //        if (leafletPoints.length === 0) {
-                    //            if (_.isUndefined(lastValidPoint)) {
-                    //                // Very first valid point.
-                    //                markers[minimalId + '___' + i] = {
-                    //                    message: 'start',
-                    //                    lat: currentPoint.lat,
-                    //                    lng: currentPoint.lng,
-                    //                    icon: startIcon
-                    //                };
-                    //            } else {
-                    //                // Just comming off an invalid streak
-                    //                leafletPaths[minimalId + '___' + i] = {
-                    //                    color: color.invalid,
-                    //                    weight: weight.invalid,
-                    //                    latlngs: [
-                    //                        lastValidPoint,
-                    //                        currentPoint
-                    //                    ]
-                    //                };
-                    //            }
-                    //        }
-                    //
-                    //        leafletPoints.push(currentPoint);
-                    //        lastValidPoint = currentPoint;
-                    //    } else {
-                    //        if (leafletPoints.length > 0) {
-                    //            // If we've just come off a valid streak
-                    //            leafletPaths[minimalId + '___' + i] = {
-                    //                color: color.valid,
-                    //                weight: weight.valid,
-                    //                latlngs: leafletPoints
-                    //            };
-                    //            leafletPoints = [];
-                    //        }
-                    //    }
-                    //}
-                    //
-                    //if (leafletPoints.length > 1) {
-                    //    // If we've just come off a valid streak
-                    //    leafletPaths[minimalId + '___' + i] = {
-                    //        color: color.valid,
-                    //        weight: weight.valid,
-                    //        latlngs: leafletPoints
-                    //    };
-                    //}
-                    //
-                    //if (!_.isUndefined(lastValidPoint)) {
-                    //    markers[minimalId + '___' + i] = {
-                    //        message: 'stop',
-                    //        lat: lastValidPoint.lat,
-                    //        lng: lastValidPoint.lng,
-                    //        icon: stopIcon
-                    //    };
-                    //}
                 }
 
                 function createMap() {
                     if (_.isObject($scope.panel)) {
                         var bounds = boundsConstructor();
+                        $scope.map.markers = {};
+                        $scope.map.paths = {};
                         createLeafletPath($scope.map.markers, $scope.map.paths, bounds, $scope.panel, $scope.highlights);
                         $scope.map.bounds = bounds.get();
                     }

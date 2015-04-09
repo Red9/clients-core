@@ -80,36 +80,49 @@
                 }).then(function () {
                     $scope.dataset = dataset;
 
-                    var waves = _.filter(dataset.events, function (event) {
-                        return event.type === 'Wave';
-                    });
-
-                    $scope.highlights = waves;
-
                     var viewModel = {
-                        waveCount: waves.length,
-                        sessionDuration: dataset.duration
+                        sessionDuration: dataset.duration,
+                        userName: dataset.user.displayName,
+                        startTime: dataset.startTime,
+                        sport: dataset.sport.charAt(0).toUpperCase() + dataset.sport.slice(1)
                     };
 
-                    viewModel.farthestWave = _.max(waves, function (event) {
-                        return event.summaryStatistics.distance.path;
-                    }).summaryStatistics.distance.path;
+                    if (search.type) {
+                        var events = _.filter(dataset.events, function (event) {
+                            return event.type === search.type;
+                        });
 
-                    viewModel.fastestWave = _.max(waves, function (event) {
-                        return event.summaryStatistics.gps.speed.maximum;
-                    }).summaryStatistics.gps.speed.maximum;
+                        $scope.highlights = events;
 
-                    viewModel.longestWave = _.max(waves, function (event) {
-                        return event.duration;
-                    }).duration;
+                        viewModel.distanceLabel = 'Top Distance';
+                        viewModel.distanceUnits = 'feet';
+                        viewModel.distance = _.max(events, function (event) {
+                            return event.summaryStatistics.distance.path;
+                        }).summaryStatistics.distance.path;
+
+                        viewModel.speedLabel = 'Top Speed';
+                        viewModel.speed = _.max(events, function (event) {
+                            return event.summaryStatistics.gps.speed.maximum;
+                        }).summaryStatistics.gps.speed.maximum;
+
+
+                        viewModel.timeLabel = 'Top Time';
+                        viewModel.time = _.max(events, function (event) {
+                            return event.duration;
+                        }).duration;
+                    } else {
+                        viewModel.distanceLabel = 'Total Distance';
+                        viewModel.distanceUnits = 'miles';
+                        viewModel.distance = dataset.summaryStatistics.distance.path;
+
+                        viewModel.speedLabel = 'Top Speed';
+                        viewModel.speed = dataset.summaryStatistics.gps.speed.maximum;
+
+                        viewModel.timeLabel = 'Total Time';
+                        viewModel.time = dataset.duration;
+                    }
 
                     $scope.viewModel = viewModel;
-
-                    console.dir(viewModel);
-
-
-                    //console.dir(dataset);
-                    //console.dir($scope.highlights);
                 });
 
 

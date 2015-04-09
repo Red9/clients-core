@@ -99,6 +99,15 @@ module.exports = function (grunt) {
                     ext: '.css'
                 }]
             },
+            components: {
+                files: [{
+                    expand: true,
+                    cwd: 'components/',
+                    src: ['**/*.scss'],
+                    dest: 'components/',
+                    ext: '.css'
+                }]
+            },
             fragments: {
                 files: [{
                     expand: true,
