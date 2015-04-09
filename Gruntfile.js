@@ -99,6 +99,15 @@ module.exports = function (grunt) {
                     ext: '.css'
                 }]
             },
+            components: {
+                files: [{
+                    expand: true,
+                    cwd: 'components/',
+                    src: ['**/*.scss'],
+                    dest: 'components/',
+                    ext: '.css'
+                }]
+            },
             fragments: {
                 files: [{
                     expand: true,
@@ -119,13 +128,15 @@ module.exports = function (grunt) {
         },
         useminPrepare: {
             html: 'dist/index.html',
+            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html',
             options: {
                 dest: 'dist',
                 root: './'
             }
         },
         usemin: {
-            html: 'dist/index.html'
+            html: 'dist/index.html',
+            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html'
         },
         copy: {
             index: {
@@ -143,6 +154,7 @@ module.exports = function (grunt) {
                             'my-client/**/*.css.map',
                             'my-client/**/*.html',
                             'images/**',
+                            'fonts/**',
                             'fragments/**', // Temporary solution. Each fragment should be optimized...
                             'old/**/*', // For the historic data page. Hopefully soon we can get rid of this.
                             'data.html' // Also for the old page.

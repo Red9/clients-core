@@ -1,13 +1,19 @@
+@import "../../scss/red9theme";
 
 .sessionshare {
 
-  $fragment-width: 900px;
-  $fragment-height: 600px;
+  font-family: $red9font;
+
+  $fragment-width: 950px;
+  $fragment-height: 700px;
   $title-height: 50px;
   $map-width: $fragment-width;
   $data-width: 450px;
   $user-picture-diameter: $title-height*2;
-  $user-picture-left: $fragment-width - $user-picture-diameter - 5px;
+  $user-picture-left: $fragment-width - $user-picture-diameter - 10px;
+  $footer-height: 40px;
+  $footer-label-height: 25px;
+  $attribution-height: 35px;
 
   img.logo {
     position: absolute;
@@ -21,12 +27,32 @@
   img.user-picture {
     position: absolute;
     //right: $fragment-width;
-    top: 5px;
+    top: 10px;
     left: $user-picture-left;
-    height: $title-height*2;
-    width: $title-height*2;
+    height: $user-picture-diameter;
+    width: $user-picture-diameter;
     border-radius: 50%;
     z-index: 2;
+  }
+
+  .sport {
+    position: absolute;
+    left: $user-picture-left - 5px;
+    top: $user-picture-diameter + 10px + 5px;
+
+    width: $user-picture-diameter + 10px;
+
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+
+    border-radius: 15px 15px 15px 15px;
+
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+    text-align: center;
+    color: white;
+
   }
 
   .title {
@@ -35,7 +61,7 @@
     top: 0;
     width: $fragment-width;
     height: $title-height;
-    background-color: black;
+    background-color: $logoblack;
 
     z-index: 1;
 
@@ -44,7 +70,8 @@
       line-height: $title-height;
       text-align: center;
       color: white;
-      font-size: $title-height;
+      font-size: $title-height - 10px;
+      font-weight: bold;
     }
   }
 
@@ -54,29 +81,11 @@
     top: $title-height;
     width: $map-width;
     height: $fragment-height - $title-height;
-    background-color: blue;
-
-    map {
-      width: inherit;
-      height: inherit;
-
-      .angular-leaflet-map {
-        width: inherit;
-        height: inherit;
-
-        // Don't display the distracting little attribution in the corner
-        //  or the layers selector
-        .leaflet-control-container {
-          display: none;
-        }
-
-      }
-    }
   }
 
   .stat {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 1;
     margin: 0;
 
@@ -99,24 +108,46 @@
 
     &.footer {
       left: 0;
-      top: $fragment-height  - $title-height;
+      top: $fragment-height  - $footer-height - $footer-label-height - $attribution-height;
       width: $fragment-width;
-      height: $title-height;
+      height: $footer-height;
     }
 
     &.footer-label {
       left: 0;
-      top: $fragment-height - $title-height*2;
-      width: auto;
-      height: $title-height;
+      top: $fragment-height - $footer-label-height - $attribution-height;
+      width: $fragment-width;
+      height: $footer-label-height;
 
-      bacground-color: rgba(0, 0, 0, 1);
-      border-radius: 15%;
-      vertical-align: middle;
-      line-height: $title-height;
+      h2 {
+        line-height: $footer-label-height;
+        font-size: 17px;
+      }
 
     }
+  }
 
+  .attribution {
+    position: absolute;
+    background-color: $logoblack;
+    left: 0;
+    top: $fragment-height - $attribution-height;
+    width: $fragment-width;
+    height: $attribution-height;
+    line-height: $attribution-height;
+    margin: 0;
+
+    .attribute {
+      color: white;
+      font-size: 17px;
+
+      &.url {
+        a:link, a:visited, a:hover, a:active {
+          font-weight: bold;
+          color: $logored;
+        }
+      }
+    }
   }
 
 }

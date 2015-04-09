@@ -146,6 +146,10 @@ angular
                     }
                 }
             ];
+
+            $scope.highlights = _.filter(dataset.events, function (event) {
+                return event.type === 'Wave';
+            });
         }
 
 

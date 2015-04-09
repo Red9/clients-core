@@ -1,0 +1,46 @@
+@import "../../scss/red9theme";
+
+map {
+  width: inherit;
+  height: inherit;
+
+  .angular-leaflet-map {
+    width: inherit;
+    height: inherit;
+
+    // Don't display the distracting little attribution in the corner
+    //  or the layers selector
+    .leaflet-control-attribution {
+      display: none;
+    }
+
+  }
+
+
+  .Wave {
+    stroke: $logored;
+    stroke-width: 4;
+    &.valid {
+      stroke-opacity: 1.0;
+    }
+    &.invalid {
+      stroke-opacity: 0.45;
+    }
+  }
+
+  .valid.default {
+    stroke: #559141;
+    stroke-width: 3;
+
+    // Use when we have highlights, and want to de-emphasize the default
+    &.unhighlight {
+      stroke-opacity: 0.5;
+    }
+  }
+
+  .invalid.default {
+    stroke: #C2C2C2;
+    stroke-width: 3;
+    stroke-opacity: 0.25;
+  }
+}

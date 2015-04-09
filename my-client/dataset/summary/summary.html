@@ -1,16 +1,25 @@
-<div class="row">
-    <div style="height: 500px">
-        <carousel interval="myInterval">
-            <slide ng-repeat="slide in slides" active="slide.active">
-                <img ng-src="{{slide.image}}" style="margin: 0 auto; max-height:500px">
 
-                <div class="carousel-caption">
-                    <h4>{{slide.text}}</h4>
-                </div>
-            </slide>
-        </carousel>
-    </div>
+<div class="row">
+    <map panel="dataset.panel.panel"
+         highlights="highlights"
+         interactive="false"
+         controls="true"
+         style="height:600px"></map>
 </div>
+
+<!--<div class="row">-->
+    <!--<div style="height: 500px">-->
+        <!--<carousel interval="myInterval">-->
+            <!--<slide ng-repeat="slide in slides" active="slide.active">-->
+                <!--<img ng-src="{{slide.image}}" style="margin: 0 auto; max-height:500px">-->
+
+                <!--<div class="carousel-caption">-->
+                    <!--<h4>{{slide.text}}</h4>-->
+                <!--</div>-->
+            <!--</slide>-->
+        <!--</carousel>-->
+    <!--</div>-->
+<!--</div>-->
 
 <div class="row statsrow"
      ng-repeat="row in viewModel.eventRows"
@@ -27,8 +36,4 @@
             <p>{{tile.caption}}</p>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <map resource="dataset"></map>
 </div>
