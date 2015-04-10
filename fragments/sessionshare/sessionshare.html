@@ -68,14 +68,19 @@
 
     <div class="stat footer row">
         <div class="col-xs-4"><h2>{{viewModel.speed | units:'knots':'mph' | number:1}} mph</h2></div>
+        <div class="col-xs-4">
+            <h2 ng-if="viewModel.metricCDuration">{{viewModel.metricC | duration:true}}</h2>
+
+            <h2 ng-if="!viewModel.metricCDuration">{{viewModel.metricC}}</h2>
+        </div>
         <div class="col-xs-4"><h2>{{viewModel.distance | units:'meters':viewModel.distanceUnits | number:1}}
             {{viewModel.distanceUnits}}</h2></div>
-        <div class="col-xs-4"><h2>{{viewModel.time | duration:true}}</h2></div>
+
     </div>
     <div class="stat footer-label row">
         <div class="col-xs-4"><h2>{{viewModel.speedLabel}}</h2></div>
+        <div class="col-xs-4"><h2>{{viewModel.metricCLabel}}</h2></div>
         <div class="col-xs-4"><h2>{{viewModel.distanceLabel}}</h2></div>
-        <div class="col-xs-4"><h2>{{viewModel.timeLabel}}</h2></div>
     </div>
 
     <div class="attribution row">

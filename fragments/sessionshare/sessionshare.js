@@ -94,22 +94,20 @@
 
                         $scope.highlights = events;
 
-                        viewModel.distanceLabel = 'Top Distance';
+                        viewModel.distanceLabel = 'Longest ' + search.type;
                         viewModel.distanceUnits = 'feet';
                         viewModel.distance = _.max(events, function (event) {
                             return event.summaryStatistics.distance.path;
                         }).summaryStatistics.distance.path;
 
-                        viewModel.speedLabel = 'Top Speed';
+                        viewModel.speedLabel = 'Fastest ' + search.type;
                         viewModel.speed = _.max(events, function (event) {
                             return event.summaryStatistics.gps.speed.maximum;
                         }).summaryStatistics.gps.speed.maximum;
 
-
-                        viewModel.timeLabel = 'Top Time';
-                        viewModel.time = _.max(events, function (event) {
-                            return event.duration;
-                        }).duration;
+                        viewModel.metricCLabel = search.type + ' Count';
+                        viewModel.metricCDuration = false;
+                        viewModel.metricC = events.length;
                     } else {
                         viewModel.distanceLabel = 'Total Distance';
                         viewModel.distanceUnits = 'miles';
@@ -118,8 +116,9 @@
                         viewModel.speedLabel = 'Top Speed';
                         viewModel.speed = dataset.summaryStatistics.gps.speed.maximum;
 
-                        viewModel.timeLabel = 'Total Time';
-                        viewModel.time = dataset.duration;
+                        viewModel.metricCLabel = 'Total Time';
+                        viewModel.metricCDuration = true;
+                        viewModel.metricC = dataset.duration;
                     }
 
                     $scope.viewModel = viewModel;
