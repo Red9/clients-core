@@ -1,6 +1,7 @@
 angular
     .module('redApp.dataset.admin', [
-        'redComponents.api'
+        'redComponents.api',
+        'ui.bootstrap.showErrors'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.admin', {
@@ -11,7 +12,7 @@ angular
             title: 'R9: Session Admin'
         });
     })
-    .controller('DatasetAdminController', function ($scope, api, dataset) {
+    .controller('DatasetAdminController', function ($scope, $window, api, dataset) {
         $scope.dataset = dataset;
 
         $scope.datasetSport = $scope.dataset.sport;
@@ -36,6 +37,18 @@ angular
             }
 
             window.open(url, 'Session Share', 'width=950,height=700,menubar=yes,toolbar=yes');
+
+        };
+
+
+        $scope.runDownload = function (parameters) {
+            $scope.$broadcast('show-errors-check-validity');
+
+            if ($scope.downloadForm.$valid) {
+                console.dir(parameters);
+
+                dataset.getCSVPanel(parameters);
+            }
 
         };
     });

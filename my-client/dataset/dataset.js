@@ -11,6 +11,7 @@ angular
         'redComponents.filters.display.duration',
         'redComponents.filters.display.units',
         'redComponents.filters.display.sumDuration',
+        'redComponents.responsiveDetection',
         'angular.filter',
         'lodash'
     ])
@@ -20,7 +21,7 @@ angular
             templateUrl: '/my-client/dataset/dataset.html',
             controller: 'DatasetController',
             resolve: {
-                dataset: function ($stateParams, api) {
+                dataset: function ($stateParams, api, ResponsiveDetection) {
                     // TODO: take care of the case that {id} isn't here
                     var queryOptions = {
                         id: $stateParams.id,
@@ -65,17 +66,20 @@ angular
                             });
                         }).then(function () {
                             // Get a high resolution version, but don't block user action for the new version.
-                            dataset.getPanel({
-                                size: 'xxxl',
-                                axes: [
-                                    'time',
-                                    'gps:latitude',
-                                    'gps:longitude'
-                                ]
-                            });
+                            if (ResponsiveDetection.getBreakpoint() === 'lg') {
+                                dataset.getPanel({
+                                    size: 'xxxl',
+                                    axes: [
+                                        'time',
+                                        'gps:latitude',
+                                        'gps:longitude'
+                                    ]
+                                });
+                            }
 
                             return dataset;
                         });
+
                 }
             },
             data: {

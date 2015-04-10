@@ -14,7 +14,7 @@ angular
  *   - delete
  *
  */
-    .factory('api', function ($resource, $http, $interval, $q, _, $timeout) {
+    .factory('api', function ($resource, $http, $interval, $q, _, $timeout, $window) {
         $http.defaults.withCredentials = true;
         var apiUrl = red9config.apiUrl;
 
@@ -168,6 +168,36 @@ angular
             }).success(function (options) {
                 self.fcpxmlOptions = options;
             });
+        };
+
+        /** Downloads a CSV panel to the user's browser.
+         *
+         * @param {Object} options
+         * @param {Number} options.frequency The frequency in Hz
+         * @param {Number} [options.startTime]
+         * @param {Number} [options.endTime]
+         * @param {Array|String} [options.axes]
+         */
+        result.dataset.prototype.getCSVPanel = function (options) {
+            if (!_.has(options, 'frequency') || !_.isNumber(options.frequency)) {
+                throw new Error('Invalid options.frequency parameter.');
+            }
+
+            var resultUrl = apiUrl + '/dataset/' + this.id + '/csv?frequency=' + options.frequency;
+
+            if (_.has(options, 'axes')) {
+                resultUrl += '&axes=' + options.axes.join(',');
+            }
+            
+            if (_.has(options, 'startTime')){
+                resultUrl += '&startTime=' + options.startTime;
+            }
+
+            if (_.has(options, 'endTime')){
+                resultUrl += '&endTime=' + options.endTime;
+            }
+
+            $window.open(resultUrl);
         };
 
         result.dataset.prototype.getFcpxmlUrl = function (options_) {
