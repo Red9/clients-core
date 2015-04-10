@@ -12,7 +12,9 @@ angular
                 // Convert from cycles per second to cycles per hour
                 return value * 60 * 60;
             } else {
-                return value;
+                return Number.Nan; // A clearly wrong value to alert us if we use the wrong units.
+                                   // Don't throw an error because several incomplete digest cycles
+                                   //   might run with undefined values.
             }
         };
     });

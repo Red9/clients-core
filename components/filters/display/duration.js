@@ -35,6 +35,9 @@ angular
                 millisecondsString = '0' + milliseconds;
             }
 
+            // We only care about the first digit (don't want to get too precise)
+            millisecondsString = millisecondsString[0];
+
 
             if (tight === false || hours > 0) {
                 return hours + 'h ' + minutesString + 'm'; // Don't display seconds if it's more than an hour. "Oddly precise".

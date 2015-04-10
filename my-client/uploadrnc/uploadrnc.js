@@ -1,6 +1,5 @@
 angular
     .module('redApp.uploadRNC', [
-        'ngRoute',
         'angularFileUpload',
         'redComponents.api',
         'redComponents.validFile'
@@ -34,7 +33,7 @@ angular
                 url: red9config.apiUrl + '/dataset/',
                 method: 'POST',
                 withCredentials: true,
-                data: {
+                fields: {
                     userId: $scope.user.id,
                     title: $scope.title
                 },

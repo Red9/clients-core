@@ -5,7 +5,7 @@
     "grunt-angular-templates": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-concat": "latest",
-    "grunt-contrib-copy": "latest",
+    "grunt-contrib-copy": "0.7.x",
     "grunt-contrib-cssmin": "latest",
     "grunt-contrib-htmlmin": "latest",
     "grunt-contrib-jshint": "latest",

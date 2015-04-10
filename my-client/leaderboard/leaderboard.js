@@ -1,6 +1,5 @@
 angular
     .module('redApp.leaderboard', [
-        'ngRoute',
         'redComponents.api',
         'lodash'
     ])
@@ -51,7 +50,7 @@ angular
         };
 
         $scope.runSearch = function () {
-            $scope.startTime = $scope.startDate.date ? $scope.startDate.date.getTime() : (new Date((new Date()).getTime() - 7 * 7 * 24 * 60 * 60 * 1000)).getTime();
+            $scope.startTime = $scope.startDate.date ? $scope.startDate.date.getTime() : (new Date((new Date()).getTime() - 70 * 7 * 24 * 60 * 60 * 1000)).getTime();
             $scope.endTime = $scope.endDate.date ? $scope.endDate.date.getTime() : (new Date()).getTime();
             $scope.leaderboardData = null;
             var datasetQuery = _.pick({
@@ -89,7 +88,7 @@ angular
                     return topSpeed || 0;
                 }
 
-                $scope.leaderboardData = _.chain(datasetList).groupBy('userId').map(function (userDatasets, userId) {
+                $scope.leaderboardData = _.chain(datasetList).groupBy('userId').map(function (userDatasets) {
                     var totalEventDistance = 0;
                     var eventCount = 0;
                     var totalDuration = 0;

@@ -1,0 +1,39 @@
+
+<div class="row">
+    <map panel="dataset.panel.panel"
+         highlights="highlights"
+         interactive="false"
+         controls="true"
+         style="height:600px"></map>
+</div>
+
+<!--<div class="row">-->
+    <!--<div style="height: 500px">-->
+        <!--<carousel interval="myInterval">-->
+            <!--<slide ng-repeat="slide in slides" active="slide.active">-->
+                <!--<img ng-src="{{slide.image}}" style="margin: 0 auto; max-height:500px">-->
+
+                <!--<div class="carousel-caption">-->
+                    <!--<h4>{{slide.text}}</h4>-->
+                <!--</div>-->
+            <!--</slide>-->
+        <!--</carousel>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="row statsrow"
+     ng-repeat="row in viewModel.eventRows"
+     ng-click="row.link();">
+    <h1 class="text-center">{{row.type}}</h1>
+
+    <div class="col-sm-4" ng-repeat="tile in row.tiles">
+        <div class="statspanel">
+            <h1 ng-if="tile.units !== 'duration'">{{tile.value | number:tile.decimals}}
+                <small>{{tile.units}}</small>
+            </h1>
+            <h1 ng-if="tile.units === 'duration'">{{tile.value | duration:true}}</h1>
+
+            <p>{{tile.caption}}</p>
+        </div>
+    </div>
+</div>

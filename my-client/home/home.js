@@ -1,6 +1,5 @@
 angular
     .module('redApp.home', [
-        'ngRoute',
         'lodash'
     ])
     .config(function ($stateProvider) {

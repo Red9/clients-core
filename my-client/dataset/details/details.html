@@ -1,0 +1,11 @@
+<ul class="nav nav-tabs nav-tabs-well-offset nav-tabs-filled">
+    <li ui-sref=".session" ui-sref-active="active"><a>Session</a></li>
+    <li ng-repeat="type in viewModel.eventTypes"
+        ui-sref=".event({type:type})"
+        ui-sref-active="active"><a>{{type}}</a></li>
+</ul>
+
+<br/>
+
+
+<ui-view></ui-view>

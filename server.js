@@ -35,21 +35,21 @@ server.route({
     }
 });
 
-server.route({
-    method: 'GET',
-    path: '/dataset/{id}',
-    handler: {
-        file: path.join(nconf.get('src'), 'data.html')
-    }
-});
+//server.route({
+//    method: 'GET',
+//    path: '/dataset/{id}',
+//    handler: {
+//        file: path.join(nconf.get('src'), 'data.html')
+//    }
+//});
 
-server.route({
-    method: 'GET',
-    path: '/event/{id}',
-    handler: {
-        file: path.join(nconf.get('src'), 'data.html')
-    }
-});
+//server.route({
+//    method: 'GET',
+//    path: '/event/{id}',
+//    handler: {
+//        file: path.join(nconf.get('src'), 'data.html')
+//    }
+//});
 
 server.route({
     method: 'GET',

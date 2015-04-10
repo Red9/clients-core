@@ -4,17 +4,10 @@ angular
         'lodash'
     ])
 
-/** Create a Red9 API accessor object
- *
- *  Each resource has the following methods:
- *   - save (create)
- *   - get
- *   - query
- *   - update
- *   - delete
- *
- */
-    .factory('api', function ($resource, $http, $interval, $q, _, $timeout) {
+    // TODO: Clean this up!
+    // TODO: Add in code to wrap the expanded responses into Angular resource objects, eg http://stackoverflow.com/questions/16452277/how-can-i-extend-the-constructor-of-an-angularjs-resource-resource
+
+    .factory('api', function ($resource, $http, $interval, $q, _, $timeout, $window) {
         $http.defaults.withCredentials = true;
         var apiUrl = red9config.apiUrl;
 
@@ -38,7 +31,6 @@ angular
         var metadataFormat = {
             get: _.merge({}, metadataResponse, {method: 'GET'}),
             save: _.merge({}, metadataResponse, {method: 'POST'}),
-            update: _.merge({}, metadataResponse, {method: 'PUT'}),
             query: _.merge({}, metadataResponse, {
                 method: 'GET',
                 isArray: true
@@ -60,7 +52,8 @@ angular
              *
              * @param updateValues {object} a set of key values to PUT to the server
              */
-            resource.prototype.update = function (updateValues) {
+            resource.prototype.update = // This name should be phased out once I figure out who is using it...
+            resource.prototype.$update = function (updateValues) {
                 var self = this;
                 var request = $http({
                     url: apiUrl + '/' + type + '/' + self.id,
@@ -88,49 +81,76 @@ angular
         });
         result.event.types = [];
 
-        result.event.getPanel = function (event) {
-            $http({
-                url: apiUrl + '/event/' + event.id + '/json?size=sm',
-                method: 'GET'
-            }).success(function (data) {
-                event.panel = data;
-            });
-        };
+        //result.event.getPanel = function (event) {
+        //    $http({
+        //        url: apiUrl + '/event/' + event.id + '/json?size=sm',
+        //        method: 'GET'
+        //    }).success(function (data) {
+        //        event.panel = data;
+        //    });
+        //};
 
 
-        /** Will get a panel, and add it to the dataset under the "panel" key.
+        /** Will get a panel, and add it to self under the "panel" key.
          *
-         * @param options
+         * @param {String} type event or dataset
+         * @param {String|Number} id
+         * @param {Object} [options]
+         * @param {Number} [options.startTime]
+         * @param {Number} [options.endTime]
+         * @param {String} [options.size]
+         * @param {Array:String} [options.axes]
+         * // Any other keys are passed directly to the API
          * @returns {$http promise}
          */
-        result.dataset.prototype.getPanel = function (options) {
-            var self = this;
-
-
+        function getPanelRaw(type, id, options) {
             var queryString = {
                 size: _.has(options, 'size') ? options.size : 'lg'
             };
 
-            _.each(options, function (value, key) {
-                if (key === 'axes') {
-                    if (!_.has(queryString, 'fields')) {
-                        queryString.fields = [];
-                    }
-                    queryString.fields.push('panel(' + value.join(',') + ')');
-                }
-            });
+            if (!_.isUndefined(options)) {
+                queryString.startTime = options.startTime;
+                queryString.endTime = options.endTime;
 
-            if (!_.has(queryString, 'fields')) {
+
+                _.each(options, function (value, key) {
+                    if (key === 'axes') {
+                        if (!_.has(queryString, 'fields')) {
+                            queryString.fields = [];
+                        }
+                        queryString.fields.push('panel(' + value.join(',') + ')');
+                    }
+                });
+            }
+
+            if (_.has(queryString, 'fields')) {
                 queryString.fields = queryString.fields.join(',');
             }
 
+
             return $http({
                 method: 'GET',
-                url: apiUrl + '/dataset/' + self.id + '/json',
+                url: apiUrl + '/' + type + '/' + id + '/json',
                 params: queryString
-            }).success(function (data) {
-                self.panel = data;
             });
+        }
+
+        result.getPanel = getPanelRaw;
+
+        result.dataset.prototype.getPanel = function (options) {
+            var self = this;
+            return getPanelRaw('dataset', self.id, options)
+                .success(function (data) {
+                    self.panel = data;
+                });
+        };
+
+        result.event.prototype.getPanel = function (options) {
+            var self = this;
+            return getPanelRaw('event', self.id, options)
+                .success(function (data) {
+                    self.panel = data;
+                });
         };
 
         result.dataset.prototype.getFcpxmlOptions = function () {
@@ -141,6 +161,36 @@ angular
             }).success(function (options) {
                 self.fcpxmlOptions = options;
             });
+        };
+
+        /** Downloads a CSV panel to the user's browser.
+         *
+         * @param {Object} options
+         * @param {Number} options.frequency The frequency in Hz
+         * @param {Number} [options.startTime]
+         * @param {Number} [options.endTime]
+         * @param {Array|String} [options.axes]
+         */
+        result.dataset.prototype.getCSVPanel = function (options) {
+            if (!_.has(options, 'frequency') || !_.isNumber(options.frequency)) {
+                throw new Error('Invalid options.frequency parameter.');
+            }
+
+            var resultUrl = apiUrl + '/dataset/' + this.id + '/csv?frequency=' + options.frequency;
+
+            if (_.has(options, 'axes')) {
+                resultUrl += '&axes=' + options.axes.join(',');
+            }
+
+            if (_.has(options, 'startTime')) {
+                resultUrl += '&startTime=' + options.startTime;
+            }
+
+            if (_.has(options, 'endTime')) {
+                resultUrl += '&endTime=' + options.endTime;
+            }
+
+            $window.open(resultUrl);
         };
 
         result.dataset.prototype.getFcpxmlUrl = function (options_) {

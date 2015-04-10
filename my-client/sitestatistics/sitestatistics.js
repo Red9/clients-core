@@ -1,6 +1,5 @@
 angular
     .module('redApp.sitestatistics', [
-        'ngRoute',
         'redComponents.api',
         'redComponents.filters.display.duration',
         'lodash'

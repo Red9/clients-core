@@ -1,3 +1,212 @@
+@import "../scss/red9theme";
+
+.inline-bar {
+
+  //background-color: yellow;
+  width: 100%;
+  display: table;
+
+  .units {
+    display: table-cell;
+    width: 60px;
+
+    max-width: 60px;
+
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+
+    text-align: right;
+    padding-right: 5px;
+
+    //background-color: blue;
+    vertical-align: middle;
+  }
+  .bar-area {
+    display: table-cell;
+    //background-color: blueviolet;
+    vertical-align: middle;
+  }
+  .bar {
+    width: 60%;
+    background-color: $logocolor;
+    height: 12px;
+    border-radius: 1px;
+  }
+}
+
+.visualization.chart.rawmap {
+
+  $tickColor: #f1f1f1;
+
+  .pegman {
+    path, circle {
+      stroke: black;
+      stroke-width: 2px;
+      fill: orange;
+    }
+  }
+
+  .markers {
+    font-family: Glyphicons Halflings;
+    font-size: 14pt;
+    .start {
+      stroke: green;
+    }
+    .end {
+      stroke: red;
+    }
+  }
+
+  .pegman:not(.dragging):hover {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
+
+  .pegman.dragging {
+    cursor: default;
+  }
+
+  .heatline {
+    stroke-width: 2px;
+  }
+
+  .scaleTickLabel {
+    font-size: 10pt;
+    fill: $tickColor;
+  }
+
+  .gridLine {
+    stroke-width: 1px;
+    stroke: #9CD0FF;
+  }
+
+  .scaleTick {
+    stroke-width: 3px;
+    stroke: $tickColor;
+  }
+
+  .background {
+    fill: #93C6E6;
+    stroke-width: 0px;
+  }
+
+  .path {
+    fill: none;
+    pointer-events: visibleStroke;
+  }
+
+  .path.valid {
+    stroke: #559141;
+    stroke-width: 3px;
+  }
+
+  .path.invalid {
+    stroke: #9c9c9c;
+    stroke-width: 2px;
+  }
+
+}
+
+.visualization.chart.timeseries {
+
+  height: 300px;
+  max-height: 300px;
+
+  line.slide {
+    stroke-width: 2px;
+    stroke-opacity: 0.5;
+
+    &.hover {
+      stroke: red;
+      pointer-events: none; // Pass through the clicks, since the hover marker will always be under our mouse we don't really care if we click on it.
+    }
+
+    &.video {
+      stroke: blue;
+    }
+
+
+    &.a, &.b {
+      stroke: black;
+    }
+  }
+
+  line.video-hoverline {
+    stroke-width: 4px;
+    stroke: blue;
+    stroke-opacity: 0.5;
+  }
+
+  rect.plotarea {
+    fill-opacity: 0;
+  }
+
+  .series {
+    fill: none;
+    pointer-events: visibleStroke;
+  }
+
+  .plotgroup {
+    stroke-width: 1px;
+  }
+
+  .plotgroup:hover {
+    stroke-width: 1.5px;
+  }
+
+  line.axis {
+    stroke-width: 1px;
+    stroke: #949494;
+    shape-rendering: crispEdges;
+  }
+
+  text.axis {
+    font-size: 8pt;
+    fill: #949494;
+  }
+
+  .valuebox text {
+    font-size: 10pt;
+    fill: #949494;
+  }
+
+  .axis.label {
+    font-size: 10pt;
+    fill: #949494;
+  }
+
+  .key {
+    font-size: 12pt;
+    stroke-width: 0px;
+    cursor: pointer;
+  }
+}
+
+$measurements: (
+        accelerationX : #FFA500,
+        accelerationY : #6B8E23,
+        accelerationZ: #0000CD,
+        rotationRateX: #C71585,
+        rotationRateY: #32CD32,
+        rotationRateZ: #4169E1,
+        magneticFieldX: #FF4500,
+        magneticFieldY: #3CB371,
+        magneticFieldZ: #191970,
+        gpsAltitude: #FF6347,
+        gpsSpeed: #8B4513,
+        gpsSatellites: #4B0082,
+        gpsHdop: #228B22,
+        pressurePressure: #2E8B57,
+        pressureTemperature: #F4A460
+);
+
+@each $key, $value in $measurements {
+  .measurement.#{$key} {
+    stroke: $value;
+    fill: $value
+  }
+}
 
 .ngFade.ng-enter {
   transition: 0.1s linear all;
@@ -101,3 +310,36 @@ div[dc-angular-chart] {
   width: 100%;
 }
 
+.graph-toolbar {
+  padding-top: 8px;
+  border-width: 0px;
+  background-color: #222222;
+}
+
+.well .graph-area {
+  // Get every last pixel from the well if it's inside of one
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.graph-area {
+  background-color: white;
+  // Apply a min-height since, when the area loads, it's full of elements with 0 height.
+  min-height: 2000px;
+}
+
+#loading-bar .bar {
+  background: $logocolor;
+  // This isn't the best: it's hard coded based on the Bootstrap nav height.
+  top: 48px;
+  height: 4px;
+}
+
+#loading-bar .peg {
+  -moz-box-shadow: $logocolor 1px 0 6px 1px;
+  -ms-box-shadow: $logocolor 1px 0 6px 1px;
+  -webkit-box-shadow: $logocolor 1px 0 6px 1px;
+  box-shadow: $logocolor 1px 0 6px 1px;
+}

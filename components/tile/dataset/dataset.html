@@ -1,8 +1,12 @@
 <div class="well">
-    <h4><a ng-href="/analysis/{{dataset.id}}" title="view detailed information">
-        {{dataset.title| limitTo:60}}
-        <span ng-if="dataset.title.length > 60">...</span>
-    </a></h4>
+    <h4>
+        <a ng-href="/dataset/{{dataset.id}}" title="view detailed information">
+            {{dataset.title| limitTo:60}}
+            <span ng-if="dataset.title.length > 60">...</span>
+            <span ng-if="dataset.videos.length > 0"
+                  class="glyphicon glyphicon-facetime-video"></span>
+
+        </a></h4>
     <a ng-href="/user/{{dataset.user.id}}" title="view user profile">
         <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px"
              class="profile-pic"/>

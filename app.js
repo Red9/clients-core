@@ -13,10 +13,11 @@
             'ui.router',
             'uiRouterStyles',
 
+            'angular-loading-bar',
+
             'angulartics',
             'angulartics.segment.io',
 
-            'redApp.experiment',
             'redApp.userProfile',
             'redApp.uploadRNC',
             'redApp.leaderboard',
@@ -25,8 +26,16 @@
             'redApp.home',
             'redApp.editUserProfile',
             'redApp.admin',
-            'redApp.dataAnalysis',
+            'redApp.dataset',
+            'redApp.dataset.summary',
+            'redApp.dataset.details',
+            'redApp.dataset.details.session',
+            'redApp.dataset.details.event',
+            'redApp.dataset.graphs',
+            'redApp.dataset.admin',
+            'redApp.dataset.media',
             'redApp.search',
+            'redApp.event',
 
             'redComponents.authenticate',
 
@@ -64,6 +73,9 @@
         .config(function ($resourceProvider) {
             // Don't strip trailing slashes from calculated URLs
             $resourceProvider.defaults.stripTrailingSlashes = false;
+        })
+        .config(function (cfpLoadingBarProvider) {
+            cfpLoadingBarProvider.includeSpinner = false;
         })
         .run(function ($rootScope, $location, $window, current, authenticate, $state) {
             // The idea of using cookies for initial user authentication came from this page:
@@ -104,6 +116,20 @@
             // Set page title
             $rootScope.$on('$stateChangeSuccess', function (event, toState) {
                 $rootScope.pageTitle = toState.title;
+            });
+
+
+            // Set up a redirect for "abstract" states.
+            // Listen to $stateChangeSuccess instead of $stateChangeStart because
+            //
+            $rootScope.$on('$stateChangeStart', function (evt, to, params, from) {
+                console.log('$stateChangeStart: ' + to.name);
+                console.dir(evt);
+
+                if (to.redirectTo && to.name !== from.name) {
+                    evt.preventDefault();
+                    $state.go(to.redirectTo, params);
+                }
             });
         });
 })();

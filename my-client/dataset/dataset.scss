@@ -1,0 +1,43 @@
+@import "../../scss/variables";
+@import "../../scss/red9theme";
+@import "../../scss/graphs";
+
+h1 .duration {
+  color: rgba(150, 150, 150, .95);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: lowercase;
+}
+
+.tags {
+  margin-top: 30px;
+
+  .label.label-primary {
+    padding: 7px 10px;
+    background-color: transparent;
+    box-shadow: inset 0px 0px 1px 0px rgba(255, 255, 255, 0.8);
+    font-weight: 300;
+  }
+}
+
+.nav-tabs-filled a {
+  background-color: $headerColor;
+  color: white;
+  font-weight: normal;
+}
+
+.nav-tabs-filled a:hover {
+  color: black;
+}
+
+.dataset-header {
+  a.user-profile {
+    color: $green;
+  }
+  a.dataset-title {
+    color: white;
+    text-decoration: none;
+  }
+
+}
+

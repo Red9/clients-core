@@ -1,0 +1,116 @@
+<div>
+    <svg class="visualization chart timeseries"
+         ng-attr-height="{{graph.height}}"
+         ng-attr-width="{{graph.width}}">
+
+
+        <!-- Plots -->
+        <rect class="plotarea"
+              ng-attr-x="{{graph.axes.y.width}}"
+              y="0"
+              ng-attr-width="{{graph.plot.width}}"
+              ng-attr-height="{{graph.plot.height}}"
+              ng-mousemove="hovermove($event);"
+              ng-click="plotareaClick($event);"></rect>
+        <g ng-repeat="(key, value) in plots" class="plotgroup">
+            <path class="series measurement"
+                  ng-class="key"
+                  ng-attr-d="{{value.line.svgLine}}">
+            </path>
+
+            <!-- Series Key -->
+            <text class="key measurement"
+                  text-anchor="middle"
+                  ng-class="key"
+                  ng-attr-x="{{value.key.x}}"
+                  ng-attr-y="{{value.key.y}}"
+                  ng-click="toggleSeries($event, key)">
+                {{key}}
+            </text>
+        </g>
+
+        <!-- Y axis -->
+        <line class="axis"
+              ng-attr-x1="{{graph.axes.y.width}}"
+              ng-attr-y1="0"
+              ng-attr-x2="{{graph.axes.y.width}}"
+              ng-attr-y2="{{graph.plot.height}}"></line>
+        <g ng-repeat="tick in graph.axes.y.ticks">
+            <line class="axis"
+                  ng-attr-x1="{{tick.line.x1}}"
+                  ng-attr-y1="{{tick.line.y}}"
+                  ng-attr-x2="{{tick.line.x2}}"
+                  ng-attr-y2="{{tick.line.y}}"></line>
+            <text class="axis"
+                  ng-attr-x="{{tick.label.x}}"
+                  ng-attr-y="{{tick.label.y}}"
+                  text-anchor="middle">{{tick.label.text}}
+            </text>
+        </g>
+        <text class="axis label"
+              ng-attr-transform="translate({{graph.axes.y.label.x}},{{graph.axes.y.label.y}})rotate(-90)"
+              text-anchor="middle">{{graph.axes.y.label.text}}
+        </text>
+
+        <!-- Value Box -->
+        <g class="valuebox"
+           ng-attr-transform="translate({{graph.valueBox.x}},{{graph.valueBox.y}})">
+            <g ng-repeat="label in graph.valueBox.labels"
+               ng-attr-transform="translate(0,{{label.y}})">
+                <text x=0 y=0>{{label.key.text}}</text>
+                <text ng-attr-x="{{label.value.x}}" y=0>{{label.value.text}}</text>
+            </g>
+        </g>
+
+
+        <!-- X Axis -->
+        <line class="axis"
+              ng-attr-x1="{{graph.axes.y.width}}"
+              ng-attr-y1="{{graph.plot.height}}"
+              ng-attr-x2="{{graph.width}}"
+              ng-attr-y2="{{graph.plot.height}}"></line>
+        <g ng-repeat="tick in graph.axes.x.ticks">
+            <line class="axis"
+                  ng-attr-x1="{{tick.line.x}}"
+                  ng-attr-y1="{{tick.line.y1}}"
+                  ng-attr-x2="{{tick.line.x}}"
+                  ng-attr-y2="{{tick.line.y2}}"></line>
+            <text class="axis"
+                  ng-attr-x="{{tick.label.x}}"
+                  ng-attr-y="{{tick.label.y}}"
+                  text-anchor="middle">{{tick.label.text}}
+            </text>
+        </g>
+
+        <!-- Hover Line -->
+        <!--<line class="hoverline"-->
+              <!--ng-if="slides.hover"-->
+              <!--ng-attr-x1="{{graph.slides.hover}}"-->
+              <!--ng-attr-x2="{{graph.slides.hover}}"-->
+              <!--ng-attr-y1="0"-->
+              <!--ng-attr-y2="{{graph.plot.height}}">-->
+        <!--</line>-->
+
+        <g ng-repeat="(name, slide) in graph.slides">
+            <line ng-if="slide !== null"
+                  class="slide"
+                  ng-class="name"
+                  ng-attr-x1="{{slide}}"
+                  ng-attr-x2="{{slide}}"
+                  ng-attr-y1="0"
+                  ng-attr-y2="{{$parent.graph.plot.height}}"></line>
+        </g>
+
+        <!-- Video Hover Line -->
+        <!--<line class="video-hoverline"-->
+              <!--ng-if="videoHover.time"-->
+              <!--ng-attr-x1="{{graph.videoHoverline.x}}"-->
+              <!--ng-attr-x2="{{graph.videoHoverline.x}}"-->
+              <!--ng-attr-y1="0"-->
+              <!--ng-attr-y2="{{graph.plot.height}}">-->
+        <!--</line>-->
+    </svg>
+</div>
+
+
+<p>{{graph.slides.hover}}</p>

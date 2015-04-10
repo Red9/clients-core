@@ -1,0 +1,144 @@
+<div class="col-xs-12">
+    <div class="row"><h1 class="col-xs-12">Dataset Admin Tools</h1></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Select Dataset Sport Type</h2>
+
+            <form class="form-inline">
+                <select ng-model="datasetSport" ng-change="saveSport(datasetSport)" class="form-control"
+                        ng-options="item for item in sportsList track by item"></select>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Download Panel</h2>
+
+            <form class="form-horizontal" name="downloadForm" novalidate>
+                <fieldset>
+
+                    <!-- Appended Input-->
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="frequency">Row Frequency *</label>
+
+                        <div class="col-sm-5">
+                            <div class="input-group" show-errors>
+                                <input id="frequency" name="frequency" class="form-control" placeholder=""
+                                       type="number" min="1" max="200" required
+                                       ng-model="download.frequency">
+                                <span class="input-group-addon">Hz</span>
+                            </div>
+                            <p class="help-block">Required. Frequency to render the result rows at (1-200Hz). Higher
+                                frequencies
+                                have more
+                                resolution, but are more expensive to generate, transmit, and work with.</p>
+                        </div>
+                    </div>
+                    <!-- Appended Input-->
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="startTime">Start Time</label>
+
+                        <div class="col-sm-5">
+                            <div class="input-group" show-errors>
+                                <input id="startTime" name="startTime" class="form-control" placeholder=""
+                                       type="number" ng-model="download.startTime">
+                                <span class="input-group-addon">ms since epoch</span>
+                            </div>
+                            <p class="help-block">Optional. Start time to begin rendering the panel at. Defaults to
+                                dataset start time. Used to select a subset of
+                                result rows.</p>
+                        </div>
+                    </div>
+                    <!-- Appended Input-->
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="endTime">End Time</label>
+
+                        <div class="col-sm-5">
+                            <div class="input-group" show-errors>
+                                <input id="endTime" name="endTime" class="form-control" placeholder=""
+                                       type="number" ng-model="download.endTime">
+                                <span class="input-group-addon">ms since epoch</span>
+                            </div>
+                            <p class="help-block">Optional. End time to stop rendering the panel at. Defaults to dataset
+                                end time. Used to select a subset of
+                                result rows.</p>
+                        </div>
+                    </div>
+                    <!-- Select Multiple -->
+                    <div class="form-group" show-errors>
+                        <label class="col-sm-4 control-label" for="axes">Axes</label>
+
+                        <div class="col-sm-5">
+                            <select id="axes" name="axes" class="form-control"
+                                    multiple="multiple" ng-model="download.axes">
+                                <option value="time">Time</option>
+                                <option value="acceleration:x">Acceleration X</option>
+                                <option value="acceleration:y">Acceleration Y</option>
+                                <option value="acceleration:z">Acceleration Z</option>
+                                <option value="rotationrate:x">Rotation Rate X</option>
+                                <option value="rotationrate:y">Rotation Rate Y</option>
+                                <option value="rotationrate:z">Rotation Rate Z</option>
+                                <option value="magneticfield:x">Magnetic Field X</option>
+                                <option value="magneticfield:y">Magnetic Field Y</option>
+                                <option value="magneticfield:z">Magnetic Field Z</option>
+                                <option value="gps:latitude">GPS Latitude</option>
+                                <option value="gps:longitude">GPS Longitude</option>
+                                <option value="gps:speed">GPS Speed</option>
+                                <option value="gps:heading">GPS Heading</option>
+                                <option value="gps:hdop">GPS HDOP</option>
+                                <option value="gps:altitude">GPS Altitude</option>
+                            </select>
+
+                            <p class="help-block">Optional. Choose the axes to include in the final result. Defaults to
+                                all available axes. All units are SI.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4"></label>
+
+                        <div class="col-sm-5">
+                            <button class="btn btn-primary" ng-click="runDownload(download)">Download</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Save Shareable Session Image</h2>
+
+            <p><a ng-click="openFragment('Wave');">Session Image With Waves</a></p>
+
+            <p><a ng-click="openFragment();">Session Image Plain</a></p>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Automatic Event Detection</h2>
+
+            <p>Start event finding. Note that this takes between 30 and 500 seconds. Do not press twice. To see the
+                created
+                events you'll need to refresh the page. <br/><br/>
+                <button class="btn btn-danger" ng-click="eventFind(dataset)" ng-disabled="eventFindDisabled">Event
+                    Find
+                </button>
+            </p>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Generate FCPXML</h2>
+            <fcpxml-download dataset="dataset"></fcpxml-download>
+        </div>
+    </div>
+</div>

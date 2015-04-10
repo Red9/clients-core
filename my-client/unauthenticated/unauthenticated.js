@@ -1,6 +1,5 @@
 angular
     .module('redApp.unauthenticated', [
-        'ngRoute',
         'lodash'
     ])
     .config(function ($stateProvider) {

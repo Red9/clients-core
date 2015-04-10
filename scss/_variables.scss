@@ -4,8 +4,44 @@ $notoSans: "Noto Sans", sans-serif;
 
 // Colors
 
-$bodycolor: rgb(1,0,31); 
+$bodycolor: #939DA3;
 $green: rgb(142,197,73);
 $headerColor: rgb(0, 61, 84);
 $tableRowColor: rgba(0, 61, 84, 0.5);
 $placeHolderColor: rgb(175,175,175);
+$logocolor: rgba(238, 20, 91, 1.0);
+
+$logored: #ED145B;
+$logoblack: #322F31;
+
+
+
+@font-face {
+  font-family: 'Avenir';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/fonts/AvenirLTStd-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Avenir';
+  font-style: oblique;
+  font-weight: 300;
+  src: url('/fonts/AvenirLTStd-LightOblique.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Avenir';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/AvenirLTStd-Black.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Avenir';
+  font-style: oblique;
+  font-weight: 700;
+  src: url('/fonts/AvenirLTStd-BlackOblique.otf') format('opentype');
+}
+
+$red9font: 'Avenir';

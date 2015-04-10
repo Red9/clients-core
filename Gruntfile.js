@@ -90,12 +90,30 @@ module.exports = function (grunt) {
             }
         },
         sass: {
-            dist: {
+            myclient: {
                 files: [{
                     expand: true,
                     cwd: 'my-client/',
                     src: ['**/*.scss'],
                     dest: 'my-client/',
+                    ext: '.css'
+                }]
+            },
+            components: {
+                files: [{
+                    expand: true,
+                    cwd: 'components/',
+                    src: ['**/*.scss'],
+                    dest: 'components/',
+                    ext: '.css'
+                }]
+            },
+            fragments: {
+                files: [{
+                    expand: true,
+                    cwd: 'fragments/',
+                    src: ['**/*.scss'],
+                    dest: 'fragments/',
                     ext: '.css'
                 }]
             }
@@ -110,13 +128,15 @@ module.exports = function (grunt) {
         },
         useminPrepare: {
             html: 'dist/index.html',
+            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html',
             options: {
                 dest: 'dist',
                 root: './'
             }
         },
         usemin: {
-            html: 'dist/index.html'
+            html: 'dist/index.html',
+            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html'
         },
         copy: {
             index: {
@@ -134,6 +154,8 @@ module.exports = function (grunt) {
                             'my-client/**/*.css.map',
                             'my-client/**/*.html',
                             'images/**',
+                            'fonts/**',
+                            'fragments/**', // Temporary solution. Each fragment should be optimized...
                             'old/**/*', // For the historic data page. Hopefully soon we can get rid of this.
                             'data.html' // Also for the old page.
                         ],
@@ -348,9 +370,10 @@ module.exports = function (grunt) {
 
         //if index.html changed, we need to reread the <script> tags so our next run of karma
         //will have the correct environment
-        if (filepath === 'index.html') {
-            tasksToRun.push('dom_munger:read');
-        }
+        // SRLM: take this out for now, since it was stopping execution (no dom_munger)
+        //if (filepath === 'index.html') {
+        //    tasksToRun.push('dom_munger:read');
+        //}
 
         grunt.config('watch.main.tasks', tasksToRun);
 

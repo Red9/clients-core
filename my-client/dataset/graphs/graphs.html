@@ -1,0 +1,135 @@
+<div class="graph-area">
+    <div class="row">
+        <br/>
+
+        <div class="col-sm-12">
+            <event-timeline events="dataset.events"></event-timeline>
+        </div>
+    </div>
+
+
+    <p><input type="checkbox" ng-model="displayHeatline" ng-init="displayHeatline=true">Heatline</p>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <maplocal panel="viewModel.panel" display-heatline="displayHeatline" slides="slides"></maplocal>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <timeseries
+                    y-label="m/s"
+                    time="viewModel.panel.panel.time"
+                    y-series="{gpsSpeed:viewModel.panel.panel['gps:speed']}"
+                    slides="slides"></timeseries>
+        </div>
+        <div class="col-sm-6">
+            <redvideo slides="slides"
+                      videos="dataset.videos"
+                      time="viewModel.panel.panel.time"></redvideo>
+        </div>
+    </div>
+
+
+    <div class="row" ng-repeat="series in viewModel.graphSeries">
+        <div class="col-xs-12">
+            <timeseries
+                    y-label="{{series.label}}"
+                    time="viewModel.panel.panel.time"
+                    y-series="series.values"
+                    slides="$parent.slides"></timeseries>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <timeseries
+                    y-label="m"
+                    time="viewModel.panel.panel.time"
+                    y-series="{gpsHdop:viewModel.panel.panel['gps:hdop']}"
+                    slides="slides"></timeseries>
+        </div>
+        <div class="col-sm-6">
+            <timeseries
+                    y-label="count"
+                    time="viewModel.panel.panel.time"
+                    y-series="{gpsSatellites:viewModel.panel.panel['gps:satellites']}"
+                    slides="slides"></timeseries>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <timeseries
+                    y-label="m"
+                    time="viewModel.panel.panel.time"
+                    y-series="{gpsAltitude:viewModel.panel.panel['gps:altitude']}"
+                    slides="slides"></timeseries>
+        </div>
+        <div class="col-sm-6">
+            <!--<map panel="dataset.panel.panel"-->
+            <!--interactive="true"-->
+            <!--controls="true"-->
+            <!--style="height:300px"></map>-->
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom graph-toolbar" role="navigation">
+    <div class="row">
+        <div class="col-sm-4 col-xs-4">
+            <button id="navbar-fixed-bottom-create-event-button" type="button" class="btn btn-default btn-md"
+                    title="create event"><span class="glyphicon glyphicon-bookmark"></span></button>
+            <button id="navbar-fixed-bottom-comments-button" type="button" class="btn btn-default btn-md"
+                    title="comments"><span class="glyphicon glyphicon-comment"></span>&nbsp;<span
+                    class="badge"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-md"
+                    title="pin video frame to marker"
+                    ng-disabled="!(slides.a && !slides.b)"
+                    ng-click="pinVideoFrame(slides.a)">
+                <span class="glyphicon glyphicon-pushpin"></span>
+            </button>
+
+
+        </div>
+        <div class="col-sm-4 hidden-xs">
+            <h4 class="text-center">{{slides.hover | date:'H:mm:ss.sss'}}</h4>
+        </div>
+        <div class="col-sm-4 col-xs-8">
+            <div class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-md" title="pan left"
+                            ng-click="zoom('left')"><span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-md" title="pan right"
+                            ng-click="zoom('right')"><span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-md" title="zoom between markers"
+                            ng-disabled="!slides.a || !slides.b"
+                            ng-click="zoom('markers')">
+                        <span class="glyphicon glyphicon-resize-horizontal"></span>
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-md" title="zoom out"
+                            ng-click="zoom('out')"><span class="glyphicon glyphicon-zoom-out"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-md" title="reset zoom"
+                            ng-click="zoom('reset')"><span class="glyphicon glyphicon-fullscreen"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-md" title="zoom in"
+                            ng-click="zoom('in')"><span class="glyphicon glyphicon-zoom-in"></span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+

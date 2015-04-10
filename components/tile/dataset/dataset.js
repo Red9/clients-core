@@ -10,7 +10,9 @@ angular
             },
             templateUrl: '/components/tile/dataset/dataset.html',
             controller: function ($scope, _) {
-                // Shorthand helpers
+
+                console.dir($scope.dataset);
+
                 try {
                     // We may not have any lat/long information, but give it our
                     // best shot.

@@ -13,94 +13,17 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    <link rel="stylesheet" href="bower_components/dcjs/dc.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.css" />
     <!-- endbower -->
     <link rel="stylesheet" href="my-client/app.css"/>
+    <link rel="stylesheet" href="components/map/map.css"/>
     <!-- endbuild -->
 </head>
 <body ng-strict-di>
 
-<!-- Livereload script for development only (stripped during dist build) -->
-<script src="http://localhost:35729/livereload.js" data-remove="true"></script>
-
-<!-- build:js js/vendor.js -->
-<!-- bower:js -->
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
-<script src="bower_components/angular-filter/dist/angular-filter.js"></script>
-<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
-<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
-<script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/angulartics/src/angulartics.js"></script>
-<script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
-<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
-<script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-<script src="bower_components/lodash/dist/lodash.compat.js"></script>
-<script src="bower_components/crossfilter/crossfilter.js"></script>
-<script src="bower_components/dcjs/dc.js"></script>
-<script src="bower_components/angular-dc/dist/angular-dc.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-<script src="bower_components/angular-ui-router-styles/ui-router-styles.js"></script>
-<script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
-<script src="bower_components/angular-scroll/angular-scroll.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
-
-<script src="config.js"></script>
-
-<!-- build:js js/app.js -->
-<script src="app.js"></script>
-<script src="my-client/userprofile/userprofile.js"></script>
-<script src="my-client/uploadrnc/uploadrnc.js"></script>
-<script src="my-client/leaderboard/leaderboard.js"></script>
-<script src="my-client/sitestatistics/sitestatistics.js"></script>
-<script src="my-client/unauthenticated/unauthenticated.js"></script>
-<script src="my-client/home/home.js"></script>
-<script src="my-client/edituserprofile/edituserprofile.js"></script>
-<script src="my-client/admin/admin.js"></script>
-<script src="my-client/dataanalysis/dataanalysis.js"></script>
-<script src="my-client/search/search.js"></script>
-<script src="components/api/api.js"></script>
-<script src="components/resourcelist/resourcelist.js"></script>
-<script src="components/confirmdialog/confirmdialog.js"></script>
-<script src="components/search/event/eventsearch.js"></script>
-<script src="components/keypressenter/keypressenter.js"></script>
-<script src="components/validfile/validfile.js"></script>
-<script src="components/userinput/userinput.js"></script>
-<script src="components/badgelist/badgelist.js"></script>
-<script src="components/taghelper/taghelper.js"></script>
-<script src="components/eventtimeline/eventtimeline.js"></script>
-<script src="components/listgroupsimple/listgroupsimple.js"></script>
-<script src="components/map/map.js"></script>
-<script src="components/summarystatistics/summarystatistics.js"></script>
-<script src="components/userdetails/userdetails.js"></script>
-<script src="components/userinputimperial/userinputimperial.js"></script>
-<script src="components/eventssummary/eventssummary.js"></script>
-<script src="components/aggregatestatistics/aggregatestatistics.js"></script>
-<script src="components/fcpxmldownload/fcpxmldownload.js"></script>
-<script src="components/head/head.js"></script>
-<script src="components/authenticate/authenticate.js"></script>
-<script src="components/filters/display/duration.js"></script>
-<script src="components/filters/display/sumduration.js"></script>
-<script src="components/filters/display/units.js"></script>
-<script src="components/queryvalidator/queryvalidator.js"></script>
-<script src="components/querybuilder/dataset/dataset.js"></script>
-<script src="components/pageapi/pageapi.js"></script>
-<script src="components/tile/dataset/dataset.js"></script>
-<script src="components/responsivedetection/responsivedetection.js"></script>
-
-<script src="my-client/experiment/experiment.js"></script>
-
-<script src="init.js"></script>
-<!-- endbuild -->
 
 <!-- The splash screen must be first -->
 <div class="splash" ng-cloak>
@@ -109,7 +32,7 @@
     </div>
 </div>
 
-<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation" ng-cloak>
+<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation" id="topnavbar" ng-cloak>
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -155,7 +78,7 @@
                         <li><a href="/user/">Users</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Settings</li>
-                        <li><a href="/admin">Admin</a></li>
+                        <li><a href="/admin/">Admin</a></li>
 
                     </ul>
                 </li>
@@ -191,6 +114,7 @@
 </nav>
 
 <br/><br/><br/>
+
 <!-- Some space so that the navbar doesn't cover up the page... -->
 
 <div class="container-fluid" ng-cloak>
@@ -206,8 +130,98 @@
         <p>This site works best with modern Chrome.</p>
     </div>
     <![endif]-->
-    <div ui-view></div>
+    <ui-view></ui-view>
 </div>
+
+
+
+<!-- Livereload script for development only (stripped during dist build) -->
+<script src="http://localhost:35729/livereload.js" data-remove="true"></script>
+
+<!-- Youtube API Library, outside of the build since we can't bundle it -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- build:js js/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
+<script src="bower_components/angular-filter/dist/angular-filter.js"></script>
+<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/angulartics/src/angulartics.js"></script>
+<script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
+<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-ui-router-styles/ui-router-styles.js"></script>
+<script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+<script src="bower_components/angular-scroll/angular-scroll.js"></script>
+<script src="bower_components/angular-bootstrap-show-errors/src/showErrors.js"></script>
+<script src="bower_components/angular-youtube-mb/src/angular-youtube-embed.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<script src="config.js"></script>
+
+<!-- build:js js/app.js -->
+<script src="app.js"></script>
+<script src="my-client/userprofile/userprofile.js"></script>
+<script src="my-client/uploadrnc/uploadrnc.js"></script>
+<script src="my-client/leaderboard/leaderboard.js"></script>
+<script src="my-client/sitestatistics/sitestatistics.js"></script>
+<script src="my-client/unauthenticated/unauthenticated.js"></script>
+<script src="my-client/home/home.js"></script>
+<script src="my-client/edituserprofile/edituserprofile.js"></script>
+<script src="my-client/admin/admin.js"></script>
+<script src="my-client/dataset/dataset.js"></script>
+<script src="my-client/dataset/summary/summary.js"></script>
+<script src="my-client/dataset/details/details.js"></script>
+<script src="my-client/dataset/details/session/session.js"></script>
+<script src="my-client/dataset/details/event/event.js"></script>
+<script src="my-client/dataset/graphs/graphs.js"></script>
+<script src="my-client/dataset/admin/admin.js"></script>
+<script src="my-client/dataset/media/media.js"></script>
+<script src="my-client/search/search.js"></script>
+<script src="my-client/event/event.js"></script>
+<script src="components/api/api.js"></script>
+<script src="components/resourcelist/resourcelist.js"></script>
+<script src="components/confirmdialog/confirmdialog.js"></script>
+<script src="components/search/event/eventsearch.js"></script>
+<script src="components/keypressenter/keypressenter.js"></script>
+<script src="components/validfile/validfile.js"></script>
+<script src="components/userinput/userinput.js"></script>
+<script src="components/badgelist/badgelist.js"></script>
+<script src="components/taghelper/taghelper.js"></script>
+<script src="components/eventtimeline/eventtimeline.js"></script>
+<script src="components/listgroupsimple/listgroupsimple.js"></script>
+<script src="components/map/map.js"></script>
+<script src="components/summarystatistics/summarystatistics.js"></script>
+<script src="components/userdetails/userdetails.js"></script>
+<script src="components/userinputimperial/userinputimperial.js"></script>
+<script src="components/eventssummary/eventssummary.js"></script>
+<script src="components/aggregatestatistics/aggregatestatistics.js"></script>
+<script src="components/fcpxmldownload/fcpxmldownload.js"></script>
+<script src="components/head/head.js"></script>
+<script src="components/authenticate/authenticate.js"></script>
+<script src="components/filters/display/duration.js"></script>
+<script src="components/filters/display/sumduration.js"></script>
+<script src="components/filters/display/units.js"></script>
+<script src="components/queryvalidator/queryvalidator.js"></script>
+<script src="components/querybuilder/dataset/dataset.js"></script>
+<script src="components/pageapi/pageapi.js"></script>
+<script src="components/tile/dataset/dataset.js"></script>
+<script src="components/responsivedetection/responsivedetection.js"></script>
+<script src="components/visualizations/charts/timeseries/timeseries.js"></script>
+<script src="components/geo/geo.js"></script>
+<script src="components/visualizations/maps/local/local.js"></script>
+<script src="components/visualizations/video/video.js"></script>
+
+<script src="init.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>
