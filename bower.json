@@ -13,7 +13,6 @@
     "angular-filter": "*",
     "angular-leaflet-directive": "*",
     "angular-resource": "*",
-    "angular-route": "*",
     "angular-bootstrap": "*",
     "angular-loading-bar": "*",
     "angulartics": "*",
@@ -21,21 +20,16 @@
     "bootstrap": "*",
     "d3": "*",
     "leaflet": "*",
-    "leaflet.markercluster": "*",
     "lodash": "3.*.*",
-    "crossfilter": "*",
-    "dcjs": "2.0.0-beta.5",
-    "angular-dc": "*",
     "angular-ui-router": "*",
     "angular-ui-router-styles": "https://github.com/srlmproductions/angular-ui-router-styles.git#master",
-    "ng-tags-input": "~2.1.1",
-    "angular-scroll": "~0.6.4",
-    "angular-bootstrap-show-errors": "~2.3.0",
-    "angular-youtube-mb": "~1.0.0"
+    "ng-tags-input": "~2.1.x",
+    "angular-scroll": "~0.6.x",
+    "angular-bootstrap-show-errors": "~2.3.x",
+    "angular-youtube-mb": "~1.0.x"
   },
   "resolutions": {
     "angular": "~1.3.x",
-    "dcjs": "2.0.0-beta.5",
     "lodash": "3.*.*"
   }
 }

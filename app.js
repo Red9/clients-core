@@ -18,7 +18,6 @@
             'angulartics',
             'angulartics.segment.io',
 
-            'redApp.experiment',
             'redApp.userProfile',
             'redApp.uploadRNC',
             'redApp.leaderboard',

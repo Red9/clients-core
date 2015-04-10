@@ -1,6 +1,5 @@
 angular
     .module('redApp.editUserProfile', [
-        'ngRoute',
         'redComponents.api',
         'redComponents.listGroupSimple'
     ])

@@ -1,6 +1,5 @@
 angular
     .module('redApp.dataset', [
-        'ngRoute',
         'redComponents.api',
         'redComponents.eventsSummary',
         'redComponents.eventTimeline',

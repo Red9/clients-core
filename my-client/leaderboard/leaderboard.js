@@ -1,6 +1,5 @@
 angular
     .module('redApp.leaderboard', [
-        'ngRoute',
         'redComponents.api',
         'lodash'
     ])
