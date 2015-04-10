@@ -11,7 +11,7 @@
               ng-attr-width="{{graph.plot.width}}"
               ng-attr-height="{{graph.plot.height}}"
               ng-mousemove="hovermove($event);"
-                ></rect>
+              ng-click="plotareaClick($event);"></rect>
         <g ng-repeat="(key, value) in plots" class="plotgroup">
             <path class="series measurement"
                   ng-class="key"
@@ -83,12 +83,34 @@
         </g>
 
         <!-- Hover Line -->
-        <line class="hoverline"
-              ng-if="hover.time"
-              ng-attr-x1="{{graph.hoverline.x}}"
-              ng-attr-x2="{{graph.hoverline.x}}"
-              ng-attr-y1="0"
-              ng-attr-y2="{{graph.plot.height}}">
-        </line>
+        <!--<line class="hoverline"-->
+              <!--ng-if="slides.hover"-->
+              <!--ng-attr-x1="{{graph.slides.hover}}"-->
+              <!--ng-attr-x2="{{graph.slides.hover}}"-->
+              <!--ng-attr-y1="0"-->
+              <!--ng-attr-y2="{{graph.plot.height}}">-->
+        <!--</line>-->
+
+        <g ng-repeat="(name, slide) in graph.slides">
+            <line ng-if="slide !== null"
+                  class="slide"
+                  ng-class="name"
+                  ng-attr-x1="{{slide}}"
+                  ng-attr-x2="{{slide}}"
+                  ng-attr-y1="0"
+                  ng-attr-y2="{{$parent.graph.plot.height}}"></line>
+        </g>
+
+        <!-- Video Hover Line -->
+        <!--<line class="video-hoverline"-->
+              <!--ng-if="videoHover.time"-->
+              <!--ng-attr-x1="{{graph.videoHoverline.x}}"-->
+              <!--ng-attr-x2="{{graph.videoHoverline.x}}"-->
+              <!--ng-attr-y1="0"-->
+              <!--ng-attr-y2="{{graph.plot.height}}">-->
+        <!--</line>-->
     </svg>
 </div>
+
+
+<p>{{graph.slides.hover}}</p>

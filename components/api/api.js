@@ -4,17 +4,10 @@ angular
         'lodash'
     ])
 
-/** Create a Red9 API accessor object
- *
- *  Each resource has the following methods:
- *   - save (create)
- *   - get
- *   - query
- *   - update
- *   - delete
- *
- */
-    .factory('api', function ($resource, $http, $interval, $q, _, $timeout) {
+    // TODO: Clean this up!
+    // TODO: Add in code to wrap the expanded responses into Angular resource objects, eg http://stackoverflow.com/questions/16452277/how-can-i-extend-the-constructor-of-an-angularjs-resource-resource
+
+    .factory('api', function ($resource, $http, $interval, $q, _, $timeout, $window) {
         $http.defaults.withCredentials = true;
         var apiUrl = red9config.apiUrl;
 
@@ -38,7 +31,6 @@ angular
         var metadataFormat = {
             get: _.merge({}, metadataResponse, {method: 'GET'}),
             save: _.merge({}, metadataResponse, {method: 'POST'}),
-            update: _.merge({}, metadataResponse, {method: 'PUT'}),
             query: _.merge({}, metadataResponse, {
                 method: 'GET',
                 isArray: true
@@ -60,7 +52,8 @@ angular
              *
              * @param updateValues {object} a set of key values to PUT to the server
              */
-            resource.prototype.update = function (updateValues) {
+            resource.prototype.update = // This name should be phased out once I figure out who is using it...
+            resource.prototype.$update = function (updateValues) {
                 var self = this;
                 var request = $http({
                     url: apiUrl + '/' + type + '/' + self.id,
@@ -168,6 +161,36 @@ angular
             }).success(function (options) {
                 self.fcpxmlOptions = options;
             });
+        };
+
+        /** Downloads a CSV panel to the user's browser.
+         *
+         * @param {Object} options
+         * @param {Number} options.frequency The frequency in Hz
+         * @param {Number} [options.startTime]
+         * @param {Number} [options.endTime]
+         * @param {Array|String} [options.axes]
+         */
+        result.dataset.prototype.getCSVPanel = function (options) {
+            if (!_.has(options, 'frequency') || !_.isNumber(options.frequency)) {
+                throw new Error('Invalid options.frequency parameter.');
+            }
+
+            var resultUrl = apiUrl + '/dataset/' + this.id + '/csv?frequency=' + options.frequency;
+
+            if (_.has(options, 'axes')) {
+                resultUrl += '&axes=' + options.axes.join(',');
+            }
+
+            if (_.has(options, 'startTime')) {
+                resultUrl += '&startTime=' + options.startTime;
+            }
+
+            if (_.has(options, 'endTime')) {
+                resultUrl += '&endTime=' + options.endTime;
+            }
+
+            $window.open(resultUrl);
         };
 
         result.dataset.prototype.getFcpxmlUrl = function (options_) {

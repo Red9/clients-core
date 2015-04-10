@@ -6,7 +6,8 @@ angular
             scope: {
                 time: '=',
                 ySeries: '=',
-                hover: '=',
+                slides: '=',
+                //videoHover: '=',
                 yLabel: '@'
             },
             templateUrl: '/components/visualizations/charts/timeseries/timeseries.html',
@@ -14,10 +15,7 @@ angular
                 var initialized = false;
                 var graph;
                 graph = {
-                    hoverline: {
-                        x: 100,
-                        visible: false
-                    }
+                    slides: {}
                 };
                 $scope.graph = graph;
 
@@ -28,27 +26,73 @@ angular
                 var fontSize = 15;
 
 
-                $scope.$watch('hover.time', function (hoverTime) {
+                function updateSlide(name) {
+                    return function (time) {
+                        if (time && graph.xScale &&
+                            _.first($scope.time) <= time &&
+                            time <= _.last($scope.time)) {
+                            graph.slides[name] = graph.xScale(time);
+                        } else {
+                            graph.slides[name] = null;
+                        }
+                    };
+                }
+
+                var slideUpdaters = {
+                    video: updateSlide('video'),
+                    a: updateSlide('a'),
+                    b: updateSlide('b')
+                };
+
+                $scope.$watch('slides.video', slideUpdaters.video);
+                $scope.$watch('slides.a', slideUpdaters.a);
+                $scope.$watch('slides.b', slideUpdaters.b);
+
+                function forceUpdateAllSlides() {
+                    _.each(slideUpdaters, function (update, key) {
+                        // Use the current time, but force a draw calculation
+                        update($scope.slides[key]);
+                    });
+                }
+
+
+                $scope.$watch('slides.hover', function (time) {
                     // The test for xScale defined is a hack, but I don't really
                     // want to dive into why it's needed right now.
-                    if (hoverTime && graph.xScale) {
-                        graph.hoverline.x = graph.xScale(hoverTime);
+                    if (time && graph.xScale) {
+                        graph.slides.hover = graph.xScale(time);
                         graph.calculateValueBox();
+                    } else {
+                        graph.slides.hover = null;
                     }
                 });
 
                 $scope.hovermove = function ($event) {
                     var hoverTime = graph.xScale.invert($event.offsetX);
-                    angular.extend($scope.hover, {
-                        time: hoverTime,
-                        index: d3.bisectLeft($scope.time, hoverTime)
-                    });
+                    $scope.slides.hover = hoverTime;
                 };
+
+                $scope.plotareaClick = function ($event) {
+                    var time = graph.xScale.invert($event.offsetX);
+
+                    if (!$scope.slides.a) {
+                        $scope.slides.a = time;
+                    } else if (!$scope.slides.b) {
+                        $scope.slides.b = time;
+                    } else {
+                        // Update the closest one
+                        if (Math.abs($scope.slides.a - time) < // Distance to A <
+                            Math.abs($scope.slides.b - time)) {// distance to B)
+                            $scope.slides.a = time;
+                        } else {
+                            $scope.slides.b = time;
+                        }
+                    }
+                };
+
+
                 $scope.hoverleave = function () {
-                    angular.extend($scope.hover, {
-                        time: null,
-                        index: null
-                    });
+                    $scope.slides.hover = null;
                 };
 
                 $scope.toggleSeries = function ($event, key) {
@@ -62,8 +106,20 @@ angular
                     drawGraph();
                 };
 
+                /** Calculate the closest index in the timeList from desiredTime.
+                 * Dulpicate!
+                 * @param timeList
+                 * @param desiredTime
+                 * @returns {*}
+                 */
+                function estimateIndex(timeList, desiredTime) {
+                    var step = (_.last(timeList) - _.first(timeList)) / timeList.length;
+                    return Math.round((desiredTime - _.first(timeList)) / step);
+                }
+
                 graph.calculateValueBox = function () {
-                    var index = 0;
+                    var measurementIndex = estimateIndex($scope.time, $scope.slides.hover);
+                    var index = 0; // position index
                     graph.valueBox = {
                         x: graph.axes.y.width + 10,
                         y: 20,
@@ -78,8 +134,8 @@ angular
 
                                     value: {
                                         x: valueBoxColumnWidth,
-                                        text: series[$scope.hover.index] ?
-                                            series[$scope.hover.index].toPrecision(3) :
+                                        text: series[measurementIndex] ?
+                                            series[measurementIndex].toPrecision(3) :
                                             null
                                     }
                                 };
@@ -94,7 +150,7 @@ angular
                  */
                 function drawGraph(width, height) {
 
-                    console.log('drawing graph with height: ' + height);
+                    //console.log('drawing graph with height: ' + height);
 
                     graph.ySeries = $scope.ySeries;
                     if (!initialized) {
@@ -213,6 +269,7 @@ angular
                     });
 
                     graph.calculateValueBox();
+                    forceUpdateAllSlides();
                 }
 
                 // Respond to zooms
@@ -239,7 +296,6 @@ angular
                         }
                         return $element[0].children[0].offsetWidth;
                     }, function (newWidth) {
-                        console.log(newWidth);
                         drawGraph($element[0].children[0].offsetWidth, $element[0].children[0].offsetHeight);
                     });
                 })();
@@ -253,7 +309,6 @@ angular
                         }
                         return $element[0].children[0].offsetHeight;
                     }, function (newHeight) {
-                        console.log('new height: ' + newHeight);
                         //drawGraph($element[0].children[0].offsetWidth, $element[0].children[0].offsetHeight);
                     });
                 })();

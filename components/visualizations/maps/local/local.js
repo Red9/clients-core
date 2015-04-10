@@ -7,7 +7,7 @@ angular
         return {
             restrict: 'E',
             scope: {
-                hover: '=',
+                slides: '=',
                 panel: '=',
                 displayHeatline: '='
             },
@@ -69,10 +69,6 @@ angular
                         lastPoint = _.last(path);
                         return result;
                     }).value();
-                    console.log('valid /invalid');
-                    console.dir(validPaths);
-                    console.dir(invalidPaths);
-
 
                     //var lastPoint = true; // "valid" first point
                     //// todo strip out the single last invalid point if it starts on invalid.
@@ -150,9 +146,6 @@ angular
                         type: 'MultiLineString',
                         coordinates: invalidPaths
                     });
-                    console.log('invalidPaths');
-                    console.dir(invalidPaths);
-
 
                     function createHeatSegments(speed, heatPoints) {
                         // This clever multi-color scale stuff is taken from here: https://groups.google.com/d/msg/d3-js/B31N2zSVEiE/rxXNlS8zCXIJ
@@ -223,7 +216,6 @@ angular
 
                             $scope.closestPixels = projection(closestPoint.point);
 
-                            console.log('closestPoint.index: ' + closestPoint.index + ', ' + time[closestPoint.index]);
                             angular.extend($scope.hover, {
                                 time: new Date(time[closestPoint.index]),
                                 index: closestPoint.index
@@ -232,8 +224,20 @@ angular
                     };
 
 
-                    $scope.$watch('hover.index', function (hoverIndex) {
-                        if (hoverIndex) {
+                    /** Calculate the closest index in the timeList from desiredTime.
+                     * Duplicate!
+                     * @param timeList
+                     * @param desiredTime
+                     * @returns {*}
+                     */
+                    function estimateIndex(timeList, desiredTime) {
+                        var step = (_.last(timeList) - _.first(timeList)) / timeList.length;
+                        return Math.round((desiredTime - _.first(timeList)) / step);
+                    }
+
+                    $scope.$watch('slides.hover', function (hoverTime) {
+                        if (hoverTime) {
+                            var hoverIndex = estimateIndex(time, hoverTime);
                             if (latitudes[hoverIndex] && longitudes[hoverIndex]) {
                                 $scope.closestPixels = projection([
                                     longitudes[hoverIndex],

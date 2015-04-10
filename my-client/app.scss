@@ -113,9 +113,28 @@
   height: 300px;
   max-height: 300px;
 
-  line.hoverline {
+  line.slide {
     stroke-width: 2px;
-    stroke: red;
+    stroke-opacity: 0.5;
+
+    &.hover {
+      stroke: red;
+      pointer-events: none; // Pass through the clicks, since the hover marker will always be under our mouse we don't really care if we click on it.
+    }
+
+    &.video {
+      stroke: blue;
+    }
+
+
+    &.a, &.b {
+      stroke: black;
+    }
+  }
+
+  line.video-hoverline {
+    stroke-width: 4px;
+    stroke: blue;
     stroke-opacity: 0.5;
   }
 
@@ -296,7 +315,6 @@ div[dc-angular-chart] {
   border-width: 0px;
   background-color: #222222;
 }
-
 
 .well .graph-area {
   // Get every last pixel from the well if it's inside of one

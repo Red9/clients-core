@@ -1,20 +1,24 @@
-<h1>Administrative Tasks</h1>
+<div class="well">
+    <h1>Administrative Tasks</h1>
 
 
-<h3>Add User</h3>
-<form role="form" name="newUserForm" novalidate>
-    <div class="form-group" ng-class="{'has-error': newUserForm.email.$dirty && newUserForm.email.$invalid}">
-        <label>Email Address</label>
-        <input type="email" class="form-control" name="email" placeholder="Enter email" ng-model="newUser.email"
-               ng-model-options="{ debounce: 500 }" required>
+    <h3>Add User</h3>
 
-        <p class="help-block">Email must be associated with a Google hosted account (Gmail, Google apps, etc.)</p>
+    <form role="form" name="newUserForm" novalidate>
+        <div class="form-group" ng-class="{'has-error': newUserForm.email.$dirty && newUserForm.email.$invalid}">
+            <label>Email Address</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter email" ng-model="newUser.email"
+                   ng-model-options="{ debounce: 500 }" required>
 
-        <p class="help-block" ng-show="newUserForm.email.$dirty && newUserForm.email.$error.required">Required</p>
+            <p class="help-block">Email must be associated with a Google hosted account (Gmail, Google apps, etc.)</p>
+
+            <p class="help-block" ng-show="newUserForm.email.$dirty && newUserForm.email.$error.required">Required</p>
+        </div>
+        <button class="btn btn-default" ng-disabled="!newUserForm.$valid" ng-click="addNewUser()">Add</button>
+    </form>
+    <br/>
+
+    <div class="alert alert-success" role="alert" ng-repeat="user in createdUsers">Created new user {{user.email}}
+        (<a ng-href="/user/{{user.id}}/admin">user's admin page</a>)
     </div>
-    <button class="btn btn-default" ng-disabled="!newUserForm.$valid" ng-click="addNewUser()">Add</button>
-</form>
-<br/>
-<div class="alert alert-success" role="alert" ng-repeat="user in createdUsers">Created new user {{user.email}}
-    (<a ng-href="/user/{{user.id}}/admin">user's admin page</a>)
 </div>

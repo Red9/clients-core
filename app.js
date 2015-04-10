@@ -18,7 +18,6 @@
             'angulartics',
             'angulartics.segment.io',
 
-            'redApp.experiment',
             'redApp.userProfile',
             'redApp.uploadRNC',
             'redApp.leaderboard',
@@ -34,11 +33,9 @@
             'redApp.dataset.details.event',
             'redApp.dataset.graphs',
             'redApp.dataset.admin',
+            'redApp.dataset.media',
             'redApp.search',
             'redApp.event',
-
-            'redApp.svg',
-            'redApp.mapDemo',
 
             'redComponents.authenticate',
 

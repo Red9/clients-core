@@ -1,6 +1,5 @@
 angular
     .module('redApp.uploadRNC', [
-        'ngRoute',
         'angularFileUpload',
         'redComponents.api',
         'redComponents.validFile'

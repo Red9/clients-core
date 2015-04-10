@@ -7,7 +7,7 @@
     <span us-spinner></span>
 </div>
 <div ng-if="resourceList.length > 0">
-    <div class="row vertical-align">
+    <div class="row vertical-align well">
         <div class="col-xs-9">
             <!--<div class="btn-toolbar" role="toolbar">-->
             <!--<div class="btn-group">-->
@@ -28,7 +28,7 @@
                     <th>
                     </th>
                     <th>Display Name</th>
-                    <th>Email</th>
+                    <th></th>
                     </thead>
 
                     <tbody>
@@ -39,7 +39,7 @@
                             <a ng-href="/user/{{user.id}}/admin" ng-if="$root.current.user.scope.indexOf('admin') !== -1">    (settings)</a>
 
                         </td>
-                        <td>{{user.email}}</td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>

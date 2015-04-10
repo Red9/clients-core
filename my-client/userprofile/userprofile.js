@@ -1,6 +1,5 @@
 angular
     .module('redApp.userProfile', [
-        'ngRoute',
         'redComponents.api',
         'lodash',
         'redComponents.aggregateStatistics',

@@ -1,6 +1,5 @@
 angular
     .module('redApp.admin', [
-        'ngRoute',
         'redComponents.api'
     ])
     .config(function ($stateProvider) {
