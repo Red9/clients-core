@@ -141,6 +141,9 @@
 <!-- Livereload script for development only (stripped during dist build) -->
 <script src="http://localhost:35729/livereload.js" data-remove="true"></script>
 
+<!-- Youtube API Library, outside of the build since we can't bundle it -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <!-- build:js js/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/angular/angular.js"></script>
@@ -166,6 +169,7 @@
 <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
 <script src="bower_components/angular-scroll/angular-scroll.js"></script>
 <script src="bower_components/angular-bootstrap-show-errors/src/showErrors.js"></script>
+<script src="bower_components/angular-youtube-mb/src/angular-youtube-embed.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -219,12 +223,11 @@
 <script src="components/pageapi/pageapi.js"></script>
 <script src="components/tile/dataset/dataset.js"></script>
 <script src="components/responsivedetection/responsivedetection.js"></script>
-<script src="my-client/svg/svg.js"></script>
 <script src="components/visualizations/charts/timeseries/timeseries.js"></script>
 <script src="my-client/experiment/experiment.js"></script>
-<script src="my-client/mapdemo/mapdemo.js"></script>
 <script src="components/geo/geo.js"></script>
 <script src="components/visualizations/maps/local/local.js"></script>
+<script src="components/visualizations/video/video.js"></script>
 
 <script src="init.js"></script>
 <!-- endbuild -->

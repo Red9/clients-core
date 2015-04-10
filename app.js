@@ -38,9 +38,6 @@
             'redApp.search',
             'redApp.event',
 
-            'redApp.svg',
-            'redApp.mapDemo',
-
             'redComponents.authenticate',
 
             'redComponents.head' // Is this the correct use of this directive?

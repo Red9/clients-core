@@ -1,6 +1,8 @@
 angular
     .module('redApp.dataset.graphs', [
-        'redComponents.api'
+        'redComponents.api',
+        'redComponents.visualizations.charts.timeseries',
+        'redComponents.visualizations.video'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.graphs', {
@@ -9,17 +11,13 @@ angular
             controller: 'DatasetGraphsController',
             accessLevel: 'basic',
             title: 'R9: Graphs',
+            reloadOnSearch: false, // prevent ui-router from recreating the page. Optimization.
             resolve: {
                 panel: function ($stateParams, _, api, dataset) {
-                    console.log('$stateParams');
-                    console.dir($stateParams);
-
                     if (_.isUndefined($stateParams.startTime)
                         && _.isUndefined($stateParams.endTime)) {
-                        console.log('graphs: using provided dataset');
                         return dataset.panel;
                     } else {
-                        console.log('graphs: getting new panel');
                         return api.getPanel('dataset', dataset.id, {
                             startTime: _.isUndefined($stateParams.startTime) ? dataset.startTime : $stateParams.startTime,
                             endTime: _.isUndefined($stateParams.endTime) ? dataset.endTime : $stateParams.endTime
@@ -32,16 +30,33 @@ angular
         });
     })
     .controller('DatasetGraphsController', function ($scope, api, dataset, $stateParams, $state, $location, panel) {
+        console.log('new graphs');
         $scope.$stateParams = $stateParams;
 
-        $scope.hover = {
-            time: null,
-            index: null
+        $scope.slides = {
+            hover: null,
+            video: null
+        };
+
+        function loadPanel(startTime, endTime) {
+            if (_.isUndefined(startTime)
+                && _.isUndefined(endTime)) {
+                displayPanel(dataset.panel);
+            } else {
+                api.getPanel('dataset', dataset.id, {
+                    startTime: _.isUndefined(startTime) ? dataset.startTime : startTime,
+                    endTime: _.isUndefined(endTime) ? dataset.endTime : endTime
+                }).then(function (response) {
+                    displayPanel(response.data);
+                });
+            }
+        }
+
+        $scope.pinVideoFrame = function (time) {
+            $scope.$broadcast('video.sync.frame', time);
         };
 
         $scope.zoom = function (direction) {
-            console.log('Zoom ' + direction);
-
             // Convenience handles
             var currentStartTime = $scope.viewModel.currentStartTime;
             var currentEndTime = $scope.viewModel.currentEndTime;
@@ -49,14 +64,30 @@ angular
             // Current window width in time
             var currentDuration = currentEndTime - currentStartTime;
 
-
-            console.log(currentStartTime + ' --- ' + currentEndTime + ' *** ' + currentDuration);
-
             var zoomInTime = Math.floor(currentDuration / 3);
 
             var result;
 
-            if (direction === 'in') {
+            if (direction === 'markers') {
+
+                if ($scope.slides.a && $scope.slides.b) {
+                    result = {
+                        startTime: $scope.slides.a.getTime(), // They're date objects...
+                        endTime: $scope.slides.b.getTime()
+                    };
+
+                    if (result.startTime > result.endTime) { // In case the user put the markers backwards...
+                        var temp = result.startTime;
+                        result.startTime = result.endTime;
+                        result.endTime = temp;
+                    }
+
+
+                } else {
+                    return; // Do nothing if we don't have both.
+                }
+
+            } else if (direction === 'in') {
                 result = {
                     startTime: currentStartTime + zoomInTime,
                     endTime: currentEndTime - zoomInTime
@@ -102,13 +133,26 @@ angular
                 };
             }
 
-            $state.go('.', result);
+            // Reset slides if they're no longer visible.
+            if ($scope.slides.a <= result.startTime || result.endTime <= $scope.slides.a) {
+                console.log('clear a');
+                $scope.slides.a = null;
+            }
+            if ($scope.slides.b <= result.startTime || result.endTime <= $scope.slides.b) {
+                console.log('clear b');
+                $scope.slides.b = null;
+            }
+
+            $location.search(result);
+            console.log('zoom!');
+            loadPanel(result.startTime, result.endTime);
+
+            //$state.go('.', result);
         };
         $scope.viewModel = {};
 
 
         function displayPanel(newPanel) {
-            console.log('newPanel!');
             angular.extend($scope.viewModel,
                 {
                     hoverTime: null,
@@ -147,18 +191,4 @@ angular
         }
 
         displayPanel(panel);
-
-
-        $scope.$watch('hover.time', function (time) {
-            $scope.viewModel.hoverTime =
-                time ?
-                _.padLeft(time.getFullYear(), 4, '0') + '-' +
-                _.padLeft(time.getMonth() + 1, 2, '0') + '-' +
-                _.padLeft(time.getDate() + 1, 2, '0') + '  ' +
-                _.padLeft(time.getHours(), 2, '0') + ':' +
-                _.padLeft(time.getMinutes(), 2, '0') + ':' +
-                _.padLeft(time.getSeconds(), 2, '0') + '.' +
-                _.padLeft(time.getMilliseconds(), 3, '0') :
-                    null;
-        });
     });

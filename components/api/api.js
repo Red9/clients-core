@@ -31,7 +31,6 @@ angular
         var metadataFormat = {
             get: _.merge({}, metadataResponse, {method: 'GET'}),
             save: _.merge({}, metadataResponse, {method: 'POST'}),
-            update: _.merge({}, metadataResponse, {method: 'PUT'}),
             query: _.merge({}, metadataResponse, {
                 method: 'GET',
                 isArray: true
@@ -53,7 +52,8 @@ angular
              *
              * @param updateValues {object} a set of key values to PUT to the server
              */
-            resource.prototype.update = function (updateValues) {
+            resource.prototype.update = // This name should be phased out once I figure out who is using it...
+            resource.prototype.$update = function (updateValues) {
                 var self = this;
                 var request = $http({
                     url: apiUrl + '/' + type + '/' + self.id,
