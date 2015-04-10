@@ -4,16 +4,9 @@ angular
         'lodash'
     ])
 
-/** Create a Red9 API accessor object
- *
- *  Each resource has the following methods:
- *   - save (create)
- *   - get
- *   - query
- *   - update
- *   - delete
- *
- */
+    // TODO: Clean this up!
+    // TODO: Add in code to wrap the expanded responses into Angular resource objects, eg http://stackoverflow.com/questions/16452277/how-can-i-extend-the-constructor-of-an-angularjs-resource-resource
+
     .factory('api', function ($resource, $http, $interval, $q, _, $timeout, $window) {
         $http.defaults.withCredentials = true;
         var apiUrl = red9config.apiUrl;
@@ -188,12 +181,12 @@ angular
             if (_.has(options, 'axes')) {
                 resultUrl += '&axes=' + options.axes.join(',');
             }
-            
-            if (_.has(options, 'startTime')){
+
+            if (_.has(options, 'startTime')) {
                 resultUrl += '&startTime=' + options.startTime;
             }
 
-            if (_.has(options, 'endTime')){
+            if (_.has(options, 'endTime')) {
                 resultUrl += '&endTime=' + options.endTime;
             }
 

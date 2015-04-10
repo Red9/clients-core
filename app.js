@@ -34,6 +34,7 @@
             'redApp.dataset.details.event',
             'redApp.dataset.graphs',
             'redApp.dataset.admin',
+            'redApp.dataset.media',
             'redApp.search',
             'redApp.event',
 

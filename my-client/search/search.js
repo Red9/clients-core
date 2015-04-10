@@ -31,13 +31,13 @@ angular
                     sort: 'startTime',
                     sortDirection: 'desc'
                 },
-                expand: 'user'
+                expand: ['user', 'video']
             },
             user: {
                 schema: {},
                 defaults: {
                     offset: 0,
-                    limit: 24,
+                    limit: 200,
                     sort: 'displayName',
                     sortDirection: 'asc'
                 }
@@ -153,7 +153,7 @@ angular
 
         function runSearch() {
             var t = $location.search();
-            t.expand = 'user';
+            t.expand = ['user', 'video']; // TODO: This line is a bit of a hack, and really should be part of the bit above
             api.dataset.query(t,
                 function (resourceList) {
                     $scope.resourceList = resourceList;

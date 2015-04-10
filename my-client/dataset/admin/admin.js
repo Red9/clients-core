@@ -12,7 +12,7 @@ angular
             title: 'R9: Session Admin'
         });
     })
-    .controller('DatasetAdminController', function ($scope, $window, api, dataset) {
+    .controller('DatasetAdminController', function ($scope, api, dataset) {
         $scope.dataset = dataset;
 
         $scope.datasetSport = $scope.dataset.sport;
