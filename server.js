@@ -35,22 +35,6 @@ server.route({
     }
 });
 
-//server.route({
-//    method: 'GET',
-//    path: '/dataset/{id}',
-//    handler: {
-//        file: path.join(nconf.get('src'), 'data.html')
-//    }
-//});
-
-//server.route({
-//    method: 'GET',
-//    path: '/event/{id}',
-//    handler: {
-//        file: path.join(nconf.get('src'), 'data.html')
-//    }
-//});
-
 server.route({
     method: 'GET',
     path: '/{path*}',
@@ -80,7 +64,10 @@ server.register({
     options: {
         reporters: [{
             reporter: require('good-console'),
-            args: [consoleArgs]
+            events: {
+                request: '*',
+                log: '*'
+            }
         }]
     }
 }, function (err) {

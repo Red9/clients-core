@@ -124,7 +124,6 @@
             //
             $rootScope.$on('$stateChangeStart', function (evt, to, params, from) {
                 console.log('$stateChangeStart: ' + to.name);
-                console.dir(evt);
 
                 if (to.redirectTo && to.name !== from.name) {
                     evt.preventDefault();
