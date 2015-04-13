@@ -32,6 +32,7 @@ angular
             });
 
             var tiles = [];
+
             tiles.push({
                 value: filteredEvents.length,
                 decimals: 0,
@@ -39,19 +40,30 @@ angular
                 caption: eventType.toLowerCase() + 's'
             });
 
-            tiles.push({
-                value: _.max(filteredEvents, function (event) {
+            var longest = 0;
+            try {
+                longest = _.max(filteredEvents, function (event) {
                     return event.summaryStatistics.distance.path;
-                }).summaryStatistics.distance.path,
+                }).summaryStatistics.distance.path;
+            } catch (e) {
+            }
+            tiles.push({
+                value: longest,
                 decimals: 0,
                 units: 'm',
                 caption: 'longest ' + eventType.toLowerCase()
             });
 
-            tiles.push({
-                value: _.max(filteredEvents, function (event) {
+
+            var speed = 0;
+            try {
+                speed = _.max(filteredEvents, function (event) {
                     return event.summaryStatistics.gps.speed.maximum;
-                }).summaryStatistics.gps.speed.maximum,
+                }).summaryStatistics.gps.speed.maximum;
+            } catch (e) {
+            }
+            tiles.push({
+                value: speed,
                 decimals: 1,
                 units: 'kn',
                 caption: 'fastest ' + eventType.toLowerCase()
@@ -67,10 +79,16 @@ angular
 
             var tiles = [];
 
-            tiles.push({
-                value: _.reduce(filteredEvents, function (sum, event) {
+            var distance = 0;
+            try {
+                distance = _.reduce(filteredEvents, function (sum, event) {
                     return sum + event.summaryStatistics.distance.path;
-                }, 0),
+                }, 0);
+            } catch (e) {
+            }
+
+            tiles.push({
+                value: distance,
                 decimals: 0,
                 units: 'm',
                 caption: 'total ' + eventType.toLowerCase() + ' distance'
@@ -85,10 +103,15 @@ angular
                 caption: 'total ' + eventType.toLowerCase() + ' time'
             });
 
-            tiles.push({
-                value: _.reduce(filteredEvents, function (sum, event) {
+            var averageSpeed = 0;
+            try {
+                averageSpeed = _.reduce(filteredEvents, function (sum, event) {
                     return sum + (event.duration * event.summaryStatistics.gps.speed.average);
-                }, 0) / duration,
+                }, 0) / duration;
+            } catch (e) {
+            }
+            tiles.push({
+                value: averageSpeed,
                 decimals: 1,
                 units: 'kn',
                 caption: 'average ' + eventType.toLowerCase() + ' speed'

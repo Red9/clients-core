@@ -1,6 +1,6 @@
 {
   "name": "redApp",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "main": "index.html",
   "ignore": [
     "**/.*",
@@ -8,28 +8,32 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular": "*",
-    "angular-deferred-bootstrap": "*",
-    "angular-filter": "*",
-    "angular-leaflet-directive": "*",
-    "angular-resource": "*",
-    "angular-bootstrap": "*",
-    "angular-loading-bar": "*",
-    "angulartics": "*",
-    "ng-file-upload": "*",
-    "bootstrap": "*",
-    "d3": "*",
-    "leaflet": "*",
-    "lodash": "3.*.*",
-    "angular-ui-router": "*",
+    "angular": "1.3.x",
+    "angular-deferred-bootstrap": "0.1.x",
+    "angular-filter": "0.5.x",
+    "angular-leaflet-directive": "0.7.x",
+    "angular-resource": "1.3.x",
+    "angular-bootstrap": "0.12.x",
+    "angular-loading-bar": "0.7.x",
+    "angulartics": "0.17.x",
+    "ng-file-upload": "3.2.x",
+    "bootstrap": "3.3.x",
+    "d3": "3.5.x",
+    "leaflet": "0.7.x",
+    "lodash": "3.6.x",
+    "angular-ui-router": "0.2.x",
     "angular-ui-router-styles": "https://github.com/srlmproductions/angular-ui-router-styles.git#master",
-    "ng-tags-input": "~2.1.x",
-    "angular-scroll": "~0.6.x",
-    "angular-bootstrap-show-errors": "~2.3.x",
-    "angular-youtube-mb": "~1.0.x"
+    "ng-tags-input": "2.3.x",
+    "angular-scroll": "0.6.x",
+    "angular-bootstrap-show-errors": "2.3.x",
+    "angular-youtube-mb": "1.0.x"
   },
   "resolutions": {
-    "angular": "~1.3.x",
-    "lodash": "3.*.*"
-  }
+    "angular": "1.3.x"
+  },
+  "authors": [
+    "srlm <srlm@srlm.io>"
+  ],
+  "license": "none",
+  "private": true
 }

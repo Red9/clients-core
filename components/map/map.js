@@ -36,8 +36,6 @@ angular
 
 
                 $scope.$watchCollection('options', function () {
-                    console.log('options');
-                    console.dir($scope.options);
                     $scope.map.defaults = {
                         scrollWheelZoom: $scope.options && _.has($scope.options, 'mouse') ?
                             $scope.options.mouse : true,
@@ -46,7 +44,6 @@ angular
                         zoomControl: $scope.options && _.has($scope.options, 'controls') ?
                             $scope.options.controls : true
                     };
-                    console.dir($scope.map.defaults);
                 });
 
                 var defaultLayerOptions = {
