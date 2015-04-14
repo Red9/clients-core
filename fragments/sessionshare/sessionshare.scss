@@ -14,6 +14,7 @@
   $footer-height: 40px;
   $footer-label-height: 25px;
   $attribution-height: 35px;
+  $mapOverlayBackground: rgba(0, 0, 0, 0.6);
 
   img.logo {
     position: absolute;
@@ -48,11 +49,13 @@
 
     border-radius: 15px 15px 15px 15px;
 
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: $mapOverlayBackground;
     z-index: 1;
     text-align: center;
     color: white;
-
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 
   .title {
@@ -76,6 +79,7 @@
   }
 
   .map {
+    z-index: 0;
     position: absolute;
     left: 0;
     top: $title-height;
@@ -85,7 +89,7 @@
 
   .stat {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: $mapOverlayBackground;
     z-index: 1;
     margin: 0;
 

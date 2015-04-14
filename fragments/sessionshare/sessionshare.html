@@ -66,40 +66,41 @@
              controls="false"></map>
     </div>
 
-    <div class="stat footer row">
-        <div class="col-xs-4"><h2>{{viewModel.speed | units:'knots':'mph' | number:1}} mph</h2></div>
-        <div class="col-xs-4">
-            <h2 ng-if="viewModel.metricCDuration">{{viewModel.metricC | duration:true}}</h2>
-
-            <h2 ng-if="!viewModel.metricCDuration">{{viewModel.metricC}}</h2>
+    <div ng-if="viewModel.sport !== 'surf'">
+        <div class="stat footer row">
+            <div class="col-xs-3 col-xs-offset-3">
+                <h2>{{viewModel.sessionDistance | units:'meters':'miles' | number:1}} mi</h2>
+            </div>
+            <div class="col-xs-3"><h2>{{viewModel.speed | units:'knots':'mph' | number:1}} mph</h2></div>
         </div>
-        <div class="col-xs-4"><h2>{{viewModel.distance | units:'meters':viewModel.distanceUnits | number:1}}
-            {{viewModel.distanceUnits}}</h2></div>
-
+        <div class="stat footer-label row">
+            <div class="col-xs-3 col-xs-offset-3"><h2>Total Distance</h2></div>
+            <div class="col-xs-3"><h2>Top Speed</h2></div>
+        </div>
     </div>
-    <div class="stat footer-label row">
-        <div class="col-xs-4"><h2>{{viewModel.speedLabel}}</h2></div>
-        <div class="col-xs-4"><h2>{{viewModel.metricCLabel}}</h2></div>
-        <div class="col-xs-4"><h2>{{viewModel.distanceLabel}}</h2></div>
+
+    <div ng-if="viewModel.sport === 'surf'">
+        <div class="stat footer row">
+            <div class="col-xs-3"><h2>{{viewModel.eventCount}}</h2></div>
+            <div class="col-xs-3"><h2>{{viewModel.speed | units:'knots':'mph' | number:1}} mph</h2></div>
+            <div class="col-xs-3"><h2>{{viewModel.distance | units:'meters':'feet' | number:0}} ft</h2></div>
+            <div class="col-xs-3"><h2>{{viewModel.sessionDistance | units:'meters':'miles' | number:1}} mi</h2></div>
+        </div>
+        <div class="stat footer-label row">
+            <div class="col-xs-3"><h2>Waves</h2></div>
+            <div class="col-xs-3"><h2>Top Speed</h2></div>
+            <div class="col-xs-3"><h2>Longest Wave</h2></div>
+            <div class="col-xs-3"><h2>Total Distance</h2></div>
+        </div>
     </div>
 
     <div class="attribution row">
-        <div class="col-xs-4 attribute">{{viewModel.startTime | date:'fullDate'}}</div>
-        <div class="col-xs-4 attribute text-center">{{viewModel.userName}}</div>
-        <div class="col-xs-4 attribute url text-right"><a href="http://redninesensor.com">redninesensor.com</a></div>
+        <div class="col-xs-3 attribute text-center">{{viewModel.startTime | date:'MMMM d, yyyy'}}</div>
+        <div class="col-xs-3 attribute text-center">{{viewModel.sessionDuration | duration:'smart'}}</div>
+        <div class="col-xs-3 attribute text-center">{{viewModel.userName}}</div>
+        <div class="col-xs-3 attribute url text-center"><a href="http://redninesensor.com">redninesensor.com</a>
+        </div>
     </div>
-
-
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-
-    <div>
-
-    </div>
-
-
-    {{testdata}}
-
-    {{logout}}
 </div>
 
 
@@ -114,14 +115,12 @@
 <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="bower_components/angulartics/src/angulartics.js"></script>
 <script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
 <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
 <script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
 <!-- endbower -->
 <!-- endbuild -->

@@ -82,49 +82,34 @@
 
                     var viewModel = {
                         sessionDuration: dataset.duration,
+                        sessionDistance: dataset.summaryStatistics.distance.path,
                         userName: dataset.user.displayName,
                         startTime: dataset.startTime,
-                        sport: dataset.sport.charAt(0).toUpperCase() + dataset.sport.slice(1)
+                        sport: dataset.sport
                     };
 
-                    if (search.type) {
+                    if (dataset.sport === 'surf') {
                         var events = _.filter(dataset.events, function (event) {
-                            return event.type === search.type;
+                            return event.type === 'Wave';
                         });
 
                         $scope.highlights = events;
 
-                        viewModel.distanceLabel = 'Longest ' + search.type;
-                        viewModel.distanceUnits = 'feet';
                         viewModel.distance = _.max(events, function (event) {
                             return event.summaryStatistics.distance.path;
                         }).summaryStatistics.distance.path;
 
-                        viewModel.speedLabel = 'Fastest ' + search.type;
                         viewModel.speed = _.max(events, function (event) {
                             return event.summaryStatistics.gps.speed.maximum;
                         }).summaryStatistics.gps.speed.maximum;
 
-                        viewModel.metricCLabel = search.type + ' Count';
-                        viewModel.metricCDuration = false;
-                        viewModel.metricC = events.length;
+                        viewModel.eventCount = events.length;
                     } else {
-                        viewModel.distanceLabel = 'Total Distance';
-                        viewModel.distanceUnits = 'miles';
-                        viewModel.distance = dataset.summaryStatistics.distance.path;
-
-                        viewModel.speedLabel = 'Top Speed';
                         viewModel.speed = dataset.summaryStatistics.gps.speed.maximum;
-
-                        viewModel.metricCLabel = 'Total Time';
-                        viewModel.metricCDuration = true;
-                        viewModel.metricC = dataset.duration;
                     }
 
                     $scope.viewModel = viewModel;
                 });
-
-
         });
 })();
 
