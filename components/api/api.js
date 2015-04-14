@@ -76,6 +76,8 @@ angular
         result.sports = [];
         result.sportsList = [];
 
+        result.domain = apiUrl; // export if needed.
+
         $http.get(apiUrl + '/eventtype/').success(function (data) {
             angular.extend(result.event.types, data);
         });

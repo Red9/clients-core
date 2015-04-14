@@ -1,7 +1,33 @@
-<h1>Attached Videos</h1>
-<p>You have the option to attach a video to a session and sync it to the dataset.</p>
 <div class="row">
     <div class="col-xs-12">
+        <h1>Share Pictures</h1>
+        <ul class="list-group">
+            <li class="list-group-item row">
+                <div class="col-sm-6">
+                    <p><a target="_blank" ng-href="{{sessionShare.src}}">
+                        <img class="share-image"
+                             ng-src="{{sessionShare.src}}"
+                             width="{{sessionShare.width}}"
+                             height="{{sessionShare.height}}">
+                    </a></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>URL: <a target="_blank" ng-href="{{sessionShare.src}}">{{sessionShare.src}}</a></p>
+
+                    <p>{{sessionShare.caption}}</p>
+                    <p><small>(right click and "Save As")</small></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Attached Videos</h1>
+
+        <p>You have the option to attach a video to a session and sync it to the dataset.</p>
+
         <ul class="list-group">
             <li class="list-group-item" ng-if="dataset.videos.length === 0">
                 <p>No videos.</p>
@@ -9,17 +35,20 @@
             <li class="list-group-item row"
                 ng-repeat="video in dataset.videos">
                 <div class="col-sm-6">
-                    <p><a ng-href="https://www.youtube.com/watch?v={{video.hostId}}">
+                    <p><a target="_blank" ng-href="https://www.youtube.com/watch?v={{video.hostId}}">
                         <img ng-src="http://img.youtube.com/vi/{{video.hostId}}/mqdefault.jpg">
                     </a></p>
                 </div>
                 <div class="col-sm-6">
-                    <p>URL: <a ng-href="https://www.youtube.com/watch?v={{video.hostId}}">https://www.youtube.com/watch?v={{video.hostId}}</a>
+                    <p>URL: <a target="_blank" ng-href="https://www.youtube.com/watch?v={{video.hostId}}">https://www.youtube.com/watch?v={{video.hostId}}</a>
                     </p>
 
                     <p>Start Time: {{video.startTime | date:'yyyy-MM-dd HH:mm:ss.sss'}} ({{video.startTime}})</p>
 
-                    <p class="pull-right"><button class="btn btn-default" ng-click="deleteVideo(video)"><span class="glyphicon glyphicon-trash"></span></button></p>
+                    <p class="pull-right">
+                        <button class="btn btn-default" ng-click="deleteVideo(video)"><span
+                                class="glyphicon glyphicon-trash"></span></button>
+                    </p>
                 </div>
             </li>
         </ul>
@@ -29,7 +58,7 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <h1>Add Video</h1>
+        <h3>Add Video</h3>
 
         <div class="alert alert-warning" role="alert" ng-if="dataset.videos.length > 0">
             <strong>Warning:</strong> You already have a video attached to this session. In most cases, you should not

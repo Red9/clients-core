@@ -53,4 +53,11 @@ angular
                 }
             })();
         };
+
+        $scope.sessionShare = {
+            src: api.domain + '/render/sessionshare?datasetId=' + dataset.id,
+            width: 316,
+            height: 233,
+            caption: 'Sharable session highlights image'
+        };
     });
