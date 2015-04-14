@@ -38,8 +38,13 @@ angular
             // We only care about the first digit (don't want to get too precise)
             millisecondsString = millisecondsString[0];
 
-
-            if (tight === false || hours > 0) {
+            if (tight === 'smart') {
+                var result = minutesString + 'min';
+                if (hours > 0) {
+                    result = hours + 'hr ' + result;
+                }
+                return result;
+            } else if (tight === false || hours > 0) {
                 return hours + 'h ' + minutesString + 'm'; // Don't display seconds if it's more than an hour. "Oddly precise".
             } else if (minutes > 0) {
                 return minutes + 'm ' + secondsString + '.' + millisecondsString + 's';

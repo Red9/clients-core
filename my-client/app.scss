@@ -126,7 +126,6 @@
       stroke: blue;
     }
 
-
     &.a, &.b {
       stroke: black;
     }
@@ -342,4 +341,9 @@ div[dc-angular-chart] {
   -ms-box-shadow: $logocolor 1px 0 6px 1px;
   -webkit-box-shadow: $logocolor 1px 0 6px 1px;
   box-shadow: $logocolor 1px 0 6px 1px;
+}
+
+img.share-image {
+  background: url('/images/loading_placeholder_xs.png') no-repeat;
+  background-size: cover;
 }
