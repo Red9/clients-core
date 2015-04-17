@@ -260,7 +260,12 @@ angular
                             }
                         };
 
-                        if (_.indexOf(graph.seriesInView, key) !== -1) {
+                        // Make sure that we don't try to graph something with all NaNs.
+                        var hasValidPoints = _.reduce(series, function (memo, value) {
+                            return memo || !_.isNull(value);
+                        }, false);
+
+                        if (_.indexOf(graph.seriesInView, key) !== -1 && hasValidPoints) {
                             result.line = {
                                 svgLine: $scope.svgLine = createLine($scope.time, series)
                             };

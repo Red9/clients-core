@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h3 class="modal-title">Create Event</h3>
+</div>
+<div class="modal-body">
+    <p>New event is {{viewModel.duration | duration:true}} long</p>
+
+    <select ng-model="resultModel.type" class="form-control"
+            ng-options="t as t.name for t in viewModel.types track by t.name">
+    </select>
+
+    <p>Create event of type "{{resultModel.type}}"</p>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-" ng-click="confirm()" id="createEventButton" auto-focus>Create</button>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

@@ -2,27 +2,32 @@
 angular
     .module('redComponents.confirmDialog', [])
     .factory('confirmDialog', function ($modal) {
-        return function (parameters) {
-            return function () {
-                var ModalInstanceCtrl = function ($scope, $modalInstance) {
-                    $scope.confirm = function () {
-                        $modalInstance.close(true);
-                    };
-
-                    $scope.cancel = function () {
-                        $modalInstance.dismiss('cancel');
-                    };
-                    $scope.message = parameters.message;
+        /**
+         *
+         * @param {Object} parameters
+         * @param {String} parameters.message
+         * @param {Function} parameters.confirm
+         * @param {Function} [parameters.cancel]
+         */
+        var result = function (parameters) {
+            var ModalInstanceCtrl = function ($scope, $modalInstance) {
+                $scope.confirm = function () {
+                    $modalInstance.close(true);
                 };
 
-                var modalInstance = $modal.open({
-                    templateUrl: '/components/confirmdialog/confirmdialog.html',
-                    controller: ModalInstanceCtrl,
-                    size: 'sm'
-                });
-
-                modalInstance.result.then(parameters.confirm, parameters.cancel);
-
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+                $scope.message = parameters.message;
             };
+
+            var modalInstance = $modal.open({
+                templateUrl: '/components/confirmdialog/confirmdialog.html',
+                controller: ModalInstanceCtrl,
+                size: 'sm'
+            });
+
+            modalInstance.result.then(parameters.confirm, parameters.cancel);
         };
+        return result;
     });
