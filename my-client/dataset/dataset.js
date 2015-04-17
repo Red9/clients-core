@@ -2,7 +2,6 @@ angular
     .module('redApp.dataset', [
         'redComponents.api',
         'redComponents.eventsSummary',
-        'redComponents.eventTimeline',
         'redComponents.fcpxmlDownload',
         'redComponents.map',
         'redComponents.summaryStatistics',

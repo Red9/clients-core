@@ -14,7 +14,6 @@ angular
             },
             templateUrl: '/components/visualizations/video/video.html',
             controller: function ($scope, $interval, _, api) {
-                console.log('initalizing new video');
                 $scope.video = $scope.videos[0]; // Default to the first video.
 
                 $scope.playerOptions = {

@@ -11,15 +11,18 @@
 
     <!-- build:css css/styles.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
-    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css"/>
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.css"/>
     <!-- endbower -->
     <link rel="stylesheet" href="my-client/app.css"/>
     <link rel="stylesheet" href="components/map/map.css"/>
+    <link rel="stylesheet" href="components/visualizations/charts/timeseries/timeseries.css"/>
+    <link rel="stylesheet" href="components/visualizations/timeline/timeline.css"/>
+    <link rel="stylesheet" href="components/visualizations/maps/local/local.css"/>
     <!-- endbuild -->
 </head>
 <body ng-strict-di>
@@ -134,7 +137,6 @@
 </div>
 
 
-
 <!-- Livereload script for development only (stripped during dist build) -->
 <script src="http://localhost:35729/livereload.js" data-remove="true"></script>
 
@@ -196,7 +198,6 @@
 <script src="components/userinput/userinput.js"></script>
 <script src="components/badgelist/badgelist.js"></script>
 <script src="components/taghelper/taghelper.js"></script>
-<script src="components/eventtimeline/eventtimeline.js"></script>
 <script src="components/listgroupsimple/listgroupsimple.js"></script>
 <script src="components/map/map.js"></script>
 <script src="components/summarystatistics/summarystatistics.js"></script>
@@ -219,7 +220,9 @@
 <script src="components/geo/geo.js"></script>
 <script src="components/visualizations/maps/local/local.js"></script>
 <script src="components/visualizations/video/video.js"></script>
-
+<script src="components/modals/createevent/createevent.js"></script>
+<script src="components/autofocus/autofocus.js"></script>
+<script src="components/visualizations/timeline/timeline.js"></script>
 <script src="init.js"></script>
 <!-- endbuild -->
 

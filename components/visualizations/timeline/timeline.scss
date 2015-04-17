@@ -1,0 +1,41 @@
+.visualization.timeline {
+  @import "../_common.scss";
+
+  .label {
+    font-size: 10pt;
+    font-weight: normal;
+    fill: #949494;
+   // pointer-events: none; // Pass through hover so that row highlight works
+    cursor: pointer;
+  }
+
+  .box {
+    opacity: 0.5;
+    cursor: pointer;
+
+    &.manual {
+      fill: #3273a8;
+    }
+
+    &.auto {
+      fill: #9c5f2e;
+    }
+
+    &.selected {
+      stroke: black;
+      stroke-width: 3px;
+    }
+  }
+
+  .row-highlight {
+    opacity: 0;
+    fill: black;
+
+    &:hover {
+      opacity: 0.15;
+    }
+
+  }
+
+}
+
