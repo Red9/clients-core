@@ -1,0 +1,36 @@
+.visualization.chart.timeseries {
+
+  height: 300px;
+  max-height: 300px;
+
+  @import "../../_common.scss";
+
+  .series {
+    fill: none;
+    pointer-events: visibleStroke;
+  }
+
+  .plotgroup {
+    stroke-width: 1px;
+  }
+
+  .plotgroup:hover {
+    stroke-width: 1.5px;
+  }
+
+  .valuebox text {
+    font-size: 10pt;
+    fill: #949494;
+  }
+
+  .axis.label {
+    font-size: 10pt;
+    fill: #949494;
+  }
+
+  .key {
+    font-size: 12pt;
+    stroke-width: 0px;
+    cursor: pointer;
+  }
+}

@@ -2,7 +2,10 @@ angular
     .module('redApp.dataset.graphs', [
         'redComponents.api',
         'redComponents.visualizations.charts.timeseries',
-        'redComponents.visualizations.video'
+        'redComponents.visualizations.video',
+        'redComponents.visualizations.timeline',
+        'redComponents.modals.createEvent',
+        'redComponents.confirmDialog'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.graphs', {
@@ -11,9 +14,16 @@ angular
             controller: 'DatasetGraphsController',
             accessLevel: 'basic',
             title: 'R9: Graphs',
-            reloadOnSearch: false, // prevent ui-router from recreating the page. Optimization.
+            reloadOnSearch: false, // prevent ui-router from recreating the page when zooming aroundeventtimeline.js. Optimization.
+            data: {
+                css: '/my-client/dataset/graphs/graphs.css'
+            },
             resolve: {
                 panel: function ($stateParams, _, api, dataset) {
+                    // Ideally, we don't want to reload the panel. But there's the
+                    // issue that the map on the summary page needs a high resolution
+                    // version, and the graphs on this page bog down if they're
+                    // given that high resolution.
                     if (_.isUndefined($stateParams.startTime)
                         && _.isUndefined($stateParams.endTime)) {
                         return dataset.panel;
@@ -29,8 +39,7 @@ angular
             }
         });
     })
-    .controller('DatasetGraphsController', function ($scope, api, dataset, $stateParams, $state, $location, panel) {
-        console.log('new graphs');
+    .controller('DatasetGraphsController', function ($scope, api, dataset, $stateParams, $state, $location, panel, CreateEventModal, confirmDialog) {
         $scope.$stateParams = $stateParams;
 
         $scope.slides = {
@@ -56,6 +65,65 @@ angular
             $scope.$broadcast('video.sync.frame', time);
         };
 
+
+        var eventTypeCache; // Small optimization to allow the user to create multiples in a row
+        $scope.createEvent = function (a, b) {
+            var startTime = a;
+            var endTime = b;
+            if (a > b) { // Are they backwards?
+                startTime = b;
+                endTime = a;
+            }
+
+            CreateEventModal({
+                defaultType: eventTypeCache,
+                datasetId: dataset.id,
+                startTime: startTime.getTime(),
+                endTime: endTime.getTime(),
+                callback: function (event) {
+                    dataset.events.push(event);
+                    eventTypeCache = event.type;
+                    $scope.slides.a = null;
+                    $scope.slides.b = null;
+                }
+            });
+        };
+
+        $scope.deleteEvents = function () {
+            var count = _.countBy(dataset.events, 'selected').true || 0;
+            if (count !== 0) {
+                confirmDialog({
+                    message: 'You are about to delete ' + count + ' events.\nAre you sure?',
+                    confirm: function () {
+                        _.forEachRight(dataset.events, function (event, index) {
+                            if (event.selected === true) {
+                                (new api.event(event)).$delete();
+                                dataset.events.splice(index, 1);
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        $scope.$on('zoom', function (event, parameters) {
+            zoom(parameters.startTime, parameters.endTime);
+        });
+
+
+        function zoom(startTime, endTime) {
+            // Reset slides if they're no longer visible.
+            if ($scope.slides.a <= startTime || endTime <= $scope.slides.a) {
+                $scope.slides.a = null;
+            }
+            if ($scope.slides.b <= startTime || endTime <= $scope.slides.b) {
+                $scope.slides.b = null;
+            }
+
+            $location.search({startTime: startTime, endTime: endTime});
+            loadPanel(startTime, endTime);
+        }
+
         $scope.zoom = function (direction) {
             // Convenience handles
             var currentStartTime = $scope.viewModel.currentStartTime;
@@ -66,88 +134,55 @@ angular
 
             var zoomInTime = Math.floor(currentDuration / 3);
 
-            var result;
+            var startTime;
+            var endTime;
 
             if (direction === 'markers') {
-
                 if ($scope.slides.a && $scope.slides.b) {
-                    result = {
-                        startTime: $scope.slides.a.getTime(), // They're date objects...
-                        endTime: $scope.slides.b.getTime()
-                    };
+                    startTime = $scope.slides.a.getTime(); // They're date objects...
+                    endTime = $scope.slides.b.getTime();
 
-                    if (result.startTime > result.endTime) { // In case the user put the markers backwards...
-                        var temp = result.startTime;
-                        result.startTime = result.endTime;
-                        result.endTime = temp;
+                    if (startTime > endTime) { // In case the user put the markers backwards...
+                        var temp = startTime;
+                        startTime = endTime;
+                        endTime = temp;
                     }
-
-
                 } else {
                     return; // Do nothing if we don't have both.
                 }
 
             } else if (direction === 'in') {
-                result = {
-                    startTime: currentStartTime + zoomInTime,
-                    endTime: currentEndTime - zoomInTime
-                };
+
+                startTime = currentStartTime + zoomInTime;
+                endTime = currentEndTime - zoomInTime;
+
             } else if (direction === 'out') {
-                result = {
-                    startTime: currentStartTime - currentDuration,
-                    endTime: currentEndTime + currentDuration
-                };
+                startTime = currentStartTime - currentDuration;
+                endTime = currentEndTime + currentDuration;
             } else if (direction === 'left') {
                 // Have we hit the left "wall"?
                 if (currentStartTime - zoomInTime < dataset.startTime) {
-                    console.log('hit left wall');
-                    result = {
-                        startTime: undefined,
-                        endTime: dataset.endTime + zoomInTime
-                    };
+                    startTime = undefined;
+                    endTime = dataset.endTime + zoomInTime;
                 } else {
-                    console.log('shifting left');
-                    result = {
-                        startTime: currentStartTime - zoomInTime,
-                        endTime: undefined
-                    };
+                    startTime = currentStartTime - zoomInTime;
+                    endTime = undefined;
                 }
             } else if (direction === 'right') {
                 // Have we hit the right "wall"?
                 if (currentEndTime + zoomInTime > dataset.endTime) {
-                    console.log('hit right wall');
-                    result = {
-                        startTime: dataset.endTime - zoomInTime,
-                        endTime: dataset.endTime
-                    };
+                    startTime = dataset.endTime - zoomInTime;
+                    endTime = dataset.endTime;
                 } else {
-                    result = {
-                        startTime: currentStartTime + zoomInTime,
-                        endTime: currentEndTime + zoomInTime
-                    };
+                    startTime = currentStartTime + zoomInTime;
+                    endTime = currentEndTime + zoomInTime;
                 }
             } else if (direction === 'reset') {
-                result = {
-                    startTime: undefined,
-                    endTime: undefined
-                };
+                startTime = undefined;
+                endTime = undefined;
             }
 
-            // Reset slides if they're no longer visible.
-            if ($scope.slides.a <= result.startTime || result.endTime <= $scope.slides.a) {
-                console.log('clear a');
-                $scope.slides.a = null;
-            }
-            if ($scope.slides.b <= result.startTime || result.endTime <= $scope.slides.b) {
-                console.log('clear b');
-                $scope.slides.b = null;
-            }
-
-            $location.search(result);
-            console.log('zoom!');
-            loadPanel(result.startTime, result.endTime);
-
-            //$state.go('.', result);
+            zoom(startTime, endTime);
         };
         $scope.viewModel = {};
 

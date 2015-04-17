@@ -1,0 +1,79 @@
+<div>
+
+    <svg class="visualization timeline"
+         ng-attr-height="{{graph.height}}"
+         ng-attr-width="{{graph.width}}">
+
+
+        <!-- Plots -->
+        <rect class="plotarea"
+              ng-attr-x="{{graph.axes.y.width}}"
+              y="0"
+              ng-attr-width="{{graph.plot.width}}"
+              ng-attr-height="{{graph.plot.height}}"
+              ng-mousemove="hovermove($event);"
+              ng-click="plotareaClick($event);"></rect>
+
+        <!-- Rows -->
+        <g ng-repeat="row in graph.events"
+           ng-attr-transform="translate(0 {{row.y}})">
+
+            <!-- We include the mouse functions here so that they still
+            work, even when the hover is displayed (and blocking the plot area -->
+
+            <rect class="row-highlight"
+                  y="0" ng-attr-height="{{row.height}}"
+                  x="0"
+                  ng-attr-width="{{$parent.graph.width}}"
+                  ng-mousemove="hovermove($event);"
+                  ng-click="plotareaClick($event);"></rect>
+
+            <text class="label"
+                  ng-attr-y="{{row.textHeight}}"
+                  ng-click="selectEventType(row.type)">
+                {{row.type}}
+                <title>Click to select row</title>
+            </text>
+
+            <rect class="box"
+                  ng-class="[box.event.source.type, box.event.selected ? 'selected' :'']"
+                  ng-repeat="box in row.boxes"
+                  ng-attr-x="{{box.x}}"
+                  ng-attr-y="{{box.y}}"
+                  ng-attr-width="{{box.width}}"
+                  ng-attr-height="{{box.height}}"
+                  ng-click="clickEvent($event, box.event)">
+                <title>Click to zoom, CTRL+click to select</title>
+            </rect>
+        </g>
+
+        <!-- X Axis -->
+        <line class="axis"
+              ng-attr-x1="{{graph.axes.y.width}}"
+              ng-attr-y1="{{graph.plot.height}}"
+              ng-attr-x2="{{graph.width}}"
+              ng-attr-y2="{{graph.plot.height}}"></line>
+        <g ng-repeat="tick in graph.axes.x.ticks">
+            <line class="axis"
+                  ng-attr-x1="{{tick.line.x}}"
+                  ng-attr-y1="{{tick.line.y1}}"
+                  ng-attr-x2="{{tick.line.x}}"
+                  ng-attr-y2="{{tick.line.y2}}"></line>
+            <text class="axis"
+                  ng-attr-x="{{tick.label.x}}"
+                  ng-attr-y="{{tick.label.y}}"
+                  text-anchor="middle">{{tick.label.text}}
+            </text>
+        </g>
+
+        <g ng-repeat="(name, slide) in graph.slides">
+            <line ng-if="slide !== null"
+                  class="slide"
+                  ng-class="name"
+                  ng-attr-x1="{{slide}}"
+                  ng-attr-x2="{{slide}}"
+                  ng-attr-y1="0"
+                  ng-attr-y2="{{$parent.graph.plot.height}}"></line>
+        </g>
+    </svg>
+</div>

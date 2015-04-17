@@ -1,18 +1,14 @@
 <div class="graph-area">
-    <div class="row">
-        <br/>
-
-        <div class="col-sm-12">
-            <event-timeline events="dataset.events"></event-timeline>
-        </div>
-    </div>
-
-
     <p><input type="checkbox" ng-model="displayHeatline" ng-init="displayHeatline=true">Heatline</p>
-
     <div class="row">
         <div class="col-xs-12">
             <maplocal panel="viewModel.panel" display-heatline="displayHeatline" slides="slides"></maplocal>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <timeline events="dataset.events" time="viewModel.panel.panel.time" slides="slides"></timeline>
         </div>
     </div>
 
@@ -80,11 +76,22 @@
 <nav class="navbar navbar-default navbar-fixed-bottom graph-toolbar" role="navigation">
     <div class="row">
         <div class="col-sm-4 col-xs-4">
-            <button id="navbar-fixed-bottom-create-event-button" type="button" class="btn btn-default btn-md"
-                    title="create event"><span class="glyphicon glyphicon-bookmark"></span></button>
-            <button id="navbar-fixed-bottom-comments-button" type="button" class="btn btn-default btn-md"
-                    title="comments"><span class="glyphicon glyphicon-comment"></span>&nbsp;<span
-                    class="badge"></span>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-md"
+                        title="create event"
+                        ng-disabled="!slides.a || !slides.b"
+                        ng-click="createEvent(slides.a, slides.b)">
+                    <span class="glyphicon glyphicon-bookmark"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-md"
+                        title="delete event(s)"
+                        ng-click="deleteEvents()">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+            <!--<button id="navbar-fixed-bottom-comments-button" type="button" class="btn btn-default btn-md"-->
+            <!--title="comments"><span class="glyphicon glyphicon-comment"></span>&nbsp;<span-->
+            <!--class="badge"></span>-->
             </button>
             <button type="button" class="btn btn-default btn-md"
                     title="pin video frame to marker"

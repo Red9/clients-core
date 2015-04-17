@@ -22,9 +22,8 @@ angular
                 function drawMap(width) {
                     $scope.map = {
                         height: 400,
-                        width: width
+                        width: width ? width : $scope.map.width // Allows for recalling this function
                     };
-
 
                     var latitudes = $scope.panel.panel['gps:latitude'];
                     var longitudes = $scope.panel.panel['gps:longitude'];
@@ -58,6 +57,18 @@ angular
                         }
                     });
 
+                    if (hoverablePoints.length === 0) {
+                        console.log('Cannot display map: no points');
+                        $scope.noPoints = {
+                            x: $scope.map.width / 2,
+                            y: $scope.map.height / 2
+                        };
+                        return;
+                    } else {
+                        $scope.noPoints = false;
+                    }
+
+
                     // TODO: this is not correct! Compare the leaflet map and the local map
 
                     lastPoint = _.last(_.first(validPaths));
@@ -69,42 +80,6 @@ angular
                         lastPoint = _.last(path);
                         return result;
                     }).value();
-
-                    //var lastPoint = true; // "valid" first point
-                    //// todo strip out the single last invalid point if it starts on invalid.
-                    //// todo make sure it works with no at the start.
-                    //_.each(_.zip(longitudes, latitudes), function (point, index) {
-                    //    if (point[0] && point[1]) { // not null
-                    //        // Valid Point
-                    //        hoverablePoints.push({point: point, index: index});
-                    //        if (lastPoint === null) {
-                    //            // We are coming off of an invalid streak.
-                    //            // Store the current point as the "end" of that streak.
-                    //            invalidPaths[invalidPaths.length - 1].push(point);
-                    //            // And start a new valid streak.
-                    //            validPaths.push([point]);
-                    //        } else if (validPaths.length === 0) {
-                    //            // special case: first valid point
-                    //            validPaths.push([point]);
-                    //        } else {
-                    //            // We're in the middle of a valid streak
-                    //            validPaths[validPaths.length - 1].push(point);
-                    //
-                    //            heatPoints.push({
-                    //                start: lastPoint,
-                    //                end: point,
-                    //                speed: speed[index]
-                    //            });
-                    //        }
-                    //        lastPoint = point;
-                    //    } else {
-                    //        // Invalid Point
-                    //        if (lastPoint) { // not null
-                    //            invalidPaths.push([lastPoint]);
-                    //        }
-                    //        lastPoint = null;
-                    //    }
-                    //});
 
 
                     function createProjection(geoJSONPoints) {
@@ -164,9 +139,7 @@ angular
                     }
 
                     $scope.dragging = false;
-
                     $scope.closestPixels = projection(hoverablePoints[0].point);
-
                     $scope.heatSegments = createHeatSegments(speed, heatPoints);
 
 
@@ -247,25 +220,21 @@ angular
                         }
                     });
 
-
                     $scope.hovermarkerMoveStart = function ($event) {
                         $scope.dragging = true;
-
                         $event.preventDefault();
                     };
 
                     $scope.hovermarkerMoveEnd = function () {
                         $scope.dragging = false;
                     };
-
-                    $scope.$watch('displayHeatline', function (newValue) {
-                        if (newValue) { // truthy
-                            //drawHeatline();
-                        } else {
-                            //drawSimpleline();
-                        }
-                    });
                 }
+
+                $scope.$watch('panel', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        drawMap();
+                    }
+                });
 
                 // This IIFE business is to overcome the Bootstrap deal where it
                 // calculates the final offsetWidth after some time. I can't

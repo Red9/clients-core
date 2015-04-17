@@ -1,0 +1,19 @@
+.graph-toolbar {
+  padding-top: 8px;
+  border-width: 0px;
+  background-color: #222222;
+}
+
+.well .graph-area {
+  // Get every last pixel from the well if it's inside of one
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.graph-area {
+  background-color: white;
+  // Apply a min-height since, when the area loads, it's full of elements with 0 height.
+  min-height: 2000px;
+}

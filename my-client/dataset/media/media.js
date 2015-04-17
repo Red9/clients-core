@@ -51,7 +51,7 @@ angular
                 },
                 cancel: function () {
                 }
-            })();
+            });
         };
 
         $scope.sessionShare = {

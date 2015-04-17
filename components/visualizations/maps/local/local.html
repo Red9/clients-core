@@ -8,91 +8,108 @@
               ng-attr-width="{{map.width}}"
               ng-attr-height="{{map.height}}"
               ng-mousemove="hovermove($event);"
-              ng-mouseup="hovermarkerMoveEnd()"
-                ></rect>
+              ng-mouseup="hovermarkerMoveEnd()"></rect>
 
+        <g ng-if="noPoints">
 
-        <!-- Axis Scales -->
-        <!-- X -->
-        <g ng-repeat="tick in gridLines"
-           ng-attr-transform="translate({{tick.bottomX}},{{$parent.map.height}})">
-            <line class="gridLine"
-                  x1="0" x2="0" y1="0"
-                  ng-attr-y2="-{{$parent.map.height}}"
-                    ></line>
-
-            <line class="scaleTick"
-                  x1="0" y1="0" x2="0" y2="-10"
-                    ></line>
-
-            <text class="scaleTickLabel"
-                  x="0" y="-15"
-                  text-anchor="middle">{{tick.text}}
+            <text class="no-points"
+                  ng-attr-x="{{noPoints.x}}"
+                  ng-attr-y="{{noPoints.y}}">
+                No GPS Available
             </text>
-        </g>
-
-        <!-- Y -->
-        <!-- Note that the repeat will likely repeat more elements than visible,
-        depending on the width/height ratio. FYI. -->
-        <g ng-repeat="tick in gridLines"
-           ng-attr-transform="translate(0,{{tick.sideY}})">
-            <line class="gridLine"
-                  x1="0"
-                  ng-attr-x2="{{$parent.map.width}}"
-                  y1="0"
-                  y2="0"></line>
-
-            <line class="scaleTick"
-                  x1="0" x2="10" y1="0" y2="0"></line>
-
-            <text class="scaleTickLabel"
-                  x="15" y="0"
-                  alignment-baseline="central">{{tick.text}}
+            <text class="no-points-sub"
+                  dy="30"
+                  ng-attr-x="{{noPoints.x}}"
+                  ng-attr-y="{{noPoints.y}}">
+                This portion of your session does not have GPS
             </text>
+
+        </g>
+        <g ng-if="!noPoints">
+
+            <!-- Axis Scales -->
+            <!-- X -->
+            <g ng-repeat="tick in gridLines"
+               ng-attr-transform="translate({{tick.bottomX}},{{$parent.map.height}})">
+                <line class="gridLine"
+                      x1="0" x2="0" y1="0"
+                      ng-attr-y2="-{{$parent.map.height}}"
+                        ></line>
+
+                <line class="scaleTick"
+                      x1="0" y1="0" x2="0" y2="-10"
+                        ></line>
+
+                <text class="scaleTickLabel"
+                      x="0" y="-15"
+                      text-anchor="middle">{{tick.text}}
+                </text>
+            </g>
+
+            <!-- Y -->
+            <!-- Note that the repeat will likely repeat more elements than visible,
+            depending on the width/height ratio. FYI. -->
+            <g ng-repeat="tick in gridLines"
+               ng-attr-transform="translate(0,{{tick.sideY}})">
+                <line class="gridLine"
+                      x1="0"
+                      ng-attr-x2="{{$parent.map.width}}"
+                      y1="0"
+                      y2="0"></line>
+
+                <line class="scaleTick"
+                      x1="0" x2="10" y1="0" y2="0"></line>
+
+                <text class="scaleTickLabel"
+                      x="15" y="0"
+                      alignment-baseline="central">{{tick.text}}
+                </text>
+            </g>
+
+            <!-- Invalid Path -->
+            <path class="path invalid"
+                  ng-attr-d="{{invalidPath}}">
+            </path>
+
+            <!-- Valid Path, basic -->
+            <path class="path valid"
+                  ng-if="!displayHeatline"
+                  ng-attr-d="{{validPath}}">
+            </path>
+
+            <!-- Heatline -->
+            <g ng-if="displayHeatline">
+                <line class="heatline"
+                      ng-repeat="segment in heatSegments"
+                      ng-attr-x1="{{segment.startPixels[0]}}"
+                      ng-attr-y1="{{segment.startPixels[1]}}"
+                      ng-attr-x2="{{segment.endPixels[0]}}"
+                      ng-attr-y2="{{segment.endPixels[1]}}"
+                      ng-attr-stroke="{{segment.color}}"></line>
+            </g>
+
+            <g class="markers">
+                <text class="start"
+                      ng-attr-x="{{markers.start[0]}}"
+                      ng-attr-y="{{markers.start[1]}}"
+                      alignment-baseline="middle" text-anchor="middle">&#xe029;</text>
+
+                <text class="end"
+                      ng-attr-x="{{markers.end[0]}}"
+                      ng-attr-y="{{markers.end[1]}}"
+                      alignment-baseline="middle" text-anchor="middle">&#xe088;</text>
+            </g>
+
+            <!-- Pegman -->
+            <g class="pegman"
+               ng-attr-transform="translate({{closestPixels[0]}},{{closestPixels[1]}})"
+               ng-mousedown="hovermarkerMoveStart($event)"
+               ng-class="{'dragging':dragging}">
+                <path d="M0,0 5,-10 8,-10 8,-30 -8,-30, -8,-10 -5,-10 Z"></path>
+                <circle cx="0" cy="-37" r="7"></circle>
+            </g>
+
         </g>
 
-        <!-- Invalid Path -->
-        <path class="path invalid"
-              ng-attr-d="{{invalidPath}}">
-        </path>
-
-        <!-- Valid Path, basic -->
-        <path class="path valid"
-              ng-if="!displayHeatline"
-              ng-attr-d="{{validPath}}">
-        </path>
-
-        <!-- Heatline -->
-        <g ng-if="displayHeatline">
-            <line class="heatline"
-                  ng-repeat="segment in heatSegments"
-                  ng-attr-x1="{{segment.startPixels[0]}}"
-                  ng-attr-y1="{{segment.startPixels[1]}}"
-                  ng-attr-x2="{{segment.endPixels[0]}}"
-                  ng-attr-y2="{{segment.endPixels[1]}}"
-                  ng-attr-stroke="{{segment.color}}"></line>
-        </g>
-
-        <g class="markers">
-            <text class="start"
-                  ng-attr-x="{{markers.start[0]}}"
-                  ng-attr-y="{{markers.start[1]}}"
-                  alignment-baseline="middle" text-anchor="middle">&#xe029;</text>
-
-            <text class="end"
-                  ng-attr-x="{{markers.end[0]}}"
-                  ng-attr-y="{{markers.end[1]}}"
-                  alignment-baseline="middle" text-anchor="middle">&#xe088;</text>
-        </g>
-
-
-        <!-- Pegman -->
-        <g class="pegman"
-           ng-attr-transform="translate({{closestPixels[0]}},{{closestPixels[1]}})"
-           ng-mousedown="hovermarkerMoveStart($event)"
-           ng-class="{'dragging':dragging}">
-            <path d="M0,0 5,-10 8,-10 8,-30 -8,-30, -8,-10 -5,-10 Z"></path>
-            <circle cx="0" cy="-37" r="7"></circle>
-        </g>
     </svg>
 </div>
