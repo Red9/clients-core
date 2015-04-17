@@ -53,17 +53,17 @@ angular
              * @param updateValues {object} a set of key values to PUT to the server
              */
             resource.prototype.update = // This name should be phased out once I figure out who is using it...
-            resource.prototype.$update = function (updateValues) {
-                var self = this;
-                var request = $http({
-                    url: apiUrl + '/' + type + '/' + self.id,
-                    method: 'PUT',
-                    data: updateValues
-                }).success(function (data) {
-                    angular.extend(self, updateValues);
-                });
-                return request;
-            };
+                resource.prototype.$update = function (updateValues) {
+                    var self = this;
+                    var request = $http({
+                        url: apiUrl + '/' + type + '/' + self.id,
+                        method: 'PUT',
+                        data: updateValues
+                    }).success(function (data) {
+                        angular.extend(self, updateValues);
+                    });
+                    return request;
+                };
         });
 
         $http.get(apiUrl + '/sport/').success(function (data) {
@@ -143,7 +143,13 @@ angular
             var self = this;
             return getPanelRaw('dataset', self.id, options)
                 .success(function (data) {
-                    self.panel = data;
+                    // This is a bit of a hack! Allows for storing both a
+                    // regular sized panel and an extra large size panel.
+                    if (options.key) {
+                        self[options.key] = data;
+                    } else {
+                        self.panel = data;
+                    }
                 });
         };
 

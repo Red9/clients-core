@@ -64,16 +64,15 @@ angular
                             });
                         }).then(function () {
                             // Get a high resolution version, but don't block user action for the new version.
-                            if (ResponsiveDetection.getBreakpoint() === 'lg') {
-                                dataset.getPanel({
-                                    size: 'xxxl',
-                                    axes: [
-                                        'time',
-                                        'gps:latitude',
-                                        'gps:longitude'
-                                    ]
-                                });
-                            }
+                            dataset.getPanel({
+                                size: 'xxxl',
+                                axes: [
+                                    'time',
+                                    'gps:latitude',
+                                    'gps:longitude'
+                                ],
+                                key: 'panelSuper'
+                            });
 
                             return dataset;
                         });
