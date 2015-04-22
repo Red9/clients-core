@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h3 class="modal-title">Set Filter Values</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Set low pass exponential moving average filter values. All raw sensor values are passed through a filter
+                of the type</p>
+
+            <p>smoothed = alpha * value + (1.0 - alpha) * smoothed</p>
+
+            <p>Minimum value for alpha is >0, maximum value is 1.0</p>
+
+            <form class="form-horizontal">
+                <fieldset>
+                    <!-- Form Name -->
+                    <legend>Filter Settings</legend>
+
+                    <!-- Text input-->
+                    <div class="form-group" ng-repeat="(type, value) in viewModel.filters">
+                        <label class="col-md-8 control-label">{{type}}</label>
+
+                        <div class="col-md-4">
+                            <input class="form-control input-md" type="number" ng-model="viewModel.filters[type]"
+                                   min="0" max="1">
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-" ng-click="confirm()" id="createEventButton" auto-focus>Update</button>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

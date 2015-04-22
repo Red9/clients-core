@@ -101,7 +101,8 @@ angular
          * @param {Number} [options.startTime]
          * @param {Number} [options.endTime]
          * @param {String} [options.size]
-         * @param {Array:String} [options.axes]
+         * @param {Array|String} [options.axes]
+         * @param {Object|Number} [options.filters]
          * // Any other keys are passed directly to the API
          * @returns {$http promise}
          */
@@ -114,6 +115,8 @@ angular
                 queryString.startTime = options.startTime;
                 queryString.endTime = options.endTime;
 
+                console.dir(options);
+
 
                 _.each(options, function (value, key) {
                     if (key === 'axes') {
@@ -121,6 +124,11 @@ angular
                             queryString.fields = [];
                         }
                         queryString.fields.push('panel(' + value.join(',') + ')');
+                    } else if (key === 'filters') {
+                        console.log('Setting filters');
+                        _.each(value, function (filterValue, filterType) {
+                            queryString['filter' + filterType] = filterValue;
+                        });
                     }
                 });
             }

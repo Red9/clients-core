@@ -205,9 +205,6 @@ module.exports = function (grunt) {
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
-                mangle: {
-                    except: ["$super"] // Don't modify the "$super" text, needed to make Rickshaw pass optimization.
-                },
                 compress: {
                     sequences: true,
                     dead_code: true,
