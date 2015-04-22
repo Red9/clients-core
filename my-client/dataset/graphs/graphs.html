@@ -1,7 +1,10 @@
 <div class="graph-area">
-    <p><input type="checkbox" ng-model="displayHeatline" ng-init="displayHeatline=true">Heatline</p>
+
+
+
     <div class="row">
         <div class="col-xs-12">
+            <p><input type="checkbox" ng-model="displayHeatline" ng-init="displayHeatline=true">Heatline</p>
             <maplocal panel="viewModel.panel" display-heatline="displayHeatline" slides="slides"></maplocal>
         </div>
     </div>
@@ -98,6 +101,11 @@
                     ng-disabled="!(slides.a && !slides.b)"
                     ng-click="pinVideoFrame(slides.a)">
                 <span class="glyphicon glyphicon-pushpin"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-md"
+                    title="adjust low pass filters"
+                    ng-click="setFilters()">
+                <span class="glyphicon glyphicon-stats"></span>
             </button>
 
 
