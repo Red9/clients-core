@@ -5,6 +5,7 @@ angular
         'redComponents.visualizations.video',
         'redComponents.visualizations.timeline',
         'redComponents.modals.createEvent',
+        'redComponents.modals.setFilters',
         'redComponents.confirmDialog'
     ])
     .config(function ($stateProvider) {
@@ -19,7 +20,14 @@ angular
                 css: '/my-client/dataset/graphs/graphs.css'
             },
             resolve: {
-                panel: function ($stateParams, _, api, dataset) {
+                filters: function () {
+                    return {
+                        acceleration: 1.0,
+                        rotationrate: 1.0,
+                        magneticfield: 1.0
+                    };
+                },
+                panel: function ($stateParams, _, api, dataset, filters) {
                     // Ideally, we don't want to reload the panel. But there's the
                     // issue that the map on the summary page needs a high resolution
                     // version, and the graphs on this page bog down if they're
@@ -30,7 +38,8 @@ angular
                     } else {
                         return api.getPanel('dataset', dataset.id, {
                             startTime: _.isUndefined($stateParams.startTime) ? dataset.startTime : $stateParams.startTime,
-                            endTime: _.isUndefined($stateParams.endTime) ? dataset.endTime : $stateParams.endTime
+                            endTime: _.isUndefined($stateParams.endTime) ? dataset.endTime : $stateParams.endTime,
+                            filters: filters
                         }).then(function (response) {
                             return response.data;
                         });
@@ -39,13 +48,32 @@ angular
             }
         });
     })
-    .controller('DatasetGraphsController', function ($scope, api, dataset, $stateParams, $state, $location, panel, CreateEventModal, confirmDialog) {
+    .controller('DatasetGraphsController', function ($scope, api, dataset, $stateParams, $state, $location, panel, filters, CreateEventModal, SetFiltersModal, confirmDialog) {
         $scope.$stateParams = $stateParams;
 
         $scope.slides = {
             hover: null,
             video: null
         };
+
+        $scope.filters = filters;
+
+        $scope.$watchCollection('filters', function (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                console.log('Filters changed, reloading panel');
+                loadPanel($scope.viewModel.currentStartTime, $scope.viewModel.currentEndTime);
+            }
+        });
+
+        $scope.setFilters = function () {
+            SetFiltersModal({
+                filters: $scope.filters,
+                callback: function (filters) {
+                    $scope.filters = angular.extend($scope.filters, filters);
+                }
+            });
+        };
+
 
         function loadPanel(startTime, endTime) {
             if (_.isUndefined(startTime)
@@ -54,7 +82,8 @@ angular
             } else {
                 api.getPanel('dataset', dataset.id, {
                     startTime: _.isUndefined(startTime) ? dataset.startTime : startTime,
-                    endTime: _.isUndefined(endTime) ? dataset.endTime : endTime
+                    endTime: _.isUndefined(endTime) ? dataset.endTime : endTime,
+                    filters: filters
                 }).then(function (response) {
                     displayPanel(response.data);
                 });
@@ -201,7 +230,8 @@ angular
                             values: {
                                 accelerationX: newPanel.panel['acceleration:x'],
                                 accelerationY: newPanel.panel['acceleration:y'],
-                                accelerationZ: newPanel.panel['acceleration:z']
+                                accelerationZ: newPanel.panel['acceleration:z'],
+                                accelerationMagnitude: newPanel.panel['acceleration:magnitude']
                             }
                         },
                         {
