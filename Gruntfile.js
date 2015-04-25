@@ -129,6 +129,7 @@ module.exports = function (grunt) {
         useminPrepare: {
             html: 'dist/index.html',
             sessionFragment: 'dist/fragments/sessionshare/sessionshare.html',
+            mapFragment: 'dist/fragments/map/map.html',
             options: {
                 dest: 'dist',
                 root: './'
@@ -136,7 +137,8 @@ module.exports = function (grunt) {
         },
         usemin: {
             html: 'dist/index.html',
-            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html'
+            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html',
+            mapFragment: 'dist/fragments/map/map.html'
         },
         copy: {
             index: {
@@ -155,9 +157,7 @@ module.exports = function (grunt) {
                             'my-client/**/*.html',
                             'images/**',
                             'fonts/**',
-                            'fragments/**', // Temporary solution. Each fragment should be optimized...
-                            'old/**/*', // For the historic data page. Hopefully soon we can get rid of this.
-                            'data.html' // Also for the old page.
+                            'fragments/**' // Temporary solution. Each fragment should be optimized...
                         ],
                         dest: 'dist/'
                     },
@@ -228,41 +228,12 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'dist/',
-                        src: [
-                            '**/*.html',
-                            '!**/embeddedvideo.fcpxmldialog.html',
-                            '!**/fcpxml.html',
-                            '!**/embeddedvideo.html',
-                            '!**/eventdetection.session.html',
-                            '!**/layouteditor.html',
-                            '!**/modifyresource.html',
-                            '!**/panelgraph.settings.html'
-                        ],
+                        src: '**/*.html',
                         dest: 'dist/'
                     }
                 ]
             }
         },
-        //karma: {
-        //    options: {
-        //        frameworks: ['jasmine'],
-        //        files: [  //this files data is also updated in the watch handler, if updated change there too
-        //            '<%= dom_munger.data.appjs %>',
-        //            'bower_components/angular-mocks/angular-mocks.js',
-        //            createFolderGlobs('*-spec.js')
-        //        ],
-        //        logLevel: 'ERROR',
-        //        reporters: ['mocha'],
-        //        autoWatch: false, //watching is handled by grunt-contrib-watch
-        //        singleRun: true
-        //    },
-        //    all_tests: {
-        //        browsers: ['PhantomJS', 'Chrome', 'Firefox']
-        //    },
-        //    during_watch: {
-        //        browsers: ['PhantomJS']
-        //    }
-        //},
         wiredep: {
             task: {
 
@@ -318,7 +289,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test', ['jshint', 'sass'/*, 'karma:all_tests'*/]);
+    grunt.registerTask('test', ['jshint', 'sass']);
     grunt.registerTask('serve', ['concurrent:serve']);
     grunt.registerTask('build', [
         'jshint',
