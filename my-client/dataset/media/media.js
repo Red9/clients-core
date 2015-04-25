@@ -10,7 +10,10 @@ angular
             templateUrl: '/my-client/dataset/media/media.html',
             controller: 'DatasetMediaController',
             accessLevel: 'basic',
-            title: 'R9: Session Media'
+            title: 'R9: Session Media',
+            data: {
+                css: '/my-client/dataset/media/media.css'
+            }
         });
     })
     .controller('DatasetMediaController', function ($scope, api, dataset, confirmDialog) {

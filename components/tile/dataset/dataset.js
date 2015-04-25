@@ -1,6 +1,7 @@
 angular
     .module('redComponents.tile.dataset', [
-        'lodash'
+        'lodash',
+        'redComponents.api'
     ])
     .directive('tileDataset', function () {
         return {
@@ -9,7 +10,15 @@ angular
                 dataset: '='
             },
             templateUrl: '/components/tile/dataset/dataset.html',
-            controller: function ($scope, _) {
+            controller: function ($scope, _, api) {
+
+                $scope.viewModel = {
+                    mapRender: {
+                        src: api.domain + '/render/map?datasetId=' + $scope.dataset.id,
+                        width: 320,
+                        height: 240
+                    }
+                };
 
                 try {
                     // We may not have any lat/long information, but give it our
