@@ -5,16 +5,14 @@
             <span ng-if="dataset.title.length > 60">...</span>
             <span ng-if="dataset.videos.length > 0"
                   class="glyphicon glyphicon-facetime-video"></span>
-
-        </a></h4>
+        </a>
+        <span class="pull-right">{{dataset.sport}}</span>
+    </h4>
     <a ng-href="/user/{{dataset.user.id}}" title="view user profile">
         <img ng-src="{{dataset.user.picture}}?sz=40" width="40px" height="40px"
              class="profile-pic"/>
         <span class="displayName">{{dataset.user.displayName}}</span>
     </a>
-
-    <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
-
 
     <div class="row">
         <div class="col-xs-6"><span class="text-muted">Recorded</span> {{dataset.startTime| date}}</div>
@@ -23,21 +21,34 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="embed-responsive embed-responsive-16by9">
+                <a ng-href="/dataset/{{dataset.id}}" title="view detailed information">
+                    <img ng-if="!map"
+                         class="img-responsive" title="no map available"
+                         src="/images/mapplaceholder.png">
 
-    <!--<li><a ng-href="/dataset/{{dataset.id}}" target="_self">Detailed Graphs <span-->
-    <!--class="glyphicon glyphicon-circle-arrow-right"></span></a></li>-->
-
-
-    <div ng-if="!map"
-         class="embed-responsive embed-responsive-16by9">
-        <img class="img-responsive" title="no map available"
-             src="/images/mapplaceholder.png">
+                    <img ng-if="map"
+                         class="tile-map"
+                         ng-src="{{viewModel.mapRender.src}}">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 badge-row">
+            <badge-list list="dataset.tags" class="pull-right" muted="true"></badge-list>
+        </div>
     </div>
 
-    <leaflet ng-if="map"
-             class="embed-responsive embed-responsive-16by9"
-             defaults="map.defaults"
-             layers="map.layers"
-             center="map.center"
-             markers="map.markers"></leaflet>
+    <!--width="{{viewModel.mapRender.width}}"-->
+    <!--height="{{viewModel.mapRender.height}}"-->
+
+    <!--<leaflet ng-if="map"-->
+    <!--class="embed-responsive embed-responsive-16by9"-->
+    <!--defaults="map.defaults"-->
+    <!--layers="map.layers"-->
+    <!--center="map.center"-->
+    <!--markers="map.markers"></leaflet>-->
 </div>

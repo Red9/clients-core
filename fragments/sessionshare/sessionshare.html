@@ -25,29 +25,14 @@
 </head>
 <body ng-strict-di>
 
-<!-- The splash screen must be first -->
-<div class="splash" ng-cloak>
-    <div class="alert alert-info">
-        <h2>Loading...</h2>
+<div class="sessionshare" ng-controller="pageController">
+
+    <div class="map">
+        <map panel="dataset.panel.panel"
+             highlights="highlights"
+             interactive="true"
+             controls="false"></map>
     </div>
-</div>
-
-<!-- Some space so that the navbar doesn't cover up the page... -->
-
-<div class="sessionshare" ng-cloak ng-controller="pageController">
-    <!--[if lt IE 9]>
-    <div class="alert alert-warning alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-        <h3>Internet Explorer Users:</h3>
-
-        <p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your
-            browser</a> to improve your experience.</p>
-
-        <p>This site works best with modern Chrome.</p>
-    </div>
-    <![endif]-->
-
 
     <img class="logo" src="/images/red9-logo.png">
 
@@ -59,12 +44,6 @@
 
     <img class="user-picture" ng-src="{{dataset.user.picture}}">
 
-    <div class="map">
-        <map panel="dataset.panel.panel"
-             highlights="highlights"
-             interactive="true"
-             controls="false"></map>
-    </div>
 
     <div ng-if="viewModel.sport !== 'surf'">
         <div class="stat footer row">

@@ -1,8 +1,10 @@
 angular
     .module('redApp.uploadRNC', [
+        'lodash',
         'angularFileUpload',
         'redComponents.api',
-        'redComponents.validFile'
+        'redComponents.validFile',
+        'redComponents.tagHelper'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('uploadRnc', {
@@ -17,12 +19,22 @@ angular
         });
     })
     .controller('uploadRNCController',
-    function ($scope, $upload, current, api) {
+    function ($scope, _, $upload, current, api) {
         $scope.users = [];
-        $scope.uploadPercent = 0;
-        $scope.upload = {};
+        $scope.uploadPercent = null;
 
-        $scope.user = current.user;
+
+        //$scope.upload = {};
+
+        $scope.sportsList = api.sportsList;
+
+
+        $scope.resultModel = {
+            sport: 'none',
+            title: '',
+            user: current.user,
+            tags: []
+        };
 
         api.user.query({}, function (users) {
             $scope.users = users;
@@ -34,8 +46,10 @@ angular
                 method: 'POST',
                 withCredentials: true,
                 fields: {
-                    userId: $scope.user.id,
-                    title: $scope.title
+                    sport: $scope.resultModel.sport,
+                    title: $scope.resultModel.title,
+                    userId: $scope.resultModel.user.id,
+                    tags: _.pluck($scope.resultModel.tags, 'text')
                 },
                 file: $scope.file,
                 fileFormDataName: 'rnc'
@@ -48,8 +62,8 @@ angular
                 $scope.uploadError = data;
             });
         };
+
         $scope.onFileSelect = function ($files) {
-            console.dir($files);
             $scope.file = $files[0];
         };
     });
