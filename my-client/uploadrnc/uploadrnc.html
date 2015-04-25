@@ -9,16 +9,33 @@
 
     <form name="form" role="form" novalidate>
         <div class="form-group">
-            <label>Session Title</label>
-            <input type="text" class="form-control" placeholder="Something descriptive..." ng-model="title" required>
+            <label>Sport</label>
+            <select ng-model="resultModel.sport" class="form-control"
+                    ng-options="item for item in sportsList track by item"></select>
         </div>
         <div class="form-group">
-            <label>Owner</label>
-            <input type="text" ng-model="user" typeahead-editable="false"
+            <label>Session Title</label>
+            <input type="text" class="form-control"
+                   placeholder="Something descriptive..."
+                   ng-model="resultModel.title" required>
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <tags-input ng-model="resultModel.tags"
+                        replace-spaces-with-dashes="false"
+                        enable-editing-last-tag="true"
+                        placeholder="tag(s)"
+                        style="color:black;"></tags-input>
+        </div>
+
+        <div class="form-group">
+            <label>Athlete</label>
+            <input type="text" ng-model="resultModel.user" typeahead-editable="false"
                    typeahead="user as user.displayName for user in users | filter:$viewValue | limitTo:15"
                    class="form-control" required>
         </div>
         <div class="form-group">
+            <label>Recording File</label><br/>
         <span class="btn btn-default btn-file">
             Select RNC <input type="file" valid-file ng-model="placeholderFile" ng-file-select="onFileSelect($files)"
                               required>
@@ -32,7 +49,7 @@
         </button>
     </form>
     <br/>
-    <progressbar value="uploadPercent">{{uploadPercent}}%</progressbar>
+    <progressbar ng-if="uploadPercent" value="uploadPercent">{{uploadPercent}}%</progressbar>
 
     <a ng-if="uploadDataset" ng-href="/dataset/{{uploadDataset.id}}">Go to your created dataset</a>
 </div>
