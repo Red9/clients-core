@@ -1,3 +1,3 @@
 var red9config = {
-    apiUrl: 'http://localhost:3000'
+    apiUrl: 'https://localhost:3000'
 };

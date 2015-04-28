@@ -27,7 +27,7 @@ angular
                 },
                 defaults: {
                     offset: 0,
-                    limit: 24,
+                    limit: 12,
                     sort: 'startTime',
                     sortDirection: 'desc'
                 },
