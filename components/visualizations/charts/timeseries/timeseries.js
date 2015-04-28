@@ -20,7 +20,7 @@ angular
                 $scope.graph = graph;
 
                 var valueBoxLineHeight = 18;
-                var valueBoxColumnWidth = 100;
+                var valueBoxColumnWidth = 140;
 
                 var tickSize = 5;
                 var fontSize = 15;
@@ -90,6 +90,10 @@ angular
                     }
                 };
 
+                $scope.yAxisClick = function ($event) {
+                    $scope.graph.horizontalRule = $event.offsetY;
+                    console.log('yvalue: ' + graph.yScale.invert($event.offsetY));
+                };
 
                 $scope.hoverleave = function () {
                     $scope.slides.hover = null;
@@ -198,6 +202,7 @@ angular
                                 .flatten()
                                 .value()
                         ));
+                    graph.yScale = yScale;
 
                     // Generate X Axis
                     graph.axes.x.ticks = _.map(graph.xScale.ticks(xTickCount), function (domainValue) {

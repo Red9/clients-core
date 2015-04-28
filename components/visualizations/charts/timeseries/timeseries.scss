@@ -33,4 +33,15 @@
     stroke-width: 0px;
     cursor: pointer;
   }
+
+  .horizontal-rule {
+    stroke-width: 2px;
+    stroke-opacity: 0.3;
+    stroke: red;
+  }
+
+  .horizontal-rule-clickarea {
+    fill-opacity: 0;
+  }
+
 }

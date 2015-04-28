@@ -1,3 +1,3 @@
 var red9config = {
-    apiUrl: 'http://api.redninesensor.com'
+    apiUrl: 'https://api.redninesensor.com'
 };

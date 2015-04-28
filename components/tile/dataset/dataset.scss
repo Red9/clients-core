@@ -1,0 +1,15 @@
+img.tile-map {
+  background: url('/images/loading_placeholder_xs.png') no-repeat center;
+  background-size: cover;
+
+  // We need this one to rescale the image to fit.
+  max-width: 100%;
+
+  // We need to specify these so that the background image will show up.
+  min-width: 100%;
+  min-height: 150px;
+}
+
+.badge-row {
+  min-height: 20px;
+}

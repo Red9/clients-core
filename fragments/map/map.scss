@@ -1,0 +1,14 @@
+@import "../../scss/red9theme";
+
+.sessionshare {
+  $map-width: 1080px;
+  $map-height: 720px;
+
+  .map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: $map-width;
+    height: $map-height;
+  }
+}
