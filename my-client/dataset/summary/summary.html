@@ -1,24 +1,38 @@
 <div class="row">
-    <map panel="dataset.panelSuper.panel || dataset.panel.panel"
-         highlights="highlights"
-         interactive="false"
-         controls="true"
-         style="height:600px"></map>
-</div>
+    <div class="col-lg-6">
+        <div class="row statsrow"
+             ng-repeat="row in viewModel.eventRows"
+             ng-click="row.link();">
+            <h1 class="text-center">{{row.type}}</h1>
 
-<div class="row statsrow"
-     ng-repeat="row in viewModel.eventRows"
-     ng-click="row.link();">
-    <h1 class="text-center">{{row.type}}</h1>
+            <div class="col-sm-4" ng-repeat="tile in row.tiles">
+                <div class="statspanel">
+                    <h1 ng-if="tile.units !== 'duration'">{{tile.value | number:tile.decimals}}
+                        <small>{{tile.units}}</small>
+                    </h1>
+                    <h1 ng-if="tile.units === 'duration'">{{tile.value | duration:true}}</h1>
 
-    <div class="col-sm-4" ng-repeat="tile in row.tiles">
-        <div class="statspanel">
-            <h1 ng-if="tile.units !== 'duration'">{{tile.value | number:tile.decimals}}
-                <small>{{tile.units}}</small>
-            </h1>
-            <h1 ng-if="tile.units === 'duration'">{{tile.value | duration:true}}</h1>
-
-            <p>{{tile.caption}}</p>
+                    <p>{{tile.caption}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <map panel="dataset.panelSuper.panel || dataset.panel.panel"
+                 highlights="highlights"
+                 interactive="false"
+                 controls="true"
+                 style="height:600px"></map>
         </div>
     </div>
 </div>
+
+
+<div class="row" ng-if="viewModel.sport.sport === 'surf'">
+    <div class="col-xs-12">
+        <h1 class="text-center">Waves</h1>
+        <event-table events="viewModel.sport.events"></event-table>
+    </div>
+</div>
+

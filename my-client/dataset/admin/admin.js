@@ -1,7 +1,8 @@
 angular
     .module('redApp.dataset.admin', [
         'redComponents.api',
-        'ui.bootstrap.showErrors'
+        'ui.bootstrap.showErrors',
+        'redComponents.confirmDialog'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.admin', {
@@ -12,7 +13,7 @@ angular
             title: 'R9: Session Admin'
         });
     })
-    .controller('DatasetAdminController', function ($scope, api, dataset) {
+    .controller('DatasetAdminController', function ($scope, $state, api, confirmDialog, dataset) {
         $scope.dataset = dataset;
 
         $scope.datasetSport = $scope.dataset.sport;
@@ -39,4 +40,30 @@ angular
             }
 
         };
+
+        $scope.viewModel = {};
+        $scope.viewModel.tags = angular.copy(dataset.tags);
+
+        $scope.deleteDataset = function (dataset) {
+            console.log('Delete dataset!');
+
+
+            confirmDialog({
+                message: 'Are you sure? You will delete all associated events, comments, and videos permanently.',
+                confirm: function () {
+                    dataset.$delete();
+                    $state.go('search_dataset');
+                }
+            });
+
+
+            // TODO: Fill out the "Are You Sure" for this.
+            // Make sure it does actually delete all events too.
+            // Redirect to home
+
+            // Also, add in an Are You Sure for the event creation.
+
+
+        };
+
     });

@@ -1,47 +1,65 @@
-<div class="col-sm-5">
-    <form name="form" role="form" novalidate>
-        <div class="form-group">
-            <label>FCPXML Template</label>
+<form name="form" role="form" class="form-horizontal" novalidate>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">FCPXML Template</label>
+
+        <div class="col-sm-5">
             <select class="form-control" ng-model="options.template"
                     ng-init="options.template = dataset.fcpxmlOptions.template[0]" required>
                 <option ng-repeat="template in dataset.fcpxmlOptions.template">{{template}}</option>
             </select>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>Title duration</label>
-            <span class="help-block">The number of seconds to display the title at the beginning of an event. 0 removes titles entirely.</span>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Title duration</label>
+
+        <div class="col-sm-5">
             <input type="number" class="form-control" placeholder="seconds" ng-model="options.titleDuration" min="0"
                    step="1" required>
+            <span class="help-block">The number of seconds to display the title at the beginning of an event. 0 removes titles entirely.</span>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>Event Type</label>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Event Type</label>
+
+        <div class="col-sm-5">
             <select class="form-control" ng-model="options.eventType" required>
                 <option ng-repeat="eventType in dataset.fcpxmlOptions.eventType">{{eventType}}</option>
             </select>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>Video Type</label>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Video Type</label>
+
+        <div class="col-sm-5">
             <select class="form-control" ng-model="options.videoType" required>
                 <option ng-repeat="(key, videoType) in dataset.fcpxmlOptions.videoType" value="{{key}}">
                     {{videoType.name}}
                 </option>
             </select>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>Video Files</label>
-            <span class="help-block">File paths on your computer to the original video(s)</span>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Video Files</label>
+
+        <div class="col-sm-5">
             <!-- This is used so that an empty array is considered invalid -->
             <input type="hidden" name="files" ng-model="options.files" required>
             <list-group-simple list="options.files" editable="true" name="files"></list-group-simple>
-
+            <span class="help-block">File paths on your computer to the original video(s)</span>
         </div>
-        <hr/>
-        <a class="btn btn-lg btn-primary" ng-disabled="form.$invalid" ng-href="{{fcpxmlUrl}}">
-            Download
-        </a>
-    </form>
-</div>
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label"></label>
+
+        <div class="col-sm-5">
+            <a class="btn btn-primary" ng-disabled="form.$invalid" ng-href="{{fcpxmlUrl}}">
+                Download
+            </a>
+        </div>
+    </div>
+</form>

@@ -1,6 +1,7 @@
 angular
     .module('redApp.dataset.details.event', [
-        'lodash'
+        'lodash',
+        'redComponents.eventTable'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.details.event', {
@@ -17,29 +18,6 @@ angular
     .controller('DatasetDetailsEventController', function ($scope, dataset, _, $stateParams) {
         $scope.dataset = dataset;
 
-
-        $scope.sortState = {
-            predicate: 'index',
-            reverse: false
-        };
-
-
-        $scope.sort = function (column) {
-            // If the column is the same then we'll reverse the sort direction,
-            // otherwise keep the current sort direction.
-            if (column === $scope.sortState.predicate) {
-                $scope.sortState.reverse = !$scope.sortState.reverse;
-            }
-
-            $scope.sortState.predicate = column;
-
-            $scope.viewModel.events = _.sortBy($scope.viewModel.events, function (e) {
-                return ($scope.sortState.reverse ? -1 : 1) *
-                    e[$scope.sortState.predicate];
-            });
-        };
-
-
         $scope.viewModel = {
             type: $stateParams.type
         };
@@ -48,53 +26,7 @@ angular
             .filter(function (event) {
                 return event.type === $stateParams.type;
             })
-            .sortBy('startTime')
             .value();
-
-
-        // This won't work for values across 0 (negative and positive)
-        function calculateBars(events, accessor) {
-            var max = accessor(_.max(events, accessor));
-
-            console.log('max: ' + max);
-
-            return _.map(events, function (event) {
-                return Math.round((accessor(event) / max) * 100);
-            });
-        }
-
-        var distanceBar =
-            calculateBars($scope.events, function (event) {
-                return event.summaryStatistics.distance.path;
-            });
-        var speedBar =
-            calculateBars($scope.events, function (event) {
-                return event.summaryStatistics.gps.speed.maximum;
-            });
-        var durationBar =
-            calculateBars($scope.events, function (event) {
-                return event.duration;
-            });
-
-        $scope.viewModel.events = _.map($scope.events,
-            function (event, index) {
-                return {
-                    id: event.id,
-                    index: index,
-                    startTime: event.startTime,
-                    endTime: event.endTime,
-                    speed: event.summaryStatistics.gps.speed.maximum,
-                    distance: event.summaryStatistics.distance.path,
-                    duration: event.duration,
-                    bars: {
-                        duration: durationBar[index],
-                        speed: speedBar[index],
-                        distance: distanceBar[index]
-                    }
-                };
-            }
-        );
-
 
         function calculateStats(label, values, units, accessor, weightAccessor) {
             if (_.isUndefined(weightAccessor)) {
@@ -112,7 +44,6 @@ angular
                 return result;
 
             }, {sum: 0, weightSum: 0});
-
 
             return {
                 title: label,
@@ -182,9 +113,4 @@ angular
                 return e.duration;
             })
         ];
-
-
-        if ($stateParams.type === 'Wave') {
-
-        }
     });

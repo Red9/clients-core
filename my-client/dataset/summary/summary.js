@@ -1,5 +1,8 @@
 angular
-    .module('redApp.dataset.summary', [])
+    .module('redApp.dataset.summary', [
+        'lodash',
+        'redComponents.eventTable'
+    ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.summary', {
             url: '/summary',
@@ -24,6 +27,16 @@ angular
             }
         };
 
+        if (dataset.sport === 'surf') {
+            $scope.viewModel.sport = {
+                sport: 'surf',
+                events: _.chain(dataset.events)
+                    .filter(function (event) {
+                        return event.type === 'Wave';
+                    })
+                    .value()
+            };
+        }
 
         function constructCountLengthSpeedTiles(eventType) {
 

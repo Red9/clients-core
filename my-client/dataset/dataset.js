@@ -5,7 +5,6 @@ angular
         'redComponents.fcpxmlDownload',
         'redComponents.map',
         'redComponents.summaryStatistics',
-        'redComponents.tagHelper',
         'redComponents.filters.display.duration',
         'redComponents.filters.display.units',
         'redComponents.filters.display.sumDuration',
