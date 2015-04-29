@@ -1,18 +1,3 @@
-<!--<div class="row">-->
-    <!--<h2>Todo:</h2>-->
-    <!--<ul>-->
-        <!--<li>Pull out top speed, distance, duration, count (averages too)</li>-->
-        <!--<li>Sum up duration, distance for totals</li>-->
-        <!--<li>Check mobile display</li>-->
-    <!--</ul>-->
-<!--</div>-->
-
-<!--<div class="row">-->
-
-<!--</div>-->
-
-<br/>
-
 <div ng-repeat="v in statsRows">
     <div class="row">
         <div class="col-xs-12"><h2 class="text-center">{{v.title}}</h2></div>
@@ -20,10 +5,13 @@
     <div class="row statsrow">
         <div class="col-sm-4" ng-repeat="tile in v.tiles">
             <div class="statspanel-muted">
-                <h3 ng-if="tile.units !== 'duration'">{{tile.value | number:tile.decimals}}
-                    <small>{{tile.units}} {{tile.postfix}}</small>
+                <h3 ng-if="tile.units !== 'duration'">{{tile.value |
+                    units:tile.units.from:tile.units.to | number:tile.decimals}}
+                    <small>{{tile.units.display}} {{tile.postfix}}</small>
                 </h3>
-                <h3 ng-if="tile.units === 'duration'">{{tile.value | duration:true}} <small>{{tile.postfix}}</small></h3>
+                <h3 ng-if="tile.units === 'duration'">{{tile.value | duration:true}}
+                    <small>{{tile.postfix}}</small>
+                </h3>
 
 
                 <p>{{tile.caption}}</p>

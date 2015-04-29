@@ -7,6 +7,16 @@
       cursor: pointer;
       display: inline-block;
       white-space: nowrap;
+
+      // Prevent ugly text selection when the user clicks quickly.
+      // Support likely poor, but it works for SRLM...
+      // http://stackoverflow.com/a/5527094/2557842
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: -moz-none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     a:after {
@@ -29,9 +39,8 @@
   }
 
   // Link to graphs column
-  th:last-child, td:last-child {
-    width: 1px;
-    text-align: right;
+  tr {
+    cursor: pointer;
   }
 
   th:first-child, td:first-child {

@@ -2,7 +2,10 @@ angular
     .module('redComponents.filters.display.units', [])
     .filter('units', function () {
         return function (value, fromUnits, toUnits) {
-            if (fromUnits === 'knots' && toUnits === 'mph') {
+            if (fromUnits === null && toUnits === null) {
+                // Pass through
+                return value;
+            } else if (fromUnits === 'knots' && toUnits === 'mph') {
                 return value * 1.15077945;
             } else if (fromUnits === 'meters' && toUnits === 'feet') {
                 return value * 3.280;

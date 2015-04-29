@@ -49,10 +49,10 @@ angular
                 title: label,
                 tiles: [
                     {
-                        value: accessor(_.max(values, accessor)),
+                        value: accessor(_.min(values, accessor)),
                         decimals: 1,
                         units: units,
-                        postfix: 'max'
+                        postfix: 'min'
                     },
                     {
                         value: averageParts.sum / averageParts.weightSum,
@@ -61,10 +61,10 @@ angular
                         postfix: 'avg'
                     },
                     {
-                        value: accessor(_.min(values, accessor)),
+                        value: accessor(_.max(values, accessor)),
                         decimals: 1,
                         units: units,
-                        postfix: 'min'
+                        postfix: 'max'
                     }
                 ]
             };
@@ -77,7 +77,11 @@ angular
                     {
                         value: values.length,
                         decimals: 0,
-                        units: eventType + 's',
+                        units: {
+                            from: null,
+                            to: null,
+                            display: eventType + 's'
+                        },
                         postfix: 'total'
                     },
                     {
@@ -85,7 +89,11 @@ angular
                             return sum + v.summaryStatistics.distance.path;
                         }, 0),
                         decimals: 0,
-                        units: 'm',
+                        units: {
+                            from: 'meters',
+                            to: 'feet',
+                            display: 'ft'
+                        },
                         postfix: 'total'
                     },
                     {
@@ -104,10 +112,18 @@ angular
             calculateStats('Duration', $scope.events, 'duration', function (e) {
                 return e.duration;
             }),
-            calculateStats('Distance', $scope.events, 'm', function (e) {
+            calculateStats('Distance', $scope.events, {
+                from: 'meters',
+                to: 'feet',
+                display: 'ft'
+            }, function (e) {
                 return e.summaryStatistics.distance.path;
             }),
-            calculateStats('Top Speed', $scope.events, 'kn', function (e) {
+            calculateStats('Top Speed', $scope.events, {
+                from: 'knots',
+                to: 'mph',
+                display: 'mph'
+            }, function (e) {
                 return e.summaryStatistics.gps.speed.maximum;
             }, function (e) {
                 return e.duration;
