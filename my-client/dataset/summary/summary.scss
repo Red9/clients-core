@@ -3,22 +3,24 @@
 .statsrow {
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
-  margin-top: 25px;
+  margin-bottom: 15px;
   padding-bottom: 20px;
+
+  margin-left: 5px;
+  margin-right: 5px;
 
   cursor: pointer;
 
   .statspanel {
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 12px;
-
+    margin-bottom: 15px;
 
     // golden ratio...
-    width: 250px;
-    height: 154px;
+    width: 140px;
+    height: 86px;
 
-    padding: 25px 0;
+    padding: 7px 0;
     background-color: $logocolor;
 
     text-align: center;
@@ -27,8 +29,15 @@
     //border: 3px solid black;
     border-radius: 8px;
 
+    h1 {
+      font-size: 2em;
+      margin-top: 10px;
+    }
+
+
     small {
       // Override the gray from Bootstrap
+      font-size: 0.75em;
       color: white;
     }
   }
@@ -38,6 +47,7 @@
 .carousel-control.right {
   background-image: none;
 }
+
 .carousel-control.left {
   background-image: none;
 }

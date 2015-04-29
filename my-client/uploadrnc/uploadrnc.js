@@ -3,8 +3,7 @@ angular
         'lodash',
         'angularFileUpload',
         'redComponents.api',
-        'redComponents.validFile',
-        'redComponents.tagHelper'
+        'redComponents.validFile'
     ])
     .config(function ($stateProvider) {
         $stateProvider.state('uploadRnc', {
