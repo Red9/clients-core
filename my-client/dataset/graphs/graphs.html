@@ -13,6 +13,7 @@
             </button>
             <button type="button" class="btn btn-default btn-md"
                     title="pin video frame to marker"
+                    ng-if="dataset.videos.length > 0"
                     ng-disabled="!(slides.a && !slides.b)"
                     ng-click="pinVideoFrame(slides.a)">
                 <span class="glyphicon glyphicon-pushpin"></span> Sync Video
