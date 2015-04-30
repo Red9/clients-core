@@ -9,7 +9,9 @@ angular
                 events: '='
             },
             templateUrl: '/components/eventtable/eventtable.html',
-            controller: function ($scope, _) {
+            controller: function ($scope, $state, _) {
+                $scope.$state = $state;
+
                 $scope.viewModel = {};
 
                 // This won't work for values across 0 (negative and positive)
@@ -26,11 +28,20 @@ angular
                     return event.summaryStatistics.distance.path;
                 }
 
+                function greatCircleAccessor(event) {
+                    return event.summaryStatistics.distance.greatCircle;
+                }
+
                 var distanceMax = calculateMax($scope.events, distanceAccessor);
 
                 function speedAccessor(event) {
                     return event.summaryStatistics.gps.speed.maximum;
                 }
+
+                function averageSpeedAccessor(event) {
+                    return event.summaryStatistics.gps.speed.average;
+                }
+
 
                 var speedMax = calculateMax($scope.events, speedAccessor);
 
@@ -45,6 +56,7 @@ angular
                     .map(function (event, index) {
                         return {
                             id: event.id,
+                            datasetId: event.datasetId,
                             index: index,
                             startTime: event.startTime,
                             endTime: event.endTime,
@@ -54,7 +66,9 @@ angular
                             bars: {
                                 duration: calculateBar(durationAccessor(event), durationMax),
                                 distance: calculateBar(distanceAccessor(event), distanceMax),
-                                speed: calculateBar(speedAccessor(event), speedMax)
+                                greatCircleDistance: calculateBar(greatCircleAccessor(event), distanceMax),
+                                speed: calculateBar(speedAccessor(event), speedMax),
+                                averageSpeed: calculateBar(averageSpeedAccessor(event), speedMax)
                             }
                         };
                     })

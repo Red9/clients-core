@@ -7,8 +7,9 @@
 
             <div class="col-sm-4" ng-repeat="tile in row.tiles">
                 <div class="statspanel">
-                    <h1 ng-if="tile.units !== 'duration'">{{tile.value | number:tile.decimals}}
-                        <small>{{tile.units}}</small>
+                    <h1 ng-if="tile.units !== 'duration'">{{tile.value |
+                        units:tile.units.from:tile.units.to | number:tile.decimals}}
+                        <small>{{tile.units.display}}</small>
                     </h1>
                     <h1 ng-if="tile.units === 'duration'">{{tile.value | duration:true}}</h1>
 

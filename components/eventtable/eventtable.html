@@ -1,25 +1,25 @@
-<table class="table event-table">
+<table class="table table-condensed event-table">
     <thead>
     <tr>
         <th>
             <a ng-class="{'sorted': (sortState.predicate==='index'), 'up': !sortState.reverse, 'down': sortState.reverse}"
                ng-click="sort('index')">#</a></th>
-        <th>
+        <th class="hidden-xs">
             <a ng-class="{'sorted': (sortState.predicate==='duration'), 'up': !sortState.reverse, 'down': sortState.reverse}"
                ng-click="sort('duration')">Duration</a></th>
         <th>
             <a ng-class="{'sorted': (sortState.predicate==='distance'), 'up': !sortState.reverse, 'down': sortState.reverse}"
-               ng-click="sort('distance')">Distance (m)</a></th>
+               ng-click="sort('distance')">Distance (ft)</a></th>
         <th>
             <a ng-class="{'sorted': (sortState.predicate==='speed'), 'up': !sortState.reverse, 'down': sortState.reverse}"
-               ng-click="sort('speed')">Top Speed (kn)</a></th>
-        <th></th>
+               ng-click="sort('speed')">Speed (mph)</a></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="event in viewModel.events track by event.id">
+    <tr ng-repeat="event in viewModel.events track by event.id"
+        ng-click="$state.go('dataset.graphs', {id: event.datasetId, startTime: event.startTime, endTime: event.endTime})">
         <td>{{event.index + 1}}</td>
-        <td>
+        <td class="hidden-xs">
             <div class="inline-bar">
                 <div class="units">{{event.duration | duration:true}}</div>
                 <div class="bar-area">
@@ -29,25 +29,25 @@
         </td>
         <td>
             <div class="inline-bar">
-                <div class="units">{{event.distance | number:1}}</div>
-                <div class="bar-area">
+                <div class="units">{{event.distance | units:'meters':'feet' | number:0}}</div>
+                <div class="bar-area hidden-xs">
                     <div class="bar" ng-style="{width: event.bars.distance + '%'}"></div>
+                    <div class="marker" ng-style="{width: event.bars.greatCircleDistance + '%'}"></div>
                 </div>
             </div>
         </td>
         <td>
             <div class="inline-bar">
-                <div class="units">{{event.speed | number:1}}</div>
-                <div class="bar-area">
+                <div class="units">{{event.speed | units:'knots':'mph' | number:1}}</div>
+                <div class="bar-area hidden-xs">
                     <div class="bar" ng-style="{width: event.bars.speed + '%'}"></div>
+                    <div class="marker" ng-style="{width: event.bars.averageSpeed + '%'}"></div>
                 </div>
             </div>
-        </td>
-        <td>
-            <a ui-sref="^.^.graphs({startTime: event.startTime, endTime: event.endTime})" title="Graphs">
-                <span class="glyphicon glyphicon-circle-arrow-right"></span>
-            </a>
         </td>
     </tr>
     </tbody>
 </table>
+<p class="text-right">
+    <small>Click on a header to sort, and a row to view event graphs.</small>
+</p>

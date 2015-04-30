@@ -15,5 +15,6 @@
 .graph-area {
   background-color: white;
   // Apply a min-height since, when the area loads, it's full of elements with 0 height.
-  min-height: 2000px;
+  min-height: 500px;
+  margin-bottom: 50px;
 }

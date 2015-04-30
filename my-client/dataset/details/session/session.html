@@ -9,7 +9,7 @@
             <tr>
                 <th>Distance</th>
                 <td>
-                    {{dataset.summaryStatistics.distance.path | number:0}} meters
+                    {{dataset.summaryStatistics.distance.path | units:'meters':'miles' | number:1}} miles
                 </td>
             </tr>
             <tr>
