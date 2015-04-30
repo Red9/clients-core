@@ -5,7 +5,6 @@ angular
         'redComponents.fcpxmlDownload',
         'redComponents.map',
         'redComponents.summaryStatistics',
-        'redComponents.tagHelper',
         'redComponents.filters.display.duration',
         'redComponents.filters.display.units',
         'redComponents.filters.display.sumDuration',
@@ -23,27 +22,6 @@ angular
                     // TODO: take care of the case that {id} isn't here
                     var queryOptions = {
                         id: $stateParams.id,
-                        fields: [
-                            'id',
-                            'userId',
-                            'title',
-                            'createdAt',
-                            'duration',
-                            'summaryStatistics',
-                            'source',
-                            'startTime',
-                            'endTime',
-                            'gpsLock',
-                            'tags',
-                            'boundingCircle',
-                            'boundingBox',
-                            // Dynamically added fields
-                            'aggregateStatistics',
-                            'user',
-                            'event(id,type,subType,startTime,endTime,source,summaryStatistics(gps,distance))',
-                            'comment',
-                            'video'
-                        ].join(','),
                         expand: ['user', 'comment', 'video']
                     };
 

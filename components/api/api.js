@@ -254,21 +254,29 @@ angular
             });
         };
 
-        result.dataset.prototype.addToCollection = function (key, values, callback) {
+        result.dataset.prototype.addToCollection = function (key, values) {
+            var self = this;
             var data = {};
             data[key] = values;
-            $http.put(apiUrl + '/dataset/' + this.id + '/' + key, data)
-                .success(callback)
+
+            $http.put(apiUrl + '/dataset/' + self.id + '/' + key, data)
+                .success(function () {
+                    self[key] = _.union(self[key], values);
+                })
                 .error(function (data, status) {
                     console.log('Error: ' + data + ', ' + status);
                 });
         };
 
-        result.dataset.prototype.removeFromCollection = function (key, values, callback) {
+        result.dataset.prototype.removeFromCollection = function (key, values) {
+            var self = this;
             var data = {};
             data[key] = values;
-            $http.patch(apiUrl + '/dataset/' + this.id + '/' + key, data)
-                .success(callback)
+
+            $http.patch(apiUrl + '/dataset/' + self.id + '/' + key, data)
+                .success(function () {
+                    self[key] = _.difference(self[key], values);
+                })
                 .error(function (data, status) {
                     console.log('Error: ' + data + ', ' + status);
                 });

@@ -1,5 +1,8 @@
 angular
-    .module('redApp.dataset.summary', [])
+    .module('redApp.dataset.summary', [
+        'lodash',
+        'redComponents.eventTable'
+    ])
     .config(function ($stateProvider) {
         $stateProvider.state('dataset.summary', {
             url: '/summary',
@@ -24,6 +27,16 @@ angular
             }
         };
 
+        if (dataset.sport === 'surf') {
+            $scope.viewModel.sport = {
+                sport: 'surf',
+                events: _.chain(dataset.events)
+                    .filter(function (event) {
+                        return event.type === 'Wave';
+                    })
+                    .value()
+            };
+        }
 
         function constructCountLengthSpeedTiles(eventType) {
 
@@ -36,7 +49,11 @@ angular
             tiles.push({
                 value: filteredEvents.length,
                 decimals: 0,
-                units: '',
+                units: {
+                    from: null,
+                    to: null,
+                    display: ''
+                },
                 caption: eventType.toLowerCase() + 's'
             });
 
@@ -50,7 +67,11 @@ angular
             tiles.push({
                 value: longest,
                 decimals: 0,
-                units: 'm',
+                units: {
+                    from: 'meters',
+                    to: 'feet',
+                    display: 'ft'
+                },
                 caption: 'longest ' + eventType.toLowerCase()
             });
 
@@ -65,7 +86,11 @@ angular
             tiles.push({
                 value: speed,
                 decimals: 1,
-                units: 'kn',
+                units: {
+                    from: 'knots',
+                    to: 'mph',
+                    display: 'mph'
+                },
                 caption: 'fastest ' + eventType.toLowerCase()
             });
 
@@ -90,7 +115,11 @@ angular
             tiles.push({
                 value: distance,
                 decimals: 0,
-                units: 'm',
+                units: {
+                    from: 'meters',
+                    to: 'feet',
+                    display: 'ft'
+                },
                 caption: 'total ' + eventType.toLowerCase() + ' distance'
             });
 
@@ -113,19 +142,27 @@ angular
             tiles.push({
                 value: averageSpeed,
                 decimals: 1,
-                units: 'kn',
+                units: {
+                    from: 'knots',
+                    to: 'mph',
+                    display: 'mph'
+                },
                 caption: 'average ' + eventType.toLowerCase() + ' speed'
             });
 
             return tiles;
         }
 
-        function constructSessionTiles() {
+        function constructSessionTiles(points) {
             var tiles = [];
             tiles.push({
                 value: dataset.summaryStatistics.distance.path,
-                decimals: 0,
-                units: 'm',
+                decimals: 1,
+                units: {
+                    from: 'meters',
+                    to: 'miles',
+                    display: 'mi'
+                },
                 caption: 'total distance'
             });
 
@@ -136,15 +173,31 @@ angular
             });
 
             tiles.push({
-                value: 920,
-                units: 'points',
+                value: points,
+                units: {
+                    from: null,
+                    to: null,
+                    display: 'points'
+                },
                 caption: 'R9 Score'
             });
             return tiles;
         }
 
 
+        var points = 0;
         if (dataset.sport === 'surf') {
+            points = Math.round(
+                _.chain(dataset.events)
+                    .filter(function (event) {
+                        return event.type === 'Wave';
+                    }).reduce(function (points, event) {
+                        return points + event.duration / 1000 +
+                            (event.summaryStatistics.gps.speed.maximum * event.summaryStatistics.distance.path) / 100;
+                    }, 0)
+                    .value());
+
+
             $scope.viewModel.eventRows = [
                 {
                     type: 'Wave',
@@ -163,7 +216,7 @@ angular
                 },
                 {
                     type: 'Session',
-                    tiles: constructSessionTiles(),
+                    tiles: constructSessionTiles(points),
                     link: function () {
                         $state.go('^.details.session');
                     }
@@ -173,6 +226,22 @@ angular
             $scope.highlights = _.filter(dataset.events, function (event) {
                 return event.type === 'Wave';
             });
+        } else {
+            points = Math.round(
+                dataset.summaryStatistics.distance.path *
+                dataset.summaryStatistics.gps.speed.maximum /
+                1000
+            );
+
+            $scope.viewModel.eventRows = [
+                {
+                    type: 'Session',
+                    tiles: constructSessionTiles(points),
+                    link: function () {
+                        $state.go('^.details.session');
+                    }
+                }
+            ];
         }
 
 

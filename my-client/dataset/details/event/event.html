@@ -1,18 +1,3 @@
-<!--<div class="row">-->
-    <!--<h2>Todo:</h2>-->
-    <!--<ul>-->
-        <!--<li>Pull out top speed, distance, duration, count (averages too)</li>-->
-        <!--<li>Sum up duration, distance for totals</li>-->
-        <!--<li>Check mobile display</li>-->
-    <!--</ul>-->
-<!--</div>-->
-
-<!--<div class="row">-->
-
-<!--</div>-->
-
-<br/>
-
 <div ng-repeat="v in statsRows">
     <div class="row">
         <div class="col-xs-12"><h2 class="text-center">{{v.title}}</h2></div>
@@ -20,10 +5,13 @@
     <div class="row statsrow">
         <div class="col-sm-4" ng-repeat="tile in v.tiles">
             <div class="statspanel-muted">
-                <h3 ng-if="tile.units !== 'duration'">{{tile.value | number:tile.decimals}}
-                    <small>{{tile.units}} {{tile.postfix}}</small>
+                <h3 ng-if="tile.units !== 'duration'">{{tile.value |
+                    units:tile.units.from:tile.units.to | number:tile.decimals}}
+                    <small>{{tile.units.display}} {{tile.postfix}}</small>
                 </h3>
-                <h3 ng-if="tile.units === 'duration'">{{tile.value | duration:true}} <small>{{tile.postfix}}</small></h3>
+                <h3 ng-if="tile.units === 'duration'">{{tile.value | duration:true}}
+                    <small>{{tile.postfix}}</small>
+                </h3>
 
 
                 <p>{{tile.caption}}</p>
@@ -35,58 +23,6 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <table class="table eventlist">
-            <thead>
-            <tr>
-                <th>
-                    <a ng-class="{'sorted': (sortState.predicate==='index'), 'up': !sortState.reverse, 'down': sortState.reverse}"
-                       ng-click="sort('index')">#</a></th>
-                <th>
-                    <a ng-class="{'sorted': (sortState.predicate==='duration'), 'up': !sortState.reverse, 'down': sortState.reverse}"
-                       ng-click="sort('duration')">Duration</a></th>
-                <th>
-                    <a ng-class="{'sorted': (sortState.predicate==='distance'), 'up': !sortState.reverse, 'down': sortState.reverse}"
-                       ng-click="sort('distance')">Distance (m)</a></th>
-                <th>
-                    <a ng-class="{'sorted': (sortState.predicate==='speed'), 'up': !sortState.reverse, 'down': sortState.reverse}"
-                       ng-click="sort('speed')">Top Speed (kn)</a></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="event in viewModel.events track by event.id">
-                <td>{{event.index + 1}}</td>
-                <td>
-                    <div class="inline-bar">
-                        <div class="units">{{event.duration | duration:true}}</div>
-                        <div class="bar-area">
-                            <div class="bar" ng-style="{width: event.bars.duration + '%'}"></div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="inline-bar">
-                        <div class="units">{{event.distance | number:1}}</div>
-                        <div class="bar-area">
-                            <div class="bar" ng-style="{width: event.bars.distance + '%'}"></div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="inline-bar">
-                        <div class="units">{{event.speed | number:1}}</div>
-                        <div class="bar-area">
-                            <div class="bar" ng-style="{width: event.bars.speed + '%'}"></div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <a ui-sref="^.^.graphs({startTime: event.startTime, endTime: event.endTime})" title="Graphs">
-                        <span class="glyphicon glyphicon-circle-arrow-right"></span>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <event-table events="events"></event-table>
     </div>
 </div>

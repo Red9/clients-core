@@ -283,8 +283,6 @@ angular
                 }
 
                 // Respond to zooms
-                // Note: we really shouldn't have this in here, since a zoom is
-                // a state change, and hence will reload this controller.
                 $scope.$watch('time', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
                         drawGraph();

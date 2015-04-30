@@ -1,19 +1,60 @@
 <div class="col-xs-12">
-    <div class="row"><h1 class="col-xs-12">Dataset Admin Tools</h1></div>
 
     <div class="row">
         <div class="col-xs-12">
-            <h2>Select Dataset Sport Type</h2>
-
-            <form class="form-inline">
-                <select ng-model="datasetSport" ng-change="saveSport(datasetSport)" class="form-control"
-                        ng-options="item for item in sportsList track by item"></select>
-            </form>
+            <h1>Dataset Admin Tools</h1>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12">
+            <h2>Update Dataset Properties</h2>
+
+            <p>All values are automatically saved.</p>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-6">
+
+
+            <h3>Title</h3>
+            <input type="text" class="form-control"
+                   ng-model="dataset.title"
+                   ng-change="dataset.$update({title: dataset.title})"
+                   ng-model-options='{ debounce: 1000 }'>
+
+        </div>
+        <div class="col-lg-6">
+            <h3>Sport</h3>
+
+            <select ng-model="datasetSport" ng-change="saveSport(datasetSport)" class="form-control"
+                    ng-options="item for item in sportsList track by item"></select>
+
+            <p>
+                <small>
+                    Note: changing the sport won't change the events as well. You'll need to do that manually.
+                </small>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Tags</h3>
+            <tags-input ng-model="viewModel.tags"
+                        replace-spaces-with-dashes="false"
+                        enable-editing-last-tag="true"
+                        placeholder="tag(s)"
+                        on-tag-added="dataset.addToCollection('tags', [$tag.text])"
+                        on-tag-removed="dataset.removeFromCollection('tags', [$tag.text])"
+                        style="color:black;">
+            </tags-input>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6">
             <h2>Download Panel</h2>
 
             <form class="form-horizontal" name="downloadForm" novalidate>
@@ -107,21 +148,41 @@
             </form>
 
         </div>
+
+        <div class="col-lg-6">
+            <h2>Generate FCPXML</h2>
+            <fcpxml-download dataset="dataset"></fcpxml-download>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <br/><br/>
+            <hr/>
+            <br/><br/>
+
+            <div class="alert alert-danger">
+                <h1 class="text-center">
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    Danger Zone!
+                </h1>
+            </div>
+        </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12">
             <h2>Automatic Event Detection</h2>
 
-            <div class="alert alert-warning" role="alert">Does this dataset already have events? Did you upload this
+            <p>Does this dataset already have events? Did you upload this
                 dataset with sport type "surf"? If so, you'll probably want to delete the current events before
                 re-running event finding. Otherwise you'll get duplicates.
-            </div>
+            </p>
 
             <p>Start event finding. Note that this takes between 30 and 500 seconds. Do not press twice. To see the
                 created
                 events you'll need to refresh the page. <br/><br/>
-                <button class="btn btn-danger" ng-click="eventFind(dataset)" ng-disabled="eventFindDisabled">Event
+                <button class="btn btn-warning" ng-click="eventFind(dataset)" ng-disabled="eventFindDisabled">Event
                     Find
                 </button>
             </p>
@@ -131,8 +192,14 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <h2>Generate FCPXML</h2>
-            <fcpxml-download dataset="dataset"></fcpxml-download>
+            <h2>Delete Dataset</h2>
+
+            <p>Permanently delete this dataset and all associated events, comments, and videos.</p>
+
+            <button class="btn btn-danger"
+                    ng-click="deleteDataset(dataset)">Delete Dataset
+            </button>
         </div>
     </div>
+
 </div>
