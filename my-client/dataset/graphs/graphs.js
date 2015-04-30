@@ -213,8 +213,9 @@ angular
 
             zoom(startTime, endTime);
         };
-        $scope.viewModel = {};
-
+        $scope.viewModel = {
+            displayExtraGraphs: false
+        };
 
         function displayPanel(newPanel) {
             angular.extend($scope.viewModel,
@@ -225,6 +226,12 @@ angular
                     currentEndTime: newPanel.panel.time
                         [newPanel.panel.time.length - 1],
                     graphSeries: [
+                        {
+                            label: 'kn',
+                            values: {
+                                gpsSpeed: newPanel.panel['gps:speed']
+                            }
+                        },
                         {
                             label: 'm/s^2',
                             values: {
@@ -243,14 +250,35 @@ angular
                             }
                         },
                         {
+                            extra: true,
                             label: 'T',
                             values: {
                                 magneticFieldX: newPanel.panel['magneticfield:x'],
                                 magneticFieldY: newPanel.panel['magneticfield:y'],
                                 magneticFieldZ: newPanel.panel['magneticfield:z']
                             }
+                        },
+                        {
+                            extra: true,
+                            label: 'satellites',
+                            values: {
+                                gpsSatellites: newPanel.panel['gps:satellites']
+                            }
+                        },
+                        {
+                            extra: true,
+                            label: 'm',
+                            values: {
+                                gpsHdop: newPanel.panel['gps:hdop']
+                            }
+                        },
+                        {
+                            extra: true,
+                            label: 'm',
+                            values: {
+                                gpsAltitude: newPanel.panel['gps:altitude']
+                            }
                         }
-
                     ]
                 });
         }
