@@ -120,7 +120,7 @@ angular
                     to: 'feet',
                     display: 'ft'
                 },
-                caption: 'total ' + eventType.toLowerCase() + ' distance'
+                caption: 'total distance'
             });
 
             var duration = _.reduce(filteredEvents, function (sum, event) {
@@ -129,7 +129,7 @@ angular
             tiles.push({
                 value: duration,
                 units: 'duration',
-                caption: 'total ' + eventType.toLowerCase() + ' time'
+                caption: 'total time'
             });
 
             var averageSpeed = 0;
@@ -147,7 +147,7 @@ angular
                     to: 'mph',
                     display: 'mph'
                 },
-                caption: 'average ' + eventType.toLowerCase() + ' speed'
+                caption: 'average speed'
             });
 
             return tiles;
