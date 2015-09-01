@@ -9,15 +9,15 @@
         </div>
 
         <div class="form-group">
+            <label>Profile Picture (URL)</label>
+            <input type="url" class="form-control" placeholder="" ng-model="editableUser.picture" required>
+        </div>
+
+        <div class="form-group">
             <label>Permissions</label>
             <span class="help-block">Website permission levels.</span>
 
             <list-group-simple list="editableUser.scope" editable="true"></list-group-simple>
-        </div>
-
-        <div class="form-group">
-            <label>Preferred Layouts</label>
-            <ul><li ng-repeat="(path, layout) in editableUser.preferredLayout">{{path}}: {{layout}}</li></ul>
         </div>
 
         <hr/>

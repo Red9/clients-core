@@ -21,7 +21,7 @@ angular
 
         api.user.get({id: $stateParams.id}, function (user) {
             $scope.editableUser.displayName = user.displayName;
-            $scope.editableUser.preferredLayout = user.preferredLayout;
+            $scope.editableUser.picture = user.picture;
             $scope.editableUser.scope = user.scope;
             $scope.user = user;
         });
