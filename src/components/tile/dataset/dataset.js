@@ -29,7 +29,7 @@ angular
                         layers: {
                             baselayers: {
                                 ThunderforestLandscape: {
-                                    url: 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+                                    url: 'https://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
                                     type: 'xyz',
                                     name: 'Thunderforest Landscape',
                                     layerParams: {},

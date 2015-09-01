@@ -21,6 +21,18 @@ window.analytics.load = function (t) {
     window.analytics.load('FnTPjUuqyF');
 /* jshint ignore:end */
 
+
+
+var red9config = {};
+// TODO: This really should be injected as part of the Grunt build, rather than a runtime check.
+if (window.location.host === 'my.redninesensor.com') {
+    red9config.apiUrl = 'https://api.redninesensor.com';
+} else if (window.location.host === 'staging.redninesensor.com') {
+    red9config.apiUrl = 'https://ghost.redninesensor.com';
+} else {
+    red9config.apiUrl = 'https://localhost:3000';
+}
+
 // Start the app
 L.Icon.Default.imagePath = '/images';
 deferredBootstrapper.bootstrap({

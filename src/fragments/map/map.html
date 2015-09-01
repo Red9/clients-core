@@ -9,10 +9,12 @@
 
     <base href="/">
 
-    <!-- build:css css/map.css -->
+    <!-- build:css(build/fragments/map) css/map_vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"/>
     <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/map.css -->
     <link rel="stylesheet" href="fragments/map/map.css"/>
     <link rel="stylesheet" href="components/map/map.css"/>
     <!-- endbuild -->
@@ -28,25 +30,12 @@
     </div>
 </div>
 
-
-<!-- Livereload script for development only (stripped during dist build) -->
-<script src="http://localhost:35729/livereload.js" data-remove="true"></script>
-
-<!-- build:js js/map_vendor.js -->
+<!-- build:js(build/fragments/map) js/map_vendor.js -->
 <!-- bower:js -->
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
-<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
-<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
-<script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src="bower_components/lodash/lodash.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
-<script src="config.js"></script>
-
 <!-- build:js js/map_app.js -->
-
 <script src="fragments/map/map.js"></script>
 <script src="components/authenticate/authenticate.js"></script>
 <script src="components/head/head.js"></script>

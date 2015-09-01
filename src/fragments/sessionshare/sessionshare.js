@@ -38,6 +38,10 @@
 
             var datasetId = search.datasetId;
 
+            if(!_.has(search, 'datasetId')){
+                throw new Error('Must provide a datasetId query parameter.');
+            }
+
             var queryOptions = {
                 id: datasetId,
                 fields: [

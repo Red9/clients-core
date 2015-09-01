@@ -29,7 +29,7 @@ angular
 
         $scope.slides = _.map(instagramList, function (id) {
             return {
-                image: 'http://instagram.com/p/' + id + '/media/?size=l',
+                image: 'https://instagram.com/p/' + id + '/media/?size=l',
                 active: false
             };
         });

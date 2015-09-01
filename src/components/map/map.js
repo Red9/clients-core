@@ -64,7 +64,7 @@ angular
                     layers: {
                         baselayers: angular.extend({
                             ThunderforestOutdoors: {
-                                url: 'http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
+                                url: 'https://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
                                 type: 'xyz',
                                 name: 'Thunderforest Outdoors',
                                 layerParams: {},
@@ -72,14 +72,14 @@ angular
                             }
                         }, $scope.controls === 'true' ? { // The layers control only shows if we have multiple layers.
                             ThunderforestLandscape: {
-                                url: 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+                                url: 'https://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
                                 type: 'xyz',
                                 name: 'Thunderforest Landscape',
                                 layerParams: {},
                                 layerOptions: defaultLayerOptions
                             },
                             OpenTopoMap: {
-                                url: 'http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png',
+                                url: 'https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png',
                                 type: 'xyz',
                                 name: 'Open Topo Map Hydda',
                                 layerParams: {},
@@ -87,13 +87,13 @@ angular
                             },
                             OpenStreetMap: {
                                 name: "OpenStreetMap",
-                                url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                                 type: "xyz",
                                 layerParams: {},
                                 layerOptions: defaultLayerOptions
                             },
                             MapQuestOpenAerial: {
-                                url: 'http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
+                                url: 'https://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
                                 name: 'MapQuestOpen Aerial',
                                 layerParams: {},
                                 type: 'xyz',
@@ -106,14 +106,14 @@ angular
                 };
 
                 var startIcon = {
-                    iconUrl: 'http://maps.google.com/mapfiles/kml/paddle/go.png',
+                    iconUrl: 'https://maps.google.com/mapfiles/kml/paddle/go.png',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, 0]
                 };
 
                 var stopIcon = {
-                    iconUrl: 'http://maps.google.com/mapfiles/kml/paddle/red-square.png',
+                    iconUrl: 'https://maps.google.com/mapfiles/kml/paddle/red-square.png',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, 0]
