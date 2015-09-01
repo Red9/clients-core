@@ -1,6 +1,11 @@
 /*jslint node: true */
 'use strict';
 
+var mozjpeg = require('imagemin-mozjpeg');
+var pngquant = require('imagemin-pngquant');
+var rewriteModule = require('http-rewrite-middleware');
+
+
 var pkg = require('./package.json');
 
 //Using exclusion patterns slows down Grunt significantly
@@ -37,30 +42,106 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: pkg,
+        // ---------------------------------------------------------------------
+        // Serve
+        // ---------------------------------------------------------------------
         watch: {
-            main: {
+            service: {
                 options: {
                     livereload: true,
                     livereloadOnError: false,
                     spawn: false // Faster, but more prone to watch failure
                 },
-                files: [createFolderGlobs(['*.js', '*.scss', '*.html']), '!_SpecRunner.html'],
-                tasks: [] //all the tasks are run dynamically during the watch event handler
+                files: ['src/**/*.*'],
+                tasks: ['<%= grunt.task.current.args[1] %>']
             }
         },
-        shell: {
-            serve: {
-                command: "nodejs server.js"
-            }
-        },
-        concurrent: {
-            serve: {
-                tasks: ['shell:serve', 'watch'],
+        connect: {
+            options: {
+                debug: false,
+                livereload: true,
+                protocol: 'https',
+                // If it doesn't have a file extension then let's try serving
+                // a .html file. Allows for vanity URLs.
+                middleware: function (connect, options) {
+                    var middlewares = [];
+
+                    middlewares.push(rewriteModule.getMiddleware([
+                        {
+                            // This line is a bit fragile when you consider that we
+                            // want to serve stuff from bower_components, and we
+                            // don't have a [... WHAT SRLM?]
+                            from: '(^((?!css|html|js|images|img|fonts|\/$).)*$)',
+                            to: "$1.html"
+                        }
+                    ]));
+
+                    if (!Array.isArray(options.base)) {
+                        options.base = [options.base];
+                    }
+
+                    var directory = options.directory || options.base[options.base.length - 1];
+                    options.base.forEach(function (base) {
+                        // Serve static files.
+                        middlewares.push(connect.static(base));
+                    });
+
+                    // Make directory browse-able.
+                    middlewares.push(connect.directory(directory));
+
+
+                    // Not found? Probably a single page app or a 404. Either way, let the SPA page handle it.
+                    // Doesn't need to be perfect, since it's only for development.
+                    middlewares.push(function (req, res) {
+                        // Taken from https://gist.github.com/ssafejava/8704372
+                        for (var file, i = 0; i < options.base.length; i++) {
+                            file = options.base + "/index.html";
+                            if (grunt.file.exists(file)) {
+                                require('fs').createReadStream(file).pipe(res);
+                                return; // we're done
+                            }
+                        }
+                        // We won't do a 404 since it's probably a SPA page.
+                        //res.statusCode(404); // where's index.html?
+                        res.end();
+                    });
+
+                    return middlewares;
+                }
+            },
+            development: {
                 options: {
-                    logConcurrentOutput: true
+                    port: 8000,
+                    base: 'build'
+                }
+            },
+            dist: {
+                options: {
+                    port: 8000,
+                    base: 'dist'
                 }
             }
         },
+        // ---------------------------------------------------------------------
+        // Setup
+        // ---------------------------------------------------------------------
+        clean: { // marketing website
+            prepare: {
+                files: [{
+                    expand: true,
+                    cwd: './',
+                    //src: ['dist/', '.tmp/', 'build/**/*.*', '!build/bower_components/**/*']
+                    src: ['dist/', '.tmp/']
+                }]
+            },
+            newer: {
+                src: 'node_modules/grunt-newer/.cache/'
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // Check
+        // ---------------------------------------------------------------------
         jshint: {
             main: {
                 options: {
@@ -86,161 +167,61 @@ module.exports = function (grunt) {
                         "spyOn": true
                     }
                 },
-                src: createFolderGlobs('*.js').concat('!old/**/*').concat('!server.js')
+                src: ['src/**/*.js']
             }
         },
-        sass: {
-            myclient: {
-                files: [{
-                    expand: true,
-                    cwd: 'my-client/',
-                    src: ['**/*.scss'],
-                    dest: 'my-client/',
-                    ext: '.css'
-                }]
-            },
-            components: {
-                files: [{
-                    expand: true,
-                    cwd: 'components/',
-                    src: ['**/*.scss'],
-                    dest: 'components/',
-                    ext: '.css'
-                }]
-            },
-            fragments: {
-                files: [{
-                    expand: true,
-                    cwd: 'fragments/',
-                    src: ['**/*.scss'],
-                    dest: 'fragments/',
-                    ext: '.css'
-                }]
-            }
-        },
-        clean: {
-            before: {
-                src: ['dist', '.tmp']
-            },
-            after: {
-                src: ['.tmp']
-            }
-        },
-        useminPrepare: {
-            html: 'dist/index.html',
-            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html',
-            mapFragment: 'dist/fragments/map/map.html',
-            options: {
-                dest: 'dist',
-                root: './'
-            }
-        },
-        usemin: {
-            html: 'dist/index.html',
-            sessionFragment: 'dist/fragments/sessionshare/sessionshare.html',
-            mapFragment: 'dist/fragments/map/map.html'
-        },
+        // ---------------------------------------------------------------------
+        // Build
+        // ---------------------------------------------------------------------
         copy: {
-            index: {
-                files: [
-                    {
-                        src: 'index.html',
-                        dest: 'dist/index.html'
-                    },
-                    {
-                        src: [
-                            'components/**/*.css',
-                            'components/**/*.css.map',
-                            'components/**/*.html',
-                            'my-client/**/*.css',
-                            'my-client/**/*.css.map',
-                            'my-client/**/*.html',
-                            'images/**',
-                            'fonts/**',
-                            'fragments/**' // Temporary solution. Each fragment should be optimized...
-                        ],
-                        dest: 'dist/'
-                    },
-                    {
-                        cwd: 'bower_components/',
-                        src: ['leaflet/dist/images/**'],
-                        dest: 'dist/css/images/',
-                        flatten: true,
-                        filter: 'isFile',
-                        expand: true
-                    },
-                    {
-                        cwd: 'bower_components/',
-                        src: ['font-awesome/fonts/**', 'bootstrap/dist/fonts/**'],
-                        dest: 'dist/fonts/',
-                        flatten: true,
-                        filter: 'isFile',
-                        expand: true
-                    }
-                ]
-            }
-        },
-        dom_munger: {
-            update: {
-                options: { // Remove development scripts
-                    remove: ['script[data-remove="true"]']
-                },
-                src: 'dist/index.html',
-                dest: 'dist/index.html'
-            }
-        },
-        ngAnnotate: {
-            options: {
-                singleQuotes: true
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '.tmp/concat/js',
-                    src: '*.js',
-                    dest: '.tmp/concat/js'
-                }]
-            }
-        },
-        uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
-                compress: {
-                    sequences: true,
-                    dead_code: true,
-                    conditionals: true,
-                    booleans: true,
-                    unused: true,
-                    if_return: true,
-                    join_vars: true,
-                    drop_console: true
-                }
-            }
-        },
-        htmlmin: {                                     // Task
-            target: {
-                options: {                                 // Target options
-                    removeComments: true,
-                    collapseWhitespace: true,
-                    conservativeCollapse: true
-                },
+            build: {
                 files: [
                     {
                         expand: true,
-                        cwd: 'dist/',
-                        src: '**/*.html',
-                        dest: 'dist/'
+                        cwd: 'src/',
+                        src: ['**/*.{html,js}'],
+                        dest: 'build/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/',
+                        src: ['images/**/*', 'fonts/**/*'],
+                        dest: 'build/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/',
+                        src: ['bower_components/**/*.*'],
+                        dest: 'build/'
                     }
                 ]
+            },
+            prepare: {
+                files: [{
+                    expand: true,
+                    cwd: 'build/',
+                    src: [
+                        'index.html',
+                        'fragments/**/*.html',
+                        'images/**/*',
+                        '!bower_components/**/*.*'
+                    ],
+                    dest: 'dist/'
+                }, {
+                    expand: true,
+                    cwd: 'build/',
+                    src: ['**/fonts/**/*.{woff,woff2,ttf,otf,eot,svg}'],
+                    dest: 'dist/fonts/',
+                    flatten: true
+                }]
             }
         },
-        wiredep: {
-            task: {
-
-                // Point to the files that should be updated when
-                // you run `grunt wiredep`
+        wiredep: { // Clients core
+            build: {
                 src: [
-                    'index.html'   // .html support...
+                    'build/index.html',
+                    // TODO: Using the same bower_components for each fragment is a bit inefficient.
+                    'build/fragments/**/*.html'
                 ],
 
                 options: {
@@ -286,64 +267,326 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+        sass: {
+            build: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/',
+                    src: ['**/*.scss'],
+                    dest: 'build/',
+                    ext: '.css'
+                }]
+            }
+        },
+        postcss: {
+            options: {
+                map: true, // Update the existing source map
+                diff: false,
+                processors: [
+                    require('autoprefixer-core')({
+                        browsers: 'last 3 versions, > 0.5%'
+                    })
+                ]
+            },
+            build: {
+                files: [{
+                    expand: true,
+                    cwd: 'build/',
+                    src: ['**/*.css', '!bower_components/**/*.css'],
+                    dest: 'build/'
+                }]
+            }
+        },
+        imagemin: {
+            build: {
+                options: {
+                    optimizationLevel: 4, // png trials
+                    use: [
+                        mozjpeg({
+                            quality: 80,
+                            progressive: true
+                        }),
+                        pngquant({
+                            quality: '75-80',
+                            speed: 1
+                        })
+                    ]
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'build/images/',
+                    src: ['**/*.{png,jpg,gif}', '!favicons/**'],
+                    dest: 'build/images/'
+                }]
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // Prepare
+        // ---------------------------------------------------------------------
+        useminPrepare: {
+            prepare: {
+                src: [
+                    'build/index.html',
+                    'build/fragments/**/*.html'
+                ],
+                options: {
+                    dest: 'dist',
+                    root: 'build/'
+                }
+            }
+        },
+        ngAnnotate: {
+            options: {
+                singleQuotes: true
+            },
+            prepare: {
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/concat/js',
+                    src: '*.js',
+                    dest: '.tmp/concat/js'
+                }]
+            }
+        },
+        //uncss: {
+        //    prepare: {
+        //        options: {
+        //            csspath: '../',
+        //            stylesheets: ['.tmp/concat/css/site.css'],
+        //            // ignore list taken from: ???
+        //            ignore: [
+        //                ///(#|\.)fancybox(\-[a-zA-Z]+)?/,
+        //                // Bootstrap selectors added via JS
+        //                /\w\.in/,
+        //                ".fade",
+        //                ".collapse",
+        //                ".collapsing",
+        //                /(#|\.)navbar(\-[a-zA-Z]+)?/,
+        //                /(#|\.)dropdown(\-[a-zA-Z]+)?/,
+        //                /(#|\.)(open)/,
+        //                // currently only in a IE conditional, so uncss doesn't see it (? SRLM)
+        //                ".close",
+        //                ".alert-dismissible",
+        //                ".animated",
+        //                '.swipebox-video',
+        //                /(#|\.)swipebox(\-[a-zA-Z]+)?/
+        //            ]
+        //        },
+        //        files: {
+        //            // Yes, this is a special case. Remove CSS rules from the
+        //            // sitewide css file if that rule is not used in any HTML
+        //            // file.
+        //            '.tmp/concat/css/site.css': 'dist/**/*.html'
+        //
+        //        }
+        //    }
+        //},
+
+        usemin: {
+            html: ['dist/**/*.html'],
+            css: ['dist/**/*.css'],
+            js: ['dist/**/*.js'],
+            options: {
+                assetsDirs: ['.tmp', 'build', 'dist'],
+                patterns: {
+                    js: [
+                        [/((my-client|components)\/.*?\.(?:css|html))/gm, 'Update references to revved files that are pulled in dynamically']
+                    ]
+                }
+            }
+        },
+
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+                compress: {
+                    sequences: true,
+                    dead_code: true,
+                    conditionals: true,
+                    booleans: true,
+                    unused: true,
+                    if_return: true,
+                    join_vars: true,
+                    drop_console: true
+                }
+            }
+        },
+        htmlmin: {                                     // Task
+            prepare: {
+                options: {                             // Target options
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    conservativeCollapse: true
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'dist/',
+                        src: '**/*.html',
+                        dest: 'dist/'
+                    }
+                ]
+            }
+        },
+        filerev: {
+            options: {
+                algorithm: 'md5',
+                length: 8
+            },
+            prepare: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['**/*.*', '!**/*.html', '!images/**', '!bower_components/**'],
+                    dest: 'dist/'
+                }, {
+                    // Copy (and filerev) the html/css files over that are dynamically loaded.
+                    expand: true,
+                    cwd: 'build/',
+                    src: [
+                        '**/*.{html,css}',
+                        '!index.{html,css}',
+                        '!fragments/**/*.{html,css}'
+                    ],
+                    dest: 'dist/'
+                }, {
+                    expand: true,
+                    cwd: '.tmp/',
+                    src: '**/*.{js,css}',
+                    dest: '.tmp/'
+                }]
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // Deploy
+        // ---------------------------------------------------------------------
+        compress: {
+            deploy: {
+                options: {
+                    mode: 'gzip'
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['**/*', '!images/**/*'],
+                    dest: 'dist/',
+                    ext: function (ext) {
+                        return ext + '.gz';
+                    }
+                }]
+            }
+        },
+        aws: grunt.file.readJSON('private/staging.json'), // Read the file
+        aws_s3: {
+            options: {
+                //debug: true,
+                accessKeyId: '<%= aws.AWSAccessKeyId %>', // Use the variables
+                secretAccessKey: '<%= aws.AWSSecretKey %>', // You can also use env variables
+                region: '<%= aws.region %>',
+                uploadConcurrency: 10, // 10 simultaneous uploads
+                downloadConcurrency: 10, // 10 simultaneous downloads
+                differential: true, // Only uploads the files that have changed
+                displayChangesOnly: true,
+                gzipRename: 'ext' // when uploading a gz file, keep the original extension
+            },
+            stagingUploadStatic: {
+                options: {
+                    bucket: 'staging.redninesensor.com',
+                    params: {
+                        CacheControl: 'no-transform, public, max-age=10, s-maxage=60'
+                    }
+                },
+                files: [{
+                    action: 'upload',
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['**/*.gz', 'images/**/*', 'fonts/**/*'],
+                    dest: ''
+                }]
+            },
+            stagingUploadPages: {
+                options: {
+                    bucket: 'staging.redninesensor.com',
+                    params: {
+                        CacheControl: 'public, max-age=10, s-maxage=60'
+                    }
+                },
+                files: [{
+                    action: 'upload',
+                    expand: true,
+                    cwd: 'dist/',
+                    src: [
+                        'index.html.gz',
+                        'fragments/**/*.html.gz'
+                    ],
+                    dest: '',
+                    rename: function (err, src) {
+                        console.log('src: ' + src);
+                        return src.slice(0, -8); // Remove the known .html.gz extension.
+                    }
+                }]
+            }
+        },
+        invalidate_cloudfront: {
+            options: {
+                key: '<%= aws.AWSAccessKeyId %>', // Use the variables
+                secret: '<%= aws.AWSSecretKey %>', // You can also use env variables
+                distribution: '<%= aws.cloudfrontDistribution %>'
+                //distribution: 'TESTING'
+            },
+            staging: {
+                expand: true,
+                cwd: 'dist/',
+                src: [
+                    'index.html',
+                    'fragments/**/*.html'
+                ],
+                dest: '',
+                filter: 'isFile',
+                rename: function (err, src) {
+                    return src.slice(0, -5); // Remove the known .html extension.
+                }
+            }
         }
     });
 
-    grunt.registerTask('test', ['jshint', 'sass']);
-    grunt.registerTask('serve', ['concurrent:serve']);
+    grunt.registerTask('serve', ['build', 'connect:development', 'watch:service:build']);
+    grunt.registerTask('serve-dist', ['prepare', 'connect:dist', 'watch:service:prepare']);
+
     grunt.registerTask('build', [
         'jshint',
-        'sass',
-        'clean:before',
-        'copy',
-        'dom_munger:update',
-        'useminPrepare',
-        'concat:generated',
-        'ngAnnotate',
-        'cssmin:generated',
-        'uglify:generated',
-        'usemin',
-        'htmlmin',
-        'clean:after'
+        'copy:build',
+        'wiredep:build',
+        'sass:build',
+        'postcss:build',
+        'newer:imagemin:build'
     ]);
 
-    grunt.event.on('watch', function (action, filepath) {
-        //https://github.com/gruntjs/grunt-contrib-watch/issues/156
+    grunt.registerTask('prepare', [
+        'clean:prepare',
+        'build',
+        'copy:prepare',
+        'useminPrepare',
+        'concat:generated',
+        'ngAnnotate:prepare',
+        //'uncss:prepare',
+        'cssmin:generated',
+        'uglify:generated',
+        'filerev',
+        'usemin',
+        'htmlmin:prepare'
+    ]);
 
-        var tasksToRun = [];
+    grunt.registerTask('deploy-staging', [
+        //'clean:newer',
+        'prepare',
+        'compress:deploy',
+        'aws_s3:stagingUploadStatic',
+        'aws_s3:stagingUploadPages',
+        'invalidate_cloudfront:staging'
+    ]);
 
-        if (filepath.lastIndexOf('.js') !== -1 && filepath.lastIndexOf('.js') === filepath.length - 3) {
-
-            //lint the changed js file
-            grunt.config('jshint.main.src', filepath);
-            tasksToRun.push('jshint');
-
-            //find the appropriate unit test for the changed file
-            var spec = filepath;
-            if (filepath.lastIndexOf('-spec.js') === -1 || filepath.lastIndexOf('-spec.js') !== filepath.length - 8) {
-                spec = filepath.substring(0, filepath.length - 3) + '-spec.js';
-            }
-
-            //if the spec exists then lets run it
-            if (grunt.file.exists(spec)) {
-                var files = [].concat(grunt.config('dom_munger.data.appjs'));
-                files.push('bower_components/angular-mocks/angular-mocks.js');
-                files.push(spec);
-                grunt.config('karma.options.files', files);
-                tasksToRun.push('karma:during_watch');
-            }
-        } else if (filepath.lastIndexOf('.scss') !== -1 && filepath.lastIndexOf('.scss') === filepath.length - 5) {
-            tasksToRun.push('sass');
-        }
-
-        //if index.html changed, we need to reread the <script> tags so our next run of karma
-        //will have the correct environment
-        // SRLM: take this out for now, since it was stopping execution (no dom_munger)
-        //if (filepath === 'index.html') {
-        //    tasksToRun.push('dom_munger:read');
-        //}
-
-        grunt.config('watch.main.tasks', tasksToRun);
-
-    });
 };

@@ -1,5 +1,0 @@
-{
-  "port": 8080,
-  "cacheMaxAge": 0,
-  "src": "./dist/"
-}

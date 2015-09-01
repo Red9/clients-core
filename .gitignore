@@ -1,7 +1,7 @@
+build/
 dist/
 node_modules/
-bower_components/
+private/
 .idea/
 .sass-cache/
-*.css
-*.css.map
+.tmp/
